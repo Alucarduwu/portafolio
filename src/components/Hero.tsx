@@ -11,6 +11,7 @@ import {
   Star,
   Gamepad2,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { Language } from "../App";
 
 interface HeroProps {
@@ -18,16 +19,15 @@ interface HeroProps {
 }
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: (i: number = 1) => ({
+  hidden: { opacity: 0, y: 12 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.08,
-      duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.22,
+      ease: "easeOut",
     },
-  }),
+  },
 };
 
 const content = {
@@ -44,6 +44,9 @@ const content = {
     primary: "Ver proyectos",
     secondary: "Contáctame",
     tertiary: "GitHub",
+    player: "Jugador",
+    creativeMode: "Modo creativo",
+    skill: "Skill",
     stats: {
       role: "Full Stack Developer",
       level: "Lv. 26",
@@ -65,7 +68,7 @@ const content = {
       {
         title: "Mobile",
         value:
-          "Aplicaciones móviles con Kotlin, JavaScript and React Native (Multiplataform)",
+          "Aplicaciones móviles con Kotlin, JavaScript y React Native",
         icon: Smartphone,
       },
     ],
@@ -83,6 +86,9 @@ const content = {
     primary: "View projects",
     secondary: "Contact me",
     tertiary: "GitHub",
+    player: "Player",
+    creativeMode: "Creative mode",
+    skill: "Skill",
     stats: {
       role: "Full Stack Developer",
       level: "Lv. 24",
@@ -103,8 +109,7 @@ const content = {
       },
       {
         title: "Mobile",
-        value:
-          "Mobile applications with Kotlin JavaScript y React Native (Multiplataforma)",
+        value: "Mobile applications with Kotlin, JavaScript and React Native",
         icon: Smartphone,
       },
     ],
@@ -115,14 +120,11 @@ export default function Hero({ language }: HeroProps) {
   const t = content[language];
 
   return (
-    <section
-      id="home"
-      className="relative flex min-h-[100vh] items-center overflow-hidden px-0 pb-16 pt-28 md:py-24"
-    >
+    <section className="relative flex min-h-[100svh] items-center overflow-hidden px-0 pb-10 pt-24 sm:pb-14 sm:pt-28 md:min-h-[92vh] md:py-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-[-120px] top-10 h-72 w-72 rounded-full bg-fuchsia-400/15 blur-3xl" />
-        <div className="absolute right-[-80px] top-16 h-80 w-80 rounded-full bg-violet-400/15 blur-3xl" />
-        <div className="absolute bottom-[-40px] left-1/3 h-72 w-72 rounded-full bg-pink-300/10 blur-3xl" />
+        <div className="absolute left-[-120px] top-8 h-60 w-60 rounded-full bg-fuchsia-400/10 blur-3xl" />
+        <div className="absolute right-[-80px] top-12 h-64 w-64 rounded-full bg-violet-400/10 blur-3xl" />
+        <div className="absolute bottom-[-40px] left-1/3 h-56 w-56 rounded-full bg-pink-300/8 blur-3xl" />
       </div>
 
       <div className="w-full max-w-6xl">
@@ -130,19 +132,18 @@ export default function Hero({ language }: HeroProps) {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="game-label retro-badge"
+          className="game-label retro-badge w-fit"
         >
           <Sparkles className="h-3.5 w-3.5" />
           {t.badge}
         </motion.div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div className="mt-6 grid grid-cols-1 gap-5 lg:mt-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-6">
           <motion.aside
-            custom={1}
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="rpg-window console-shell arcade-corners pixel-console"
+            className="rpg-window console-shell arcade-corners pixel-console overflow-hidden"
           >
             <div className="rpg-window__bar console-topbar">
               <div className="rpg-window__title console-brand">Player Data</div>
@@ -153,10 +154,10 @@ export default function Hero({ language }: HeroProps) {
               </div>
             </div>
 
-            <div className="space-y-4 p-5">
+            <div className="space-y-4 p-4 sm:p-5">
               <div className="game-screen retro-screen p-4">
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="pacman-row">
+                  <div className="pacman-row scale-90 sm:scale-100">
                     <span className="pacman" />
                     <span className="pacdot" />
                     <span className="pacdot" />
@@ -168,13 +169,13 @@ export default function Hero({ language }: HeroProps) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-400/20 to-violet-400/20 text-fuchsia-200">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-fuchsia-300/20 bg-fuchsia-500/10 text-fuchsia-200 sm:h-14 sm:w-14">
                     <Heart className="h-5 w-5" />
                   </div>
 
                   <div className="min-w-0 text-left">
                     <p className="text-xs uppercase tracking-[0.18em] text-fuchsia-200/75">
-                      {language === "es" ? "Jugador" : "Player"}
+                      {t.player}
                     </p>
                     <p className="truncate text-sm font-semibold text-white">
                       Anahí Lozano
@@ -215,9 +216,7 @@ export default function Hero({ language }: HeroProps) {
 
                 <div className="game-chip">
                   <Star className="h-3.5 w-3.5 text-violet-200" />
-                  {language === "es"
-                    ? "Frontend + Backend"
-                    : "Frontend + Backend"}
+                  Frontend + Backend
                 </div>
 
                 <div className="game-chip">
@@ -225,33 +224,14 @@ export default function Hero({ language }: HeroProps) {
                   {language === "es" ? "Diseño cuidado" : "Polished design"}
                 </div>
               </div>
-
-              <div className="game-divider" />
-
-              <div className="retro-controls pt-1">
-                <div className="dpad" />
-
-                <div className="console-mini-buttons">
-                  <span />
-                  <span />
-                </div>
-
-                <div className="arcade-pad-buttons">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              </div>
             </div>
           </motion.aside>
 
           <motion.div
-            custom={2}
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="rpg-window console-shell arcade-corners"
+            className="rpg-window console-shell arcade-corners overflow-hidden"
           >
             <div className="rpg-window__bar console-topbar">
               <div className="rpg-window__title console-brand">Main Quest</div>
@@ -262,39 +242,21 @@ export default function Hero({ language }: HeroProps) {
               </div>
             </div>
 
-            <div className="p-5 md:p-7">
-              <motion.p
-                custom={3}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-                className="text-left text-xs uppercase tracking-[0.28em] text-slate-400"
-              >
+            <div className="p-4 sm:p-5 md:p-7">
+              <p className="text-left text-[11px] uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.28em]">
                 {t.intro}
-              </motion.p>
+              </p>
 
-              <motion.h1
-                custom={4}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-                className="pixel-title glow-text mt-4 text-left text-4xl text-white md:text-6xl"
-              >
+              <h1 className="pixel-title glow-text mt-4 text-left text-3xl text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 <span className="block">{t.title1}</span>
                 <span className="game-title-gradient block">{t.title2}</span>
                 <span className="mt-2 block text-slate-200">{t.title3}</span>
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                custom={5}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-                className="mt-6"
-              >
-                <div className="game-screen retro-screen p-5 md:p-6">
-                  <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-                    <div className="pacman-row">
+              <div className="mt-5 sm:mt-6">
+                <div className="game-screen retro-screen p-4 sm:p-5 md:p-6">
+                  <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                    <div className="pacman-row scale-90 sm:scale-100">
                       <span className="pacman" />
                       <span className="pacdot" />
                       <span className="pacdot" />
@@ -303,9 +265,9 @@ export default function Hero({ language }: HeroProps) {
                       <span className="arcade-ghost arcade-ghost--violet" />
                     </div>
 
-                    <div className="retro-badge">
+                    <div className="retro-badge w-fit">
                       <Gamepad2 className="h-3.5 w-3.5" />
-                      {language === "es" ? "Modo creativo" : "Creative mode"}
+                      {t.creativeMode}
                     </div>
                   </div>
 
@@ -317,37 +279,37 @@ export default function Hero({ language }: HeroProps) {
                     {t.subdescription}
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                custom={6}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-                className="mt-8 flex flex-wrap gap-3"
-              >
-                <a href="#projects" className="arcade-button retro-boost">
+              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
+                <Link
+                  to="/projects"
+                  className="arcade-button retro-boost justify-center sm:justify-start"
+                >
                   {t.primary}
                   <ArrowRight className="h-4 w-4" />
-                </a>
+                </Link>
 
-                <a href="#contact" className="game-button-secondary">
+                <Link
+                  to="/contact"
+                  className="game-button-secondary justify-center sm:justify-start"
+                >
                   {t.secondary}
-                </a>
+                </Link>
 
                 <a
-                  href="https://github.com/alucarduwu"
+                  href="https://github.com/Alucarduwu"
                   target="_blank"
                   rel="noreferrer"
-                  className="game-button-secondary"
+                  className="game-button-secondary justify-center sm:justify-start"
                 >
                   <Github className="h-4 w-4" />
                   {t.tertiary}
                 </a>
-              </motion.div>
+              </div>
 
               <div className="mt-6 flex items-center justify-center md:justify-start">
-                <div className="pacman-row">
+                <div className="pacman-row scale-90 sm:scale-100">
                   <span className="pacman" />
                   <span className="pacdot" />
                   <span className="pacdot" />
@@ -361,39 +323,33 @@ export default function Hero({ language }: HeroProps) {
           </motion.div>
         </div>
 
-        <motion.div
-          custom={7}
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3"
-        >
+        <div className="mt-5 grid grid-cols-1 gap-4 md:mt-6 md:grid-cols-3">
           {t.cards.map((card) => {
             const Icon = card.icon;
 
             return (
               <motion.div
                 key={card.title}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="game-card console-screen p-5 text-left"
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                className="game-card console-screen p-4 text-left sm:p-5"
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200">
                     <Icon className="h-4 w-4" />
                   </div>
 
-                  <span className="game-chip">
-                    {language === "es" ? "Skill" : "Skill"}
-                  </span>
+                  <span className="game-chip">{t.skill}</span>
                 </div>
 
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="pacman-row">
+                  <div className="pacman-row scale-90 sm:scale-100">
                     <span className="pacman" />
                     <span className="pacdot" />
                     <span className="pacdot" />
                   </div>
+
                   <div className="arcade-ghost arcade-ghost--blue" />
                 </div>
 
@@ -407,7 +363,7 @@ export default function Hero({ language }: HeroProps) {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
