@@ -7,7 +7,9 @@ import {
   Smartphone,
   Rocket,
   MonitorSmartphone,
-  
+  Code2,
+  ServerCog,
+  Database,
 } from "lucide-react";
 import { skillSections } from "../components/dataprojetcts/skills";
 import type { Language } from "../App";
@@ -54,7 +56,6 @@ const content = {
     tools: "Tools and stack",
     mobile: "Cross-platform with React Native",
     loadout: "Loadout",
-   
   },
 };
 
@@ -62,26 +63,75 @@ export default function Skills({ language }: SkillsProps) {
   const t = content[language];
 
   const enhancedSections = skillSections.map((section) => {
-    const isMobileSection =
-      section.titleEs.toLowerCase().includes("móvil") ||
-      section.titleEs.toLowerCase().includes("mobile") ||
-      section.titleEn.toLowerCase().includes("mobile");
+    const titleEs = section.titleEs.toLowerCase();
+    const titleEn = section.titleEn.toLowerCase();
 
-    if (!isMobileSection) return section;
+    const isMobileSection =
+      titleEs.includes("móvil") ||
+      titleEs.includes("mobile") ||
+      titleEn.includes("mobile");
+
+    const isBackendSection =
+      titleEs.includes("backend") ||
+      titleEs.includes("servidor") ||
+      titleEs.includes("api") ||
+      titleEn.includes("backend") ||
+      titleEn.includes("server") ||
+      titleEn.includes("api");
+
+    const isDatabaseSection =
+      titleEs.includes("base de datos") ||
+      titleEs.includes("bases de datos") ||
+      titleEs.includes("bd") ||
+      titleEs.includes("database") ||
+      titleEn.includes("database") ||
+      titleEn.includes("databases") ||
+      titleEn.includes("data");
 
     const currentNames = section.skills.map((skill) => skill.name.toLowerCase());
 
     const extraSkills = [
-      !currentNames.includes("react native")
-        ? { name: "React Native", icon: Smartphone }
-        : null,
-      !currentNames.includes("expo")
-        ? { name: "Expo", icon: Rocket }
-        : null,
-      !currentNames.includes("genymotion")
-        ? { name: "Genymotion", icon: MonitorSmartphone }
-        : null,
+      ...(isMobileSection
+        ? [
+            !currentNames.includes("react native")
+              ? { name: "React Native", icon: Smartphone }
+              : null,
+            !currentNames.includes("expo")
+              ? { name: "Expo", icon: Rocket }
+              : null,
+            !currentNames.includes("genymotion")
+              ? { name: "Genymotion", icon: MonitorSmartphone }
+              : null,
+          ]
+        : []),
+
+      ...(isBackendSection
+        ? [
+            !currentNames.includes("php")
+              ? { name: "PHP", icon: Code2 }
+              : null,
+            !currentNames.includes("laravel")
+              ? { name: "Laravel", icon: ServerCog }
+              : null,
+            !currentNames.includes("express")
+              ? { name: "Express", icon: ServerCog }
+              : null,
+          ]
+        : []),
+
+      ...(isDatabaseSection
+        ? [
+            !currentNames.includes("sql server")
+              ? { name: "SQL Server", icon: Database }
+              : null,
+            !currentNames.includes("sqlite")
+              ? { name: "SQLite", icon: Database }
+              : null,
+          ]
+        : []),
     ].filter(Boolean) as { name: string; icon: React.ElementType }[];
+
+    if (extraSkills.length === 0) return section;
 
     return {
       ...section,
