@@ -18,16 +18,15 @@ interface AboutProps {
 }
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number = 1) => ({
+  hidden: { opacity: 0, y: 12 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.08,
-      duration: 0.55,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.22,
+      ease: "easeOut",
     },
-  }),
+  },
 };
 
 const content = {
@@ -47,7 +46,7 @@ const content = {
     skill: "Skill",
     background: "Background",
     viewProjects: "Ver proyectos",
-    contact: "Contacto",
+    contact: "Contáctame",
     highlights: [
       "Desarrollo Full Stack web",
       "Aplicaciones móviles con Kotlin, Java y React Native",
@@ -99,7 +98,7 @@ const content = {
     skill: "Skill",
     background: "Background",
     viewProjects: "View projects",
-    contact: "Contact",
+    contact: "Contact me",
     highlights: [
       "Full Stack web development",
       "Mobile applications with Kotlin",
@@ -141,13 +140,13 @@ export default function About({ language }: AboutProps) {
   const t = content[language];
 
   return (
-    <section className="relative py-18 md:py-24">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(244,114,182,0.10),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.10),transparent_28%)]" />
+    <section className="relative overflow-hidden py-10 sm:py-14 md:py-20 lg:py-24">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(244,114,182,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_28%)]" />
 
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.16 }}
         variants={fadeUp}
       >
         <div className="game-label retro-badge">
@@ -155,12 +154,12 @@ export default function About({ language }: AboutProps) {
           {t.badge}
         </div>
 
-        <h2 className="pixel-title glow-text mt-5 max-w-5xl text-3xl text-white md:text-5xl">
+        <h2 className="pixel-title glow-text mt-4 max-w-5xl text-2xl text-white sm:mt-5 sm:text-3xl md:text-4xl lg:text-5xl">
           <span className="game-title-gradient">{t.title}</span>
         </h2>
 
-        <div className="mt-6 flex items-center justify-start">
-          <div className="pacman-row">
+        <div className="mt-4 flex items-center justify-start">
+          <div className="pacman-row scale-90 sm:scale-100">
             <span className="pacman" />
             <span className="pacdot" />
             <span className="pacdot" />
@@ -170,14 +169,13 @@ export default function About({ language }: AboutProps) {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="mt-8 grid gap-5 sm:mt-10 lg:grid-cols-[1.15fr_0.85fr]">
           <motion.div
-            custom={1}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="rpg-window console-shell arcade-corners"
+            className="rpg-window console-shell arcade-corners overflow-hidden"
           >
             <div className="rpg-window__bar console-topbar">
               <div className="rpg-window__title console-brand">
@@ -191,9 +189,9 @@ export default function About({ language }: AboutProps) {
               </div>
             </div>
 
-            <div className="space-y-5 p-5 md:p-7">
-              <div className="game-screen retro-screen p-5">
-                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="p-4 sm:p-5 md:p-6">
+              <div className="game-screen retro-screen p-4 sm:p-5">
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                   <div className="flex flex-wrap gap-2">
                     <span className="game-chip">
                       <Shield className="h-3.5 w-3.5 text-fuchsia-200" />
@@ -206,7 +204,7 @@ export default function About({ language }: AboutProps) {
                     </span>
                   </div>
 
-                  <div className="pacman-row">
+                  <div className="pacman-row scale-90 sm:scale-100">
                     <span className="pacman" />
                     <span className="pacdot" />
                     <span className="pacdot" />
@@ -214,16 +212,16 @@ export default function About({ language }: AboutProps) {
                   </div>
                 </div>
 
-                <div className="space-y-5 text-left text-[15px] leading-8 text-slate-300 md:text-base">
+                <div className="space-y-4 text-left text-sm leading-7 text-slate-300 sm:text-[15px] sm:leading-8 md:text-base">
                   <p>{t.paragraph1}</p>
                   <p>{t.paragraph2}</p>
                   <p>{t.paragraph3}</p>
                 </div>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
                   <Link
                     to="/projects"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(217,70,239,0.18)] transition-all duration-300 hover:scale-[1.02]"
+                    className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200"
                   >
                     {t.viewProjects}
                     <ArrowRight className="h-4 w-4" />
@@ -231,7 +229,7 @@ export default function About({ language }: AboutProps) {
 
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold text-slate-200 transition-all duration-300 hover:border-fuchsia-300/25 hover:bg-white/[0.05] hover:text-fuchsia-200"
+                    className="inline-flex min-h-[46px] items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold text-slate-200 transition-colors duration-200 hover:border-fuchsia-300/25 hover:text-fuchsia-200"
                   >
                     {t.contact}
                   </Link>
@@ -241,12 +239,11 @@ export default function About({ language }: AboutProps) {
           </motion.div>
 
           <motion.div
-            custom={2}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="rpg-window console-shell arcade-corners pixel-console"
+            className="rpg-window console-shell arcade-corners pixel-console overflow-hidden"
           >
             <div className="rpg-window__bar console-topbar">
               <div className="rpg-window__title console-brand">{t.cardTitle}</div>
@@ -258,7 +255,7 @@ export default function About({ language }: AboutProps) {
               </div>
             </div>
 
-            <div className="p-5 md:p-6">
+            <div className="p-4 sm:p-5 md:p-6">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div className="retro-badge">
                   <Sparkles className="h-3.5 w-3.5" />
@@ -280,22 +277,21 @@ export default function About({ language }: AboutProps) {
           </motion.div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          {t.miniCards.map((card, index) => {
+        <div className="mt-6 grid gap-4 sm:mt-8 md:grid-cols-2 xl:grid-cols-5">
+          {t.miniCards.map((card) => {
             const Icon = card.icon;
 
             return (
               <motion.div
                 key={card.title}
-                custom={index + 3}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
-                className="game-card console-screen p-5 text-left"
+                className="game-card console-screen p-4 text-left sm:p-5"
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-12 sm:w-12">
                     <Icon className="h-5 w-5" />
                   </div>
 
@@ -303,7 +299,7 @@ export default function About({ language }: AboutProps) {
                 </div>
 
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="pacman-row">
+                  <div className="pacman-row scale-90 sm:scale-100">
                     <span className="pacman" />
                     <span className="pacdot" />
                     <span className="pacdot" />

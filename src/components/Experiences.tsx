@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   Sparkles,
@@ -30,36 +30,33 @@ interface ExperienceProps {
 type ExperienceItem = (typeof experience)[number];
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number = 1) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.07,
-      duration: 0.42,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  }),
-};
-
-const modalVariants: Variants = {
-  hidden: { opacity: 0, y: 18, scale: 0.985 },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.24,
-      ease: [0.22, 1, 0.36, 1],
+      duration: 0.22,
+      ease: "easeOut",
+    },
+  },
+};
+
+const modalVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.18,
+      ease: "easeOut",
     },
   },
   exit: {
     opacity: 0,
-    y: 14,
-    scale: 0.985,
+    y: 8,
     transition: {
-      duration: 0.18,
-      ease: [0.22, 1, 0.36, 1],
+      duration: 0.14,
+      ease: "easeInOut",
     },
   },
 };
@@ -227,30 +224,8 @@ export default function Experience({ language }: ExperienceProps) {
   const t = content[language];
   const [selectedItem, setSelectedItem] = useState<ExperienceItem | null>(null);
 
-  const enhancedExperience = useMemo(() => {
-    return experience.map((item) => {
-      const details = (item as any).details?.[language];
-      const fallback = getFallbackDetails(item, language);
-
-      return {
-        ...item,
-        resolvedDetails: {
-          architecture: details?.architecture ?? fallback.architecture,
-          achievements: details?.achievements ?? fallback.achievements,
-          learnings: details?.learnings ?? fallback.learnings,
-          impact: details?.impact ?? fallback.impact,
-        },
-      };
-    });
-  }, [language]);
-
   useEffect(() => {
-    if (selectedItem) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
+    document.body.style.overflow = selectedItem ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -286,7 +261,7 @@ export default function Experience({ language }: ExperienceProps) {
           </div>
 
           <div className="mt-8 space-y-5 sm:mt-10 sm:space-y-6">
-            {enhancedExperience.map((item, index) => {
+            {experience.map((item, index) => {
               const Icon = item.icon;
               const title = language === "es" ? item.titleEs : item.titleEn;
               const company = language === "es" ? item.companyEs : item.companyEn;
@@ -298,7 +273,6 @@ export default function Experience({ language }: ExperienceProps) {
               return (
                 <motion.article
                   key={item.titleEn}
-                  custom={index + 1}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
@@ -335,7 +309,7 @@ export default function Experience({ language }: ExperienceProps) {
                         </div>
 
                         <div className="flex flex-col gap-4 sm:gap-5 md:flex-row md:items-start">
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-16 sm:w-16">
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-16 sm:w-16">
                             <Icon className="h-6 w-6" />
                           </div>
 
@@ -364,7 +338,7 @@ export default function Experience({ language }: ExperienceProps) {
                               <button
                                 type="button"
                                 onClick={() => setSelectedItem(item)}
-                                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(217,70,239,0.18)] transition-all duration-300 hover:scale-[1.02]"
+                                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-200"
                               >
                                 {t.openDetails}
                                 <ChevronRight className="h-4 w-4" />
@@ -499,7 +473,7 @@ function ExperienceDetailModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[80] bg-[#05060c]/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[80] bg-[#05060c]/75"
       />
 
       <motion.div
@@ -507,10 +481,10 @@ function ExperienceDetailModal({
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="fixed inset-x-2 bottom-2 top-2 z-[90] overflow-hidden rounded-[1.4rem] border border-fuchsia-300/15 bg-[#0b0914]/97 shadow-[0_24px_120px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:inset-x-6 sm:top-1/2 sm:bottom-auto sm:max-h-[88vh] sm:-translate-y-1/2 sm:rounded-[1.8rem] lg:left-1/2 lg:w-[min(1100px,92vw)] lg:-translate-x-1/2"
+        className="fixed inset-x-2 top-2 bottom-2 z-[90] rounded-[1.4rem] border border-fuchsia-300/15 bg-[#0b0914] shadow-[0_12px_40px_rgba(0,0,0,0.35)] sm:inset-x-6 sm:top-1/2 sm:bottom-auto sm:max-h-[88vh] sm:-translate-y-1/2 sm:rounded-[1.8rem] lg:left-1/2 lg:w-[min(1100px,92vw)] lg:-translate-x-1/2"
       >
-        <div className="flex h-full max-h-full flex-col">
-          <div className="border-b border-white/8 px-3 py-3 sm:px-5 sm:py-4 md:px-6">
+        <div className="flex h-full max-h-[calc(100vh-1rem)] flex-col overflow-hidden sm:max-h-[88vh]">
+          <div className="shrink-0 border-b border-white/8 px-3 py-3 sm:px-5 sm:py-4 md:px-6">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -518,6 +492,7 @@ function ExperienceDetailModal({
                     <BriefcaseBusiness className="h-3.5 w-3.5 text-fuchsia-200" />
                     {company}
                   </span>
+
                   <span className="game-chip">
                     <Clock3 className="h-3.5 w-3.5 text-violet-200" />
                     {period}
@@ -536,7 +511,7 @@ function ExperienceDetailModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 transition-all duration-200 hover:border-fuchsia-300/20 hover:text-fuchsia-200 sm:h-11 sm:w-11"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 transition-colors duration-200 hover:border-fuchsia-300/20 hover:text-fuchsia-200 sm:h-11 sm:w-11"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -549,7 +524,7 @@ function ExperienceDetailModal({
                 <div className="game-screen retro-screen p-3 sm:p-4 md:p-5">
                   <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-14 sm:w-14">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-14 sm:w-14">
                         <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
 
@@ -613,9 +588,10 @@ function ExperienceDetailModal({
                           key={tech}
                           className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3"
                         >
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-white/[0.03] text-fuchsia-200">
                             <TechIcon className="h-4 w-4" />
                           </div>
+
                           <span className="min-w-0 break-words text-sm leading-6 text-slate-200">
                             {tech}
                           </span>
@@ -690,7 +666,7 @@ function DetailBlock({
   return (
     <div className="rounded-[1.2rem] border border-white/8 bg-white/[0.025] p-3 sm:rounded-[1.4rem] sm:p-4">
       <div className="mb-3 flex items-center gap-2">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200 sm:h-9 sm:w-9">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-white/[0.03] text-fuchsia-200 sm:h-9 sm:w-9">
           <Icon className="h-4 w-4" />
         </div>
         <p className="text-sm font-semibold text-white">{title}</p>

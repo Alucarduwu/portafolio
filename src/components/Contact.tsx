@@ -7,7 +7,6 @@ import {
   Sparkles,
   Send,
   Star,
-  Gamepad2,
 } from "lucide-react";
 import type { Language } from "../App";
 
@@ -16,16 +15,15 @@ interface ContactProps {
 }
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number = 1) => ({
+  hidden: { opacity: 0, y: 12 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.08,
-      duration: 0.55,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.22,
+      ease: "easeOut",
     },
-  }),
+  },
 };
 
 const content = {
@@ -43,7 +41,6 @@ const content = {
     linksTitle: "Canales principales",
     availability: "Disponible para colaboración y oportunidades",
     quickNote: "Respuesta por correo o LinkedIn",
-    connectMode: "Modo conexión",
     document: "Documento",
     cvStandardText:
       "Versión principal de mi currículum para revisión general.",
@@ -54,7 +51,7 @@ const content = {
     badge: "Contact",
     title: "Let’s build something amazing",
     description:
-      "I’m open to opportunities in full stack development, frontend, backend and mobile development. If you’d like to collaborate, review my work or contact me for a role, you can find my main links below.",
+      "I’m open to opportunities in full stack development, frontend, backend and mobile development.",
     email: "Email",
     github: "GitHub",
     linkedin: "LinkedIn",
@@ -64,10 +61,8 @@ const content = {
     linksTitle: "Main channels",
     availability: "Available for collaboration and opportunities",
     quickNote: "Reply via email or LinkedIn",
-    connectMode: "Connect mode",
     document: "Document",
-    cvStandardText:
-      "Main version of my resume for general review.",
+    cvStandardText: "Main version of my resume for general review.",
     cvHarvardText:
       "Academic/professional version in Harvard format.",
   },
@@ -81,7 +76,7 @@ export default function Contact({ language }: ContactProps) {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.16 }}
         variants={fadeUp}
         className="rpg-window console-shell arcade-corners pixel-console overflow-hidden"
       >
@@ -103,7 +98,7 @@ export default function Contact({ language }: ContactProps) {
             {t.badge}
           </div>
 
-          <h2 className="pixel-title glow-text mt-4 max-w-4xl text-2xl text-white sm:mt-5 sm:text-3xl md:text-4xl lg:text-5xl">
+          <h2 className="pixel-title glow-text mt-4 text-2xl text-white sm:mt-5 sm:text-3xl md:text-4xl lg:text-5xl">
             <span className="game-title-gradient">{t.title}</span>
           </h2>
 
@@ -118,65 +113,41 @@ export default function Contact({ language }: ContactProps) {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-5 lg:grid-cols-[1.15fr_0.85fr]">
             <motion.div
-              custom={1}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               className="game-screen retro-screen p-4 sm:p-5 md:p-6"
             >
-              <div className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-                <div className="flex flex-wrap gap-2">
-                  <span className="game-chip">
-                    <Star className="h-3.5 w-3.5 text-fuchsia-200" />
-                    {t.availability}
-                  </span>
+              <div className="mb-4 flex flex-wrap gap-2">
+                <span className="game-chip">
+                  <Star className="h-3.5 w-3.5 text-fuchsia-200" />
+                  {t.availability}
+                </span>
 
-                  <span className="game-chip">
-                    <Send className="h-3.5 w-3.5 text-violet-200" />
-                    {t.quickNote}
-                  </span>
-                </div>
-
-                <div className="retro-badge w-fit">
-                  <Gamepad2 className="h-3.5 w-3.5" />
-                  {t.connectMode}
-                </div>
+                <span className="game-chip">
+                  <Send className="h-3.5 w-3.5 text-violet-200" />
+                  {t.quickNote}
+                </span>
               </div>
 
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="pacman-row scale-90 sm:scale-100">
-                  <span className="pacman" />
-                  <span className="pacdot" />
-                  <span className="pacdot" />
-                  <span className="power-pellet" />
-                </div>
-
-                <div className="arcade-ghost arcade-ghost--blue shrink-0" />
-              </div>
-
-              <p className="max-w-2xl text-left text-sm leading-7 text-slate-300 sm:text-[15px] sm:leading-8">
+              <p className="text-left text-sm leading-7 text-slate-300 sm:text-[15px] sm:leading-8">
                 {t.description}
               </p>
             </motion.div>
 
             <motion.div
-              custom={2}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               className="game-card console-screen p-4 sm:p-5 md:p-6"
             >
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <p className="text-left text-[11px] font-semibold uppercase tracking-[0.22em] text-fuchsia-200/85 sm:text-xs">
-                  {t.linksTitle}
-                </p>
-
-                <div className="arcade-ghost arcade-ghost--violet shrink-0" />
-              </div>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-fuchsia-200/80 sm:text-xs">
+                {t.linksTitle}
+              </p>
 
               <div className="game-divider my-4" />
 
@@ -212,115 +183,61 @@ export default function Contact({ language }: ContactProps) {
             </motion.div>
           </div>
 
-          <motion.div
-            custom={3}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="mt-6 grid gap-4 md:grid-cols-2"
-          >
-            <a
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <motion.a
               href="/Cv Anahi Betzabe Lozano de Lira.pdf"
               target="_blank"
               rel="noreferrer"
-              className="game-card console-screen p-4 transition-transform duration-200 hover:-translate-y-1 sm:p-5"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="game-card console-screen block p-4 transition-colors duration-200 sm:p-5"
             >
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-12 sm:w-12">
-                  <FileText className="h-5 w-5" />
-                </div>
-
-                <span className="game-chip">PDF</span>
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-12 sm:w-12">
+                <FileText className="h-5 w-5" />
               </div>
 
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="pacman-row scale-90 sm:scale-100">
-                  <span className="pacman" />
-                  <span className="pacdot" />
-                  <span className="pacdot" />
-                </div>
-
-                <div className="arcade-ghost arcade-ghost--blue shrink-0" />
-              </div>
-
-              <p className="text-left text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/80 sm:text-[11px]">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/80 sm:text-[11px]">
                 {t.document}
               </p>
 
-              <h3 className="mt-2 text-left text-base font-semibold text-white sm:text-lg">
+              <h3 className="mt-2 text-base font-semibold text-white sm:text-lg">
                 {t.cvStandard}
               </h3>
 
-              <p className="mt-3 text-left text-sm leading-6 text-slate-300 sm:leading-7">
+              <p className="mt-3 text-sm leading-6 text-slate-300 sm:leading-7">
                 {t.cvStandardText}
               </p>
-            </a>
+            </motion.a>
 
-            <a
+            <motion.a
               href="/Anahi_Lozano_Harvard_CV.pdf"
               target="_blank"
               rel="noreferrer"
-              className="game-card console-screen p-4 transition-transform duration-200 hover:-translate-y-1 sm:p-5"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="game-card console-screen block p-4 transition-colors duration-200 sm:p-5"
             >
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-12 sm:w-12">
-                  <FileText className="h-5 w-5" />
-                </div>
-
-                <span className="game-chip">PDF</span>
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-12 sm:w-12">
+                <FileText className="h-5 w-5" />
               </div>
 
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div className="pacman-row scale-90 sm:scale-100">
-                  <span className="pacman" />
-                  <span className="pacdot" />
-                  <span className="pacdot" />
-                </div>
-
-                <div className="arcade-ghost arcade-ghost--violet shrink-0" />
-              </div>
-
-              <p className="text-left text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/80 sm:text-[11px]">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-fuchsia-200/80 sm:text-[11px]">
                 {t.document}
               </p>
 
-              <h3 className="mt-2 text-left text-base font-semibold text-white sm:text-lg">
+              <h3 className="mt-2 text-base font-semibold text-white sm:text-lg">
                 {t.cvHarvard}
               </h3>
 
-              <p className="mt-3 text-left text-sm leading-6 text-slate-300 sm:leading-7">
+              <p className="mt-3 text-sm leading-6 text-slate-300 sm:leading-7">
                 {t.cvHarvardText}
               </p>
-            </a>
-          </motion.div>
-
-          <motion.div
-            custom={4}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
-          >
-            <a
-              href="mailto:anahydlira@gmail.com"
-              className="arcade-button retro-boost w-full justify-center sm:w-auto sm:justify-start"
-            >
-              <Mail className="h-4 w-4" />
-              {t.email}
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/anahi-lozano-de-lira-a4213a187"
-              target="_blank"
-              rel="noreferrer"
-              className="game-button-secondary w-full justify-center sm:w-auto sm:justify-start"
-            >
-              <Linkedin className="h-4 w-4" />
-              {t.linkedin}
-            </a>
-          </motion.div>
+            </motion.a>
+          </div>
         </div>
       </motion.div>
     </section>
