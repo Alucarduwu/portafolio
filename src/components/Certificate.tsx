@@ -1,4 +1,3 @@
-import { motion, type Variants } from "framer-motion";
 import {
   Award,
   ExternalLink,
@@ -13,6 +12,7 @@ import {
   ServerCog,
   Laptop2,
 } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 import type { Language } from "../App";
 
 interface CertificatesProps {
@@ -62,7 +62,7 @@ const certificates = [
     title: "Django Web Development",
     issuer: "Coursera",
     date: "2024",
-    file: "/certificates/Coursera CQPLODRRH46E Django.pdf",
+    file: "/certificates/Coursera CQPL0DRRH46E Django.pdf",
     categoryEs: "Backend",
     categoryEn: "Backend",
     descriptionEs:
@@ -186,8 +186,9 @@ function getCategoryIcon(category: string) {
   if (value.includes("linux")) return Code2;
   if (value.includes("redes") || value.includes("network")) return Network;
   if (value.includes("data")) return Database;
-  if (value.includes("security") || value.includes("seguridad"))
+  if (value.includes("security") || value.includes("seguridad")) {
     return ShieldCheck;
+  }
 
   return Award;
 }
@@ -200,7 +201,7 @@ export default function Certificates({ language }: CertificatesProps) {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.16 }}
+        viewport={{ once: true, amount: 0.14 }}
         variants={fadeUp}
       >
         <div className="game-label retro-badge w-fit">
@@ -246,12 +247,8 @@ export default function Certificates({ language }: CertificatesProps) {
             const CategoryIcon = getCategoryIcon(category);
 
             return (
-              <motion.article
+              <article
                 key={`${certificate.title}-${certificate.issuer}`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
                 className="rpg-window console-shell arcade-corners pixel-console overflow-hidden"
               >
                 <div className="rpg-window__bar console-topbar">
@@ -267,9 +264,9 @@ export default function Certificates({ language }: CertificatesProps) {
                 </div>
 
                 <div className="p-4 sm:p-5">
-                  <div className="game-screen console-screen p-4 sm:p-5">
+                  <div className="game-screen console-screen flex h-full flex-col p-4 sm:p-5">
                     <div className="mb-4 flex items-start justify-between gap-3">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 text-fuchsia-200 sm:h-12 sm:w-12">
                         <Award className="h-5 w-5" />
                       </div>
 
@@ -286,25 +283,25 @@ export default function Certificates({ language }: CertificatesProps) {
                     </h3>
 
                     <div className="mt-4 space-y-2.5 text-sm text-slate-300">
-                      <div className="flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 shrink-0 text-fuchsia-200" />
-                        <span>
+                      <div className="flex items-start gap-2">
+                        <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-fuchsia-200" />
+                        <span className="break-words">
                           <span className="text-slate-400">{t.issuer}: </span>
                           {certificate.issuer}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <CalendarDays className="h-4 w-4 shrink-0 text-violet-200" />
-                        <span>
+                      <div className="flex items-start gap-2">
+                        <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-violet-200" />
+                        <span className="break-words">
                           <span className="text-slate-400">{t.date}: </span>
                           {certificate.date}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <CategoryIcon className="h-4 w-4 shrink-0 text-pink-200" />
-                        <span>
+                      <div className="flex items-start gap-2">
+                        <CategoryIcon className="mt-0.5 h-4 w-4 shrink-0 text-pink-200" />
+                        <span className="break-words">
                           <span className="text-slate-400">{t.category}: </span>
                           {category}
                         </span>
@@ -324,13 +321,13 @@ export default function Certificates({ language }: CertificatesProps) {
                         rel="noreferrer"
                         className="game-button-secondary w-full justify-center sm:justify-start"
                       >
-                        <ExternalLink className="h-4 w-4" />
+                        <ExternalLink className="h-4 w-4 shrink-0" />
                         {t.view}
                       </a>
                     </div>
                   </div>
                 </div>
-              </motion.article>
+              </article>
             );
           })}
         </div>
