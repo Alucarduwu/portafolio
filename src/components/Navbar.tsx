@@ -19,6 +19,7 @@ const content = {
     skills: "Tecnologías",
     contact: "Contacto",
     menu: "Menú",
+    certificates: "Certificados"
   },
   en: {
     role: "Full Stack Developer",
@@ -29,6 +30,7 @@ const content = {
     skills: "Skills",
     contact: "Contact",
     menu: "Menu",
+    certificates: "Certificates"
   },
 };
 
@@ -86,6 +88,7 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
     { to: "/projects", label: t.projects },
     { to: "/skills", label: t.skills },
     { to: "/contact", label: t.contact },
+    { to: "/certificates", label: t.certificates },
   ];
 
   const isActiveRoute = (path: string) => {
