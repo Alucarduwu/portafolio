@@ -20,12 +20,12 @@ interface CertificatesProps {
 }
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.22,
+      duration: 0.18,
       ease: "easeOut",
     },
   },
@@ -198,12 +198,7 @@ export default function Certificates({ language }: CertificatesProps) {
 
   return (
     <section className="py-10 sm:py-14 md:py-20 lg:py-24">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.14 }}
-        variants={fadeUp}
-      >
+      <motion.div initial="hidden" animate="visible" variants={fadeUp}>
         <div className="game-label retro-badge w-fit">
           <Sparkles className="h-4 w-4" />
           {t.badge}
