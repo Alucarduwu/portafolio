@@ -91,7 +91,7 @@ const content = {
     skill: "Skill",
     stats: {
       role: "Full Stack Developer",
-      level: "Lv. 24",
+      level: "Lv. 26",
       className: "Web • Mobile • Backend",
       affinity: "UI / UX + Engineering",
       status: "Open to new challenges",
