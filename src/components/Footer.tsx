@@ -1,4 +1,4 @@
-import { Heart, Sparkles, Gamepad2 } from "lucide-react";
+import { Heart} from "lucide-react";
 import type { Language } from "../App";
 
 interface FooterProps {
@@ -77,15 +77,7 @@ export default function Footer({ language }: FooterProps) {
 
             <div className="mt-4 flex justify-center gap-3 flex-wrap">
 
-              <span className="game-chip flex items-center gap-2">
-                <Sparkles className="h-3 w-3 text-fuchsia-200" />
-                Portfolio v1.0
-              </span>
-
-              <span className="game-chip flex items-center gap-2">
-                <Gamepad2 className="h-3 w-3 text-violet-200" />
-                Retro UI
-              </span>
+              
 
             </div>
 
