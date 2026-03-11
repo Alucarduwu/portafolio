@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   Sparkles,
@@ -30,16 +30,38 @@ interface ExperienceProps {
 type ExperienceItem = (typeof experience)[number];
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number = 1) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.08,
-      duration: 0.55,
-      ease: [0.25, 0.1, 0.25, 1],
+      delay: i * 0.07,
+      duration: 0.42,
+      ease: [0.22, 1, 0.36, 1],
     },
   }),
+};
+
+const modalVariants: Variants = {
+  hidden: { opacity: 0, y: 18, scale: 0.985 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.24,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 14,
+    scale: 0.985,
+    transition: {
+      duration: 0.18,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
 };
 
 const content = {
@@ -58,7 +80,6 @@ const content = {
     questActive: "Quest active",
     experienceLabel: "Experiencia",
     openDetails: "Ver detalle",
-    dblClickHint: "Doble click para abrir detalle",
     close: "Cerrar",
     technicalView: "Vista técnica",
     impactLabel: "Impacto",
@@ -78,7 +99,6 @@ const content = {
     questActive: "Quest active",
     experienceLabel: "Experience",
     openDetails: "View details",
-    dblClickHint: "Double click to open details",
     close: "Close",
     technicalView: "Technical view",
     impactLabel: "Impact",
@@ -224,13 +244,25 @@ export default function Experience({ language }: ExperienceProps) {
     });
   }, [language]);
 
+  useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedItem]);
+
   return (
     <>
       <section className="py-10 sm:py-14 md:py-20 lg:py-24">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.18 }}
           variants={fadeUp}
         >
           <div className="game-label retro-badge">
@@ -261,18 +293,17 @@ export default function Experience({ language }: ExperienceProps) {
               const period = language === "es" ? item.periodEs : item.periodEn;
               const description =
                 language === "es" ? item.descriptionEs : item.descriptionEn;
-
               const stackItems = splitStack(item.stack);
 
               return (
-                <motion.div
+                <motion.article
                   key={item.titleEn}
                   custom={index + 1}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
-                  className="rpg-window console-shell arcade-corners pixel-console"
+                  className="rpg-window console-shell arcade-corners pixel-console overflow-hidden"
                 >
                   <div className="rpg-window__bar console-topbar">
                     <div className="rpg-window__title console-brand">
@@ -286,12 +317,9 @@ export default function Experience({ language }: ExperienceProps) {
                     </div>
                   </div>
 
-                  <div className="p-4 sm:p-5 md:p-7">
-                    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-5">
-                      <div
-                        onDoubleClick={() => setSelectedItem(item)}
-                        className="game-screen retro-screen cursor-default p-4 sm:p-5 transition-all duration-300 hover:shadow-[0_0_0_1px_rgba(244,114,182,0.08)]"
-                      >
+                  <div className="p-4 sm:p-5 md:p-6">
+                    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+                      <div className="game-screen retro-screen p-4 sm:p-5">
                         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                           <div className="pacman-row scale-90 sm:scale-100">
                             <span className="pacman" />
@@ -300,19 +328,13 @@ export default function Experience({ language }: ExperienceProps) {
                             <span className="power-pellet" />
                           </div>
 
-                          <div className="flex flex-wrap gap-2">
-                            <div className="retro-badge w-fit">
-                              <Gamepad2 className="h-3.5 w-3.5" />
-                              {t.questActive}
-                            </div>
-
-                            <div className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400 md:inline-flex">
-                              {t.dblClickHint}
-                            </div>
+                          <div className="retro-badge w-fit">
+                            <Gamepad2 className="h-3.5 w-3.5" />
+                            {t.questActive}
                           </div>
                         </div>
 
-                        <div className="flex flex-col gap-5 md:flex-row md:items-start">
+                        <div className="flex flex-col gap-4 sm:gap-5 md:flex-row md:items-start">
                           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-16 sm:w-16">
                             <Icon className="h-6 w-6" />
                           </div>
@@ -338,11 +360,11 @@ export default function Experience({ language }: ExperienceProps) {
                               {description}
                             </p>
 
-                            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                            <div className="mt-5 flex flex-wrap gap-3">
                               <button
                                 type="button"
                                 onClick={() => setSelectedItem(item)}
-                                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(217,70,239,0.18)] transition-all duration-300 hover:scale-[1.02]"
+                                className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-500/90 via-violet-500/90 to-pink-400/90 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(217,70,239,0.18)] transition-all duration-300 hover:scale-[1.02]"
                               >
                                 {t.openDetails}
                                 <ChevronRight className="h-4 w-4" />
@@ -409,10 +431,10 @@ export default function Experience({ language }: ExperienceProps) {
                               return (
                                 <span
                                   key={tech}
-                                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-200"
+                                  className="inline-flex min-h-[38px] items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-200"
                                 >
                                   <TechIcon className="h-3.5 w-3.5 text-fuchsia-200" />
-                                  {tech}
+                                  <span className="break-words">{tech}</span>
                                 </span>
                               );
                             })}
@@ -421,7 +443,7 @@ export default function Experience({ language }: ExperienceProps) {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </motion.article>
               );
             })}
           </div>
@@ -477,60 +499,62 @@ function ExperienceDetailModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[80] bg-[#05060c]/75 backdrop-blur-sm"
+        className="fixed inset-0 z-[80] bg-[#05060c]/80 backdrop-blur-sm"
       />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.97, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.97, y: 10 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-x-3 top-1/2 z-[90] max-h-[88vh] -translate-y-1/2 overflow-hidden rounded-[1.8rem] border border-fuchsia-300/15 bg-[#0b0914]/96 shadow-[0_24px_120px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:inset-x-6 lg:left-1/2 lg:w-[min(1100px,92vw)] lg:-translate-x-1/2"
+        variants={modalVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="fixed inset-x-2 bottom-2 top-2 z-[90] overflow-hidden rounded-[1.4rem] border border-fuchsia-300/15 bg-[#0b0914]/97 shadow-[0_24px_120px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:inset-x-6 sm:top-1/2 sm:bottom-auto sm:max-h-[88vh] sm:-translate-y-1/2 sm:rounded-[1.8rem] lg:left-1/2 lg:w-[min(1100px,92vw)] lg:-translate-x-1/2"
       >
-        <div className="flex max-h-[88vh] flex-col">
-          <div className="flex items-start justify-between gap-4 border-b border-white/8 px-4 py-4 sm:px-5 md:px-6">
-            <div className="min-w-0">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                <span className="game-chip">
-                  <BriefcaseBusiness className="h-3.5 w-3.5 text-fuchsia-200" />
-                  {company}
-                </span>
-                <span className="game-chip">
-                  <Clock3 className="h-3.5 w-3.5 text-violet-200" />
-                  {period}
-                </span>
+        <div className="flex h-full max-h-full flex-col">
+          <div className="border-b border-white/8 px-3 py-3 sm:px-5 sm:py-4 md:px-6">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <span className="game-chip">
+                    <BriefcaseBusiness className="h-3.5 w-3.5 text-fuchsia-200" />
+                    {company}
+                  </span>
+                  <span className="game-chip">
+                    <Clock3 className="h-3.5 w-3.5 text-violet-200" />
+                    {period}
+                  </span>
+                </div>
+
+                <h3 className="text-lg font-bold text-white sm:text-2xl md:text-3xl">
+                  {title}
+                </h3>
+
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300 sm:leading-7">
+                  {description}
+                </p>
               </div>
 
-              <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
-                {title}
-              </h3>
-
-              <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-300">
-                {description}
-              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 transition-all duration-200 hover:border-fuchsia-300/20 hover:text-fuchsia-200 sm:h-11 sm:w-11"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 transition-all duration-200 hover:border-fuchsia-300/20 hover:text-fuchsia-200"
-            >
-              <X className="h-5 w-5" />
-            </button>
           </div>
 
-          <div className="overflow-y-auto px-4 py-4 sm:px-5 md:px-6 md:py-5">
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
+          <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3 sm:px-5 sm:py-4 md:px-6 md:py-5">
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
               <div className="space-y-4">
-                <div className="game-screen retro-screen p-4 sm:p-5">
-                  <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="game-screen retro-screen p-3 sm:p-4 md:p-5">
+                  <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200">
-                        <Icon className="h-6 w-6" />
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20 text-fuchsia-200 sm:h-14 sm:w-14">
+                        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
 
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fuchsia-200/80">
+                      <div className="min-w-0">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-200/80 sm:text-xs">
                           {t.technicalView}
                         </p>
                         <p className="mt-1 text-sm text-slate-300">
@@ -539,7 +563,7 @@ function ExperienceDetailModal({
                       </div>
                     </div>
 
-                    <div className="pacman-row">
+                    <div className="pacman-row scale-90 sm:scale-100">
                       <span className="pacman" />
                       <span className="pacdot" />
                       <span className="pacdot" />
@@ -547,7 +571,7 @@ function ExperienceDetailModal({
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     <DetailBlock
                       icon={Wrench}
                       title={t.achievementsTitle}
@@ -570,9 +594,9 @@ function ExperienceDetailModal({
               </div>
 
               <div className="space-y-4">
-                <div className="game-card console-screen p-4">
+                <div className="game-card console-screen p-3 sm:p-4">
                   <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fuchsia-200/85">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-200/85 sm:text-xs">
                       {t.technologiesTitle}
                     </p>
                     <div className="arcade-ghost arcade-ghost--violet" />
@@ -580,7 +604,7 @@ function ExperienceDetailModal({
 
                   <div className="game-divider my-3" />
 
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2">
                     {stackItems.map((tech) => {
                       const TechIcon = getTechIcon(tech);
 
@@ -589,45 +613,53 @@ function ExperienceDetailModal({
                           key={tech}
                           className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3"
                         >
-                          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200">
                             <TechIcon className="h-4 w-4" />
                           </div>
-                          <span className="text-sm text-slate-200">{tech}</span>
+                          <span className="min-w-0 break-words text-sm leading-6 text-slate-200">
+                            {tech}
+                          </span>
                         </div>
                       );
                     })}
                   </div>
                 </div>
 
-                <div className="game-card console-screen p-4">
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fuchsia-200/85">
-                      {t.periodLabel}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                  <div className="game-card console-screen p-3 sm:p-4">
+                    <div className="mb-3 flex items-center justify-between gap-2">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-200/85 sm:text-xs">
+                        {t.periodLabel}
+                      </p>
+                      <Clock3 className="h-4 w-4 text-fuchsia-200" />
+                    </div>
+
+                    <div className="game-divider my-3" />
+
+                    <p className="text-sm font-semibold leading-6 text-white">
+                      {period}
                     </p>
-                    <Clock3 className="h-4 w-4 text-fuchsia-200" />
                   </div>
 
-                  <div className="game-divider my-3" />
+                  <div className="game-card console-screen p-3 sm:p-4">
+                    <div className="mb-3 flex items-center justify-between gap-2">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-200/85 sm:text-xs">
+                        {t.roleLabel}
+                      </p>
+                      <Laptop2 className="h-4 w-4 text-fuchsia-200" />
+                    </div>
 
-                  <p className="text-sm font-semibold text-white">{period}</p>
-                </div>
+                    <div className="game-divider my-3" />
 
-                <div className="game-card console-screen p-4">
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fuchsia-200/85">
-                      {t.roleLabel}
+                    <p className="text-sm font-semibold leading-6 text-white">
+                      {title}
                     </p>
-                    <Laptop2 className="h-4 w-4 text-fuchsia-200" />
                   </div>
-
-                  <div className="game-divider my-3" />
-
-                  <p className="text-sm font-semibold text-white">{title}</p>
                 </div>
 
-                <div className="game-card console-screen p-4">
+                <div className="game-card console-screen p-3 sm:p-4">
                   <div className="mb-3 flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-fuchsia-200/85">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-200/85 sm:text-xs">
                       {t.impactLabel}
                     </p>
                     <Star className="h-4 w-4 text-violet-200" />
@@ -656,22 +688,22 @@ function DetailBlock({
   items: string[];
 }) {
   return (
-    <div className="rounded-[1.4rem] border border-white/8 bg-white/[0.025] p-4">
+    <div className="rounded-[1.2rem] border border-white/8 bg-white/[0.025] p-3 sm:rounded-[1.4rem] sm:p-4">
       <div className="mb-3 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-500/15 to-violet-500/15 text-fuchsia-200 sm:h-9 sm:w-9">
           <Icon className="h-4 w-4" />
         </div>
         <p className="text-sm font-semibold text-white">{title}</p>
       </div>
 
-      <ul className="space-y-2">
+      <ul className="space-y-2.5">
         {items.map((entry) => (
           <li
             key={entry}
-            className="flex items-start gap-3 text-sm leading-7 text-slate-300"
+            className="flex items-start gap-3 text-sm leading-6 text-slate-300 sm:leading-7"
           >
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-fuchsia-300" />
-            <span>{entry}</span>
+            <span className="break-words">{entry}</span>
           </li>
         ))}
       </ul>
