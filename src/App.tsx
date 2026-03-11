@@ -9,6 +9,7 @@ import ExperiencePage from "../src/components/Experiences";
 import ProjectsPage from "../src/components/Projects";
 import SkillsPage from "../src/components/Skills";
 import ContactPage from "../src/components/Contact";
+import CertificatesPage from "../src/components/Certificate";
 
 export type Language = "es" | "en";
 
@@ -47,6 +48,10 @@ export default function App() {
               element={<ProjectsPage language={language} />}
             />
             <Route path="/skills" element={<SkillsPage language={language} />} />
+            <Route
+              path="/certificates"
+              element={<CertificatesPage language={language} />}
+            />
             <Route
               path="/contact"
               element={<ContactPage language={language} />}
