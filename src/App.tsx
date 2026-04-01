@@ -1,66 +1,75 @@
-import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import React, { Suspense, lazy, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { GlobalStateProvider } from "./context/GlobalContext";
+import AIBot from "./components/AIBot";
 
-import HomePage from "../src/components/Hero";
-import AboutPage from "../src/components/About";
-import ExperiencePage from "../src/components/Experiences";
-import ProjectsPage from "../src/components/Projects";
-import SkillsPage from "../src/components/Skills";
-import ContactPage from "../src/components/Contact";
-import CertificatesPage from "../src/components/Certificate";
-
-export type Language = "es" | "en";
-
-export default function App() {
-  const [language, setLanguage] = useState<Language>(() => {
-    const savedLanguage = localStorage.getItem("language");
-    return savedLanguage === "en" ? "en" : "es";
-  });
-
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
   useEffect(() => {
-    localStorage.setItem("language", language);
-  }, [language]);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [pathname]);
+  return null;
+};
 
+const PageTransition = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+  >
+    {children}
+  </motion.div>
+);
+
+const HomePage = lazy(() => import("./components/HomePage"));
+const AboutPage = lazy(() => import("./components/AboutPage"));
+const ExperiencePage = lazy(() => import("./components/ExperiencePage"));
+const ProjectsPage = lazy(() => import("./components/ProjectsPage"));
+const CertificatesPage = lazy(() => import("./components/CertificatesPage"));
+const ContactPage = lazy(() => import("./components/ContactPage"));
+
+const LoadingScreen = () => (
+  <div className="fixed inset-0 z-[1000] bg-[var(--bg-main)] flex flex-col items-center justify-center space-y-6">
+    <div className="w-12 h-12 rounded-full border-2 border-[var(--primary)] border-t-transparent animate-spin"></div>
+    <div className="system-label text-[10px] animate-pulse tracking-[0.5em]">SYSTEM_INITIALIZING...</div>
+  </div>
+);
+
+const App = () => {
+  const location = useLocation();
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#07070c] text-slate-100">
-      {/* Fondo decorativo global */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute left-[-140px] top-8 h-80 w-80 rounded-full bg-fuchsia-400/12 blur-3xl" />
-        <div className="absolute right-[-100px] top-24 h-96 w-96 rounded-full bg-violet-400/12 blur-3xl" />
-        <div className="absolute bottom-[-80px] left-1/3 h-80 w-80 rounded-full bg-pink-300/10 blur-3xl" />
+    <GlobalStateProvider>
+      <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-500 selection:bg-[var(--primary)]/30 selection:text-[var(--primary)]">
+        <ScrollToTop />
+        <Header />
+        <Suspense fallback={<LoadingScreen />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+              <Route path="/experience" element={<PageTransition><ExperiencePage /></PageTransition>} />
+              <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
+              <Route path="/certificates" element={<PageTransition><CertificatesPage /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+        <Footer />
+        <AIBot />
       </div>
-
-      <div className="relative mx-auto flex min-h-screen w-full max-w-[90rem] flex-col">
-        <Navbar language={language} setLanguage={setLanguage} />
-
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-10 pt-24 sm:px-6 lg:px-8">
-          <Routes>
-            <Route path="/" element={<HomePage language={language} />} />
-            <Route path="/about" element={<AboutPage language={language} />} />
-            <Route
-              path="/experience"
-              element={<ExperiencePage language={language} />}
-            />
-            <Route
-              path="/projects"
-              element={<ProjectsPage language={language} />}
-            />
-            <Route path="/skills" element={<SkillsPage language={language} />} />
-            <Route
-              path="/certificates"
-              element={<CertificatesPage language={language} />}
-            />
-            <Route
-              path="/contact"
-              element={<ContactPage language={language} />}
-            />
-          </Routes>
-        </main>
-
-        <Footer language={language} />
-      </div>
-    </div>
+    </GlobalStateProvider>
   );
-}
+};
+
+export default App;

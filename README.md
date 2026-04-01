@@ -1,73 +1,232 @@
-# React + TypeScript + Vite
+<h1 align="center">✨ Anahí Lozano Portfolio</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <b>Modern Developer Portfolio</b><br/>
+  <i>Portafolio profesional de desarrollo</i>
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+<a href="https://portafolioanahi.vercel.app/">
+  <img src="https://img.shields.io/badge/Live%20Demo-Portfolio-black?style=for-the-badge&logo=vercel&logoColor=white"/>
+</a>
+<img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react&logoColor=white"/>
+<img src="https://img.shields.io/badge/Language-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🧩 Description | Descripción
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**EN 🇺🇸**  
+This is a modern personal portfolio built to showcase **real-world projects, technical skills, and professional growth** as a Full Stack Developer.  
 
-## Expanding the ESLint configuration
+The focus is on performance, clean UI/UX, and scalable frontend architecture.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**ES 🇲🇽**  
+Este es un portafolio personal moderno enfocado en mostrar **proyectos reales, habilidades técnicas y crecimiento profesional** como desarrolladora Full Stack.  
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Se enfoca en rendimiento, diseño limpio y arquitectura escalable.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🎯 Problem | Problema
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**EN 🇺🇸**  
+Many portfolios:
+- look generic  
+- lack real technical depth  
+- fail to communicate real experience  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**ES 🇲🇽**  
+Muchos portafolios:
+- se ven genéricos  
+- no muestran profundidad técnica  
+- no reflejan experiencia real  
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## 💡 Solution | Solución
+
+**EN 🇺🇸**  
+This portfolio is designed as a **technical showcase platform**, emphasizing:
+
+- real projects  
+- structured information  
+- developer-focused design  
+
+**ES 🇲🇽**  
+Este portafolio está diseñado como una **plataforma de presentación técnica**, enfocada en:
+
+- proyectos reales  
+- información estructurada  
+- diseño orientado a desarrolladores  
+
+---
+
+## ⚙️ Stack
+
+- React  
+- TypeScript  
+- Vite  
+- CSS / Tailwind (si aplica)  
+- Git / Vercel  
+
+---
+
+## ✨ Features | Funcionalidades
+
+**EN 🇺🇸**
+- Project showcase with detailed technical info  
+- Responsive design  
+- Fast loading with Vite  
+- Clean UI/UX  
+- Modular structure  
+
+**ES 🇲🇽**
+- Visualización de proyectos con detalle técnico  
+- Diseño responsivo  
+- Alto rendimiento con Vite  
+- UI limpia y moderna  
+- Estructura modular  
+
+---
+
+## 🧠 Architecture | Arquitectura
+
+**EN 🇺🇸**
+- Component-based architecture  
+- Modular folder structure  
+- Separation of concerns  
+- Scalable frontend design  
+
+**ES 🇲🇽**
+- Arquitectura basada en componentes  
+- Estructura modular  
+- Separación de responsabilidades  
+- Diseño escalable  
+
+---
+
+## 📊 Status | Estado
+
+- Production deployed / En producción  
+- Continuous improvements / Mejoras continuas  
+
+---
+
+# ⚙️ SYSTEM DATA (DO NOT EDIT FORMAT)
+
+<!-- Used for portfolio parsing -->
+
+## PROJECT_DATA
+
+name:
+  en: Developer Portfolio
+  es: Portafolio de Desarrolladora
+
+description:
+  en: Personal portfolio showcasing projects, skills and experience
+  es: Portafolio personal para mostrar proyectos, habilidades y experiencia
+
+problem:
+  en: Generic portfolios fail to show real technical depth
+  es: Los portafolios genéricos no muestran profundidad técnica real
+
+solution:
+  en: Structured portfolio focused on real projects and technical clarity
+  es: Portafolio estructurado enfocado en proyectos reales y claridad técnica
+
+stack:
+  - React
+  - TypeScript
+  - Vite
+  - CSS
+
+features:
+  en:
+    - Project showcase
+    - Responsive design
+    - Fast performance
+  es:
+    - Visualización de proyectos
+    - Diseño responsivo
+    - Alto rendimiento
+
+architecture: Component-based frontend
+
+technical_challenges:
+  en:
+    - UI/UX design consistency
+    - Performance optimization
+    - Component modularization
+  es:
+    - Consistencia de UI/UX
+    - Optimización de rendimiento
+    - Modularización de componentes
+
+improvements:
+  en:
+    - Better UI structure
+    - Improved performance
+    - Cleaner components
+  es:
+    - Mejora en UI
+    - Optimización de rendimiento
+    - Componentes más limpios
+
+learning:
+  en:
+    - Modern frontend architecture
+    - UI/UX design
+    - Performance optimization
+  es:
+    - Arquitectura frontend moderna
+    - Diseño UI/UX
+    - Optimización de rendimiento
+
+status:
+  en: Production
+  es: En producción
+
+future:
+  en:
+    - More interactive UI
+    - Advanced animations
+    - AI integration
+  es:
+    - UI más interactiva
+    - Animaciones avanzadas
+    - Integración con IA
+
+repo: https://github.com/Alucarduwu/portafolio
+
+---
+
+## 🌐 Live Demo
+
+👉 https://portafolioanahi.vercel.app/
+
+---
+
+## 🚀 Installation
+
+git clone https://github.com/Alucarduwu/portafolio.git  
+cd portafolio  
+npm install  
+npm run dev  
+
+---
+
+## 👩💻 Author
+
+**Anahí Lozano**
+
+- LinkedIn: https://www.linkedin.com/in/anahi-lozano-de-lira-a4213a187/  
+- Portfolio: https://portafolioanahi.vercel.app/  
+- Email: anahydlira@gmail.com  
+
+---
+
+<p align="center">
+💜 Built to showcase real developer growth
+</p>

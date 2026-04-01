@@ -1,0 +1,60 @@
+export const CONTACT_CONFIG = {
+    email: "anahydlira@gmail.com",
+    whatsapp: "4492238799",
+    linkedin: "https://www.linkedin.com/in/anahi-lozano-de-lira-a4213a187/?skipRedirect=true"
+};
+
+export const translations = {
+    es: {
+        nav_home: 'KERNEL',
+        nav_about: 'BIO',
+        nav_exp: 'LOGS',
+        nav_projects: 'CORE',
+        nav_certs: 'HASH',
+        nav_contact: 'IO',
+        hero_status: 'RUNLEVEL_5: ACTIVO',
+        hero_title: 'ROOT@USER:',
+        hero_role: 'SOFTWARE DEVELOPER // FULL STACK // MOBILE // SAP',
+        hero_desc: 'Ingeniera en TIC especializada en desarrollo de apps avanzadas del software y soluciones empresariales.',
+        about_title: 'BIO_PERSPECTIVA',
+        about_desc: 'Soy Ingeniera en Tecnologías de la Información y Comunicación con especialidad en Desarrollo de Aplicaciones Avanzadas del Software, enfocada en crear soluciones tecnológicas integrales, con experiencia en el ciclo de vida completo de desarrollo. Mi perspectiva técnica abarca desde la creación de aplicaciones móviles nativas de alto rendimiento hasta la implementación de complejos sistemas empresariales SAP, priorizando siempre la eficiencia, la escapabilidad y una arquitectura de software impecable.',
+        exp_title: 'REGISTROS_EJECUCIÓN',
+        projects_title: 'ÍNDICE_NÚCLEO',
+        certs_title: 'DIPLOMAS_VERIFICADOS',
+        contact_title: 'PROTOCOLOS_TRANSMISIÓN',
+        cv_standard: 'CV_ESTÁNDAR',
+        cv_ai: 'CV_ESPECIALIZADO',
+        cat_all: "Todos",
+        cat_front: "Frontend",
+        cat_back: "Backend",
+        cat_completo: "Full-stack",
+        cat_prototipo: "Prototipos",
+        cat_empresarial: "Enterprise"
+    },
+    en: {
+        nav_home: 'KERNEL',
+        nav_about: 'BIO',
+        nav_exp: 'LOGS',
+        nav_projects: 'CORE',
+        nav_certs: 'HASH',
+        nav_contact: 'IO',
+        hero_status: 'RUNLEVEL_5: ACTIVE',
+        hero_title: "ROOT@USER:",
+        hero_role: 'SOFTWARE DEVELOPER // FULL STACK // MOBILE // SAP',
+        hero_desc: 'ICT Engineer specialized in Advanced Software Application Development and enterprise solutions.',
+        about_title: 'BIO_PERSPECTIVE',
+        about_desc: 'I am an Information and Communication Technologies Engineer specialized in Advanced Software Application Development, focused on creating comprehensive technological solutions with experience in the complete development lifecycle. My technical perspective spans from high-performance native mobile apps to complex SAP enterprise systems, always prioritizing efficiency, scalability, and flawless software architecture.',
+        exp_title: 'EXECUTION_LOGS',
+        projects_title: 'CORE_INDEX',
+        certs_title: 'VERIFIED_DIPLOMAS',
+        contact_title: 'TRANSMISSION_PROTOCOL',
+        cv_standard: 'STANDARD_CV',
+        cv_ai: 'SPECIALIZED_CV',
+        cat_all: "All",
+        cat_front: "Frontend",
+        cat_back: "Backend",
+        cat_completo: "Full-stack",
+        cat_prototipo: "Prototypes",
+        cat_empresarial: "Enterprise"
+    }
+};
