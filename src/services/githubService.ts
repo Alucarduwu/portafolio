@@ -151,6 +151,38 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
   return enriched.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
+export const fetchOverallLanguages = async (): Promise<{ name: string; value: number }[]> => {
+  try {
+    const repos = await fetchAllRepos();
+    if (!repos || repos.length === 0) return [];
+
+    const languages: Record<string, number> = {};
+    
+    // Fetch languages for the top 15 most recently pushed repos to avoid rate issues
+    const topRepos = repos.filter((r: any) => !r.fork).slice(0, 15);
+    
+    await Promise.all(
+      topRepos.map(async (repo: any) => {
+        try {
+          const langResponse = await axios.get(repo.languages_url, { headers: GITHUB_HEADERS });
+          for (const [lang, bytes] of Object.entries(langResponse.data)) {
+            languages[lang] = (languages[lang] || 0) + (bytes as number);
+          }
+        } catch (e) {
+          // Skip if language fetch fails
+        }
+      })
+    );
+
+    return Object.entries(languages)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+  } catch (error) {
+    console.error("Error fetching overall languages:", error);
+    return [];
+  }
+};
+
 const detectCategory = (repo: any) => {
   const name = repo.name.toLowerCase();
   const topics = repo.topics || [];
