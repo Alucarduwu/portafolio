@@ -96,6 +96,7 @@ export const skillSections = [
       { name: "Git", icon: SiGit },
       { name: "Postman", icon: SiPostman },
       { name: "Figma", icon: SiFigma },
+      { name: "Stitch", icon: SiTestinglibrary },
       { name: "GitHub", icon: SiGithub },
     ],
   },

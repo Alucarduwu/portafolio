@@ -1,91 +1,36 @@
-import { Heart} from "lucide-react";
-import type { Language } from "../App";
+import { CONTACT_CONFIG } from "../config";
 
-interface FooterProps {
-  language: Language;
-}
+const Footer = () => {
+    return (
+        <footer className="border-t border-[var(--border)] bg-[var(--bg-footer)] backdrop-blur-2xl py-8 overflow-hidden relative selection:bg-[var(--primary)]/20">
+            <div className="max-w-[1240px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10 text-center md:text-left transition-all duration-700">
+                
+                <div className="flex flex-col gap-2.5">
+                    <div className="font-mono font-black text-[9.5px] md:text-[11px] tracking-[0.5em] uppercase text-[var(--text-muted)] light:text-[var(--text-soft)]">
+                        VER: 6.4.2 // SYSTM_UI <span className="text-[var(--primary)] text-glow light:opacity-90">OPTIMIZED</span>
+                    </div>
+                    <div className="flex items-center gap-3 justify-center md:justify-start">
+                        <span className="status-dot online"></span>
+                        <span className="text-[7px] md:text-[8px] font-mono text-[var(--text-muted)] uppercase tracking-widest font-black light:opacity-50">RUNTIME: ACTIVE_SESSION</span>
+                    </div>
+                </div>
 
-const content = {
-  es: {
-    built: "Construido con",
-    rights: "Todos los derechos reservados.",
-    panel: "System Status",
-  },
-  en: {
-    built: "Built with",
-    rights: "All rights reserved.",
-    panel: "System Status",
-  },
+                <div className="flex gap-12 md:gap-20 order-3 md:order-2 group">
+                    <a href="https://github.com/Alucarduwu" target="_blank" rel="noreferrer" className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.4em] text-[var(--text-soft)] hover:text-[var(--primary)] transition-all hover:scale-110 active:scale-95 light:hover:text-[var(--accent-secondary)]">GITHUB_SRC</a>
+                    <a href={CONTACT_CONFIG.linkedin} target="_blank" rel="noreferrer" className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.4em] text-[var(--text-soft)] hover:text-[var(--primary)] transition-all hover:scale-110 active:scale-95 light:hover:text-[var(--accent-secondary)]">LINKEDIN_PROF</a>
+                </div>
+
+                <div className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.5em] text-[var(--text-muted)] order-2 md:order-3 light:text-[var(--text-soft)]">
+                    © 2026 // <span className="text-[var(--text-main)] font-black italic tracking-tighter opacity-80">ANAHÍ BETZABE</span>
+                </div>
+            </div>
+            
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--primary)]/20 to-transparent group-hover:via-[var(--primary)]/40 transition-all duration-1000"></div>
+            <div className="absolute top-0 right-0 p-10 opacity-[0.03] select-none pointer-events-none hidden md:block">
+                <span className="font-mono text-[60px] font-black italic tracking-tighter">IO_PROTOCOL</span>
+            </div>
+        </footer>
+    );
 };
 
-export default function Footer({ language }: FooterProps) {
-  const t = content[language];
-
-  return (
-    <footer className="mt-20 pb-10 px-6">
-      <div className="max-w-6xl mx-auto">
-
-        <div className="rpg-window console-shell arcade-corners pixel-console">
-
-          <div className="rpg-window__bar console-topbar">
-            <div className="rpg-window__title console-brand">{t.panel}</div>
-
-            <div className="rpg-window__dots console-leds">
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-
-          <div className="p-6 text-center">
-
-            {/* pacman row */}
-            <div className="flex justify-center mb-4">
-              <div className="pacman-row">
-                <span className="pacman" />
-                <span className="pacdot" />
-                <span className="pacdot" />
-                <span className="pacdot" />
-                <span className="power-pellet" />
-                <span className="arcade-ghost arcade-ghost--violet" />
-              </div>
-            </div>
-
-            <p className="flex items-center justify-center gap-2 text-sm text-slate-300">
-              © 2026
-
-              <span className="font-semibold text-white">
-                Anahí Lozano
-              </span>
-
-              <Heart className="h-4 w-4 text-pink-400 opacity-80" />
-            </p>
-
-            <div className="game-divider my-4" />
-
-            <p className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-300">
-              {t.built}
-
-              <span className="game-chip">React</span>
-              <span className="game-chip">TypeScript</span>
-              <span className="game-chip">Tailwind</span>
-            </p>
-
-            <p className="mt-3 text-xs text-slate-500">
-              {t.rights}
-            </p>
-
-            <div className="mt-4 flex justify-center gap-3 flex-wrap">
-
-              
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </footer>
-  );
-}
+export default Footer;
