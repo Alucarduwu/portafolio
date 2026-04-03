@@ -137,7 +137,7 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
         stack: meta.stack?.length ? meta.stack : (staticMatch?.stack?.split(' • ') || [repo.language].filter(Boolean)),
         images: meta.images?.length ? meta.images : (staticMatch?.images || []),
         github: repo.html_url,
-        demo: meta.demo || repo.homepage || staticMatch?.demo || null,
+        demo: (staticMatch?.demo && staticMatch.demo !== "") ? staticMatch.demo : (meta.demo || repo.homepage || null),
         category: meta.category || staticMatch?.category || detectCategory(repo),
         problem: isEs ? (meta.problem_es || meta.problem || staticMatch?.problemEs) : (meta.problem_en || meta.problem || staticMatch?.problemEn),
         solution: isEs ? (meta.solution_es || meta.solution || staticMatch?.solutionEs) : (meta.solution_en || meta.solution || staticMatch?.solutionEn),

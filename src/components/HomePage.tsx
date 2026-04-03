@@ -80,10 +80,10 @@ const HomePage = () => {
                                      <span className="text-[var(--primary)]">›</span> STK: REACT // NEXT // NODE // PY 
                                   </p>
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
-                                     <span className="text-[var(--primary)]">›</span> DB: MONGO // POSTGRES // HANA // SQLITE 
+                                     <span className="text-[var(--primary)]">›</span> DB: FB // MONGO // PG // HANA 
                                   </p>
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
-                                     <span className="text-[var(--primary)]">›</span> MOB: KOTLIN // FLUTTER // RN 
+                                     <span className="text-[var(--primary)]">›</span> MOB: KT // FLUTTER // EXPO // RN // GM 
                                   </p>
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
                                      <span className="text-[var(--primary)]">›</span> LANG: TS // JS // PY // JAVA // C# // PHP // KT 

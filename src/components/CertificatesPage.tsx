@@ -63,10 +63,10 @@ const CertificatesPage = () => {
     return (
         <main className="section-container space-y-10 pt-4 md:pt-8 pb-20 relative">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 border-b border-[var(--border)] pb-8 text-center md:text-left">
-                <div className="space-y-3">
+                <div className="space-y-3 notranslate" translate="no">
                     <div className="system-label text-[var(--primary)] text-[8px] tracking-[0.2em] justify-center md:justify-start"><span>{t('cert_vault')}</span></div>
-                    <h1 className="font-extrabold text-[var(--text-main)] uppercase leading-none italic">
-                        {t('certs_title')}
+                    <h1 className="font-extrabold text-[var(--text-main)] uppercase leading-none italic shadow-sm">
+                        <span>{t('certs_title')}</span>
                     </h1>
                 </div>
                 <span className="font-mono text-[9px] text-[var(--text-muted)] font-black uppercase tracking-widest opacity-50 text-center md:text-right">
@@ -98,7 +98,7 @@ const CertificatesPage = () => {
                                 </div>
 
                                 <div className="p-5 space-y-4 flex-grow flex flex-col relative bg-gradient-to-br from-transparent to-[var(--bg-ui)]/5">
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex justify-between items-center notranslate" translate="no">
                                         <span className="material-symbols-outlined text-2xl text-[var(--primary)] group-hover:scale-110 transition-transform">
                                             {c.featured ? 'workspace_premium' : 'verified'}
                                         </span>
@@ -107,7 +107,7 @@ const CertificatesPage = () => {
                                             ? 'bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30'
                                             : 'bg-[var(--bg-ui)] text-[var(--text-muted)] border border-[var(--border)]'
                                         }`}>
-                                            {c.featured ? '★ FEATURED' : 'STANDARD'}
+                                            <span>{c.featured ? '★ FEATURED' : 'STANDARD'}</span>
                                         </span>
                                     </div>
 
@@ -115,14 +115,14 @@ const CertificatesPage = () => {
                                         {c.title}
                                     </h3>
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-2 gap-4 notranslate" translate="no">
                                         <div>
-                                            <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start">ISSUER</div>
-                                            <div className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-tight">{c.issuer}</div>
+                                            <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start"><span>ISSUER</span></div>
+                                            <div className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-tight"><span>{c.issuer}</span></div>
                                         </div>
                                         <div>
-                                            <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start">ID</div>
-                                            <div className="text-[8px] md:text-[9px] font-mono text-[var(--text-muted)] tracking-tight truncate">{c.idCode}</div>
+                                            <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start"><span>ID</span></div>
+                                            <div className="text-[8px] md:text-[9px] font-mono text-[var(--text-muted)] tracking-tight truncate"><span>{c.idCode}</span></div>
                                         </div>
                                     </div>
 
