@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 const HomePage = () => {
-    const { t, lang } = useContext(GlobalContext);
+    const { t } = useContext(GlobalContext);
 
     return (
         <main className="section-container flex flex-col justify-center min-h-[60vh] py-6 relative overflow-hidden">
@@ -37,12 +37,10 @@ const HomePage = () => {
                             <span className="material-symbols-outlined text-4xl md:text-5xl">terminal</span>
                         </div>
                         <h2 className="text-[10px] md:text-xs font-black text-[var(--primary)] uppercase tracking-tight flex items-center gap-2 md:gap-4 italic font-mono">
-                           <span className="text-[var(--text-muted)] opacity-50 text-[10px] md:text-xs">0x01/</span> {lang === 'es' ? 'ING. EN TICS // DESARROLLO DE SOFTWARE AVANZADO' : 'IT ENGINEER // ADVANCED SOFTWARE APP DEV'}
+                           <span className="text-[var(--text-muted)] opacity-50 text-[10px] md:text-xs">0x01/</span> {t('hero_about_role')}
                         </h2>
                         <p className="text-[14.5px] text-[var(--text-soft)] leading-relaxed font-bold italic opacity-95">
-                            {lang === 'es' 
-                                ? 'Soy Ingeniera en Tecnologías de la Información y Comunicación con especialidad en Desarrollo de Aplicaciones Avanzadas del Software, enfocada en crear soluciones tecnológicas integrales, con experiencia en el ciclo de vida completo de desarrollo. Mi perspectiva técnica abarca desde la creación de aplicaciones móviles nativas de alto rendimiento hasta la implementación de complejos sistemas empresariales SAP, priorizando siempre la eficiencia, la escalabilidad y una arquitectura de software impecable.'
-                                : 'I am an Information and Communication Technologies Engineer specialized in Advanced Software Application Development, focused on creating comprehensive technological solutions with experience across the entire development lifecycle. My technical perspective ranges from building high-performance native mobile apps to implementing complex SAP enterprise systems, always prioritizing efficiency, scalability, and impeccable software architecture.'}
+                            {t('about_desc')}
                         </p>
                     </div>
 

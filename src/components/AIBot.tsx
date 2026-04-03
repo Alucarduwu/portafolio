@@ -41,9 +41,7 @@ const AIBot = () => {
     };
 
     useEffect(() => {
-        if (messages.length === 0) {
-            setMessages([{ role: "assistant", content: info[lang as 'es'|'en'].welcome }]);
-        }
+        setMessages([{ role: "assistant", content: info[lang as 'es'|'en'].welcome }]);
     }, [lang]);
 
     const startAction = (text: string, response: string, options: any = {}) => {

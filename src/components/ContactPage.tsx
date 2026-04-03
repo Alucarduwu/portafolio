@@ -83,7 +83,7 @@ const ContactPage = () => {
                         </div>
                         <div className="p-5 space-y-3 flex flex-col justify-center items-center flex-grow text-center">
                             <div className="flex gap-3 w-full">
-                                <a href="https://github.com/Alucarduwu" target="_blank" rel="noreferrer"
+                                <a href="https://github.com/Alucarduwu/portafolio" target="_blank" rel="noreferrer"
                                    className="flex-1 flex flex-col items-center justify-center gap-1.5 py-4 rounded-xl border border-[var(--border)] bg-[var(--bg-ui)] hover:bg-[#24292E] hover:border-[#24292E] hover:text-white transition-all">
                                    <span className="material-symbols-outlined text-2xl">code</span>
                                    <span className="text-[8px] font-black uppercase tracking-widest font-mono">GitHub</span>
