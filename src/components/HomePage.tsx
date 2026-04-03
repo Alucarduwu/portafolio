@@ -22,11 +22,11 @@ const HomePage = () => {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary)] opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--primary)]"></span>
                             </span>
-                            KERNEL_LOAD // STATUS: OPTIMIZED_V6.4 <span className="typing-cursor"></span>
+                            KERNEL_LOAD // STATUS: OPTIMIZED_V6.4 <span className="typing-cursor notranslate" translate="no"></span>
                         </div>
-                        <h1 className="text-[var(--text-main)] font-black italic drop-shadow-2xl leading-none">
-                            ANAHÍ BETZABE <br/>
-                            <span className="text-[var(--primary)] opacity-90 block mt-2 tracking-tighter hover:translate-x-2 transition-transform duration-700 cursor-default">
+                        <h1 className="text-[var(--text-main)] font-black italic drop-shadow-2xl leading-none notranslate" translate="no">
+                            <span className="block mb-2">ANAHÍ BETZABE</span>
+                            <span className="text-[var(--primary)] opacity-90 block tracking-tighter hover:translate-x-2 transition-transform duration-700 cursor-default">
                                 LOZANO DE LIRA
                             </span>
                         </h1>
@@ -77,17 +77,20 @@ const HomePage = () => {
                                <p className="text-[var(--text-muted)] mb-2 opacity-70">$ system_metrics --fetch_all</p>
                                <div className="space-y-2.5 pl-6 border-l border-[var(--primary)]/30">
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
-                                     <span className="text-[var(--primary)]">›</span> STK: REACT // NODE // SAP_BTP 
+                                     <span className="text-[var(--primary)]">›</span> STK: REACT // NEXT // NODE // PY 
                                   </p>
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
-                                     <span className="text-[var(--primary)]">›</span> DB: POSTGRES // HANA // SQLITE 
+                                     <span className="text-[var(--primary)]">›</span> DB: MONGO // POSTGRES // HANA // SQLITE 
                                   </p>
                                   <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
-                                     <span className="text-[var(--primary)]">›</span> MOB: KOTLIN // FLUTTER_OS 
+                                     <span className="text-[var(--primary)]">›</span> MOB: KOTLIN // FLUTTER // RN 
                                   </p>
-                                  <div className="animate-pulse flex items-center gap-3 text-[var(--secondary)] font-bold">
-                                      <span className="text-[var(--primary)]">›</span> SYNC: READY_STATE_OK_v.6.4
-                                  </div>
+                                  <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold"> 
+                                     <span className="text-[var(--primary)]">›</span> LANG: TS // JS // PY // JAVA // C# // PHP // KT 
+                                  </p>
+                                  <p className="text-[var(--text-soft)] flex items-center gap-3 font-bold notranslate" translate="no"> 
+                                     <span className="text-[var(--primary)]">›</span> <span>SYNC: READY_STATE_OK_v.6.4</span>
+                                  </p>
                                </div>
                             </div>
                             <div className="pt-10 flex items-center gap-3">

@@ -49,8 +49,8 @@ const Header = () => {
                 className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] transition-all duration-150 ease-out z-[101]" 
                 style={{ width: `${scrollProgress}%` }}
             />
-            <nav className="max-w-[1200px] mx-auto flex items-center justify-between bg-[var(--bg-card)]/80 backdrop-blur-xl border border-[var(--border)] rounded-2xl px-4 md:px-6 py-2.5 shadow-[var(--shadow)] transition-all duration-700 hover:border-[var(--primary)]/30">
-                <div className="flex items-center gap-2.5 md:gap-4">
+            <nav className="max-w-[1200px] mx-auto flex items-center justify-between bg-[var(--bg-card)]/80 backdrop-blur-xl border border-[var(--border)] rounded-2xl px-4 md:px-6 py-2.5 shadow-[var(--shadow)] transition-all duration-700 hover:border-[var(--primary)]/30 notranslate" translate="no">
+                <div className="flex items-center gap-2.5 md:gap-4 shrink-0">
                     <button 
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         className="lg:hidden w-8 h-8 flex items-center justify-center text-[var(--text-main)] hover:text-[var(--primary)] transition-all bg-[var(--bg-ui)]/30 rounded-lg active:scale-90"
@@ -64,31 +64,31 @@ const Header = () => {
                                 <span className="text-[var(--primary)] font-black text-[10px]">A</span>
                             </div>
                         </div>
-                        <div className="hidden sm:flex flex-col leading-none">
-                            <span className="font-ex-bold text-[9px] tracking-widest text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic font-black">ANAHÍ BETZABE</span>
-                            <span className="text-[7px] font-mono text-[var(--text-muted)] tracking-widest mt-0.5 opacity-60 uppercase">SYSTEM_OS_v6.4</span>
+                        <div className="hidden sm:flex flex-col leading-none shrink-0 notranslate" translate="no">
+                            <span className="font-ex-bold text-[9px] tracking-widest text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic font-black"><span>ANAHÍ BETZABE</span></span>
+                            <span className="text-[7px] font-mono text-[var(--text-muted)] tracking-widest mt-0.5 opacity-60 uppercase"><span>SYSTEM_OS_v6.4</span></span>
                         </div>
                     </Link>
                 </div>
 
-                <div className="hidden lg:flex items-center gap-1.5 p-1.5 bg-[var(--bg-ui)]/40 rounded-xl border border-[var(--border)]/20">
+                <div className="hidden lg:flex items-center gap-1.5 p-1.5 bg-[var(--bg-ui)]/40 rounded-xl border border-[var(--border)]/20 overflow-hidden shrink mx-4">
                     {navLinks.map(link => (
                         <Link 
                             key={link.path}
                             to={link.path}
-                            className={`px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-2 transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+                            className={`px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-2 transition-all duration-300 transform hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap ${
                                 location.pathname === link.path 
                                 ? 'bg-[var(--primary)] text-white shadow-lg' 
                                 : 'text-[var(--text-soft)] hover:text-[var(--text-main)] hover:bg-[var(--bg-ui)]'
                             }`}
                         >
                            <span className="material-symbols-outlined text-xs">{link.icon}</span>
-                           {link.label}
+                           <span>{link.label}</span>
                         </Link>
                     ))}
                 </div>
 
-                <div className="flex items-center gap-2.5 md:gap-4 lg:pl-4 lg:border-l lg:border-[var(--border)]/60">
+                <div className="flex items-center gap-2.5 md:gap-4 lg:pl-4 lg:border-l lg:border-[var(--border)]/60 shrink-0">
                     <button 
                         onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
                         className="h-8 px-3 rounded-lg border border-[var(--border)] text-[8px] md:text-[9px] font-black text-[var(--text-muted)] hover:text-[var(--primary)] hover:border-[var(--primary)]/40 transition-all uppercase tracking-[0.2em] bg-[var(--bg-ui)]/30 backdrop-blur"
@@ -114,7 +114,7 @@ const Header = () => {
             {mobileMenuOpen && (
                 <>
                     <div className="lg:hidden fixed inset-0 z-[98] bg-[var(--bg-main)]/60 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setMobileMenuOpen(false)}></div>
-                    <div className="lg:hidden fixed inset-y-0 left-0 z-[99] w-[85%] max-w-[320px] bg-[var(--bg-card)]/95 backdrop-blur-3xl border-r border-[var(--primary)]/30 shadow-[20px_0_60px_rgba(0,0,0,0.8)] animate-in slide-in-from-left duration-500 flex flex-col ring-1 ring-[var(--primary)]/20">
+                    <div className="lg:hidden fixed inset-y-0 left-0 z-[99] w-[85%] max-w-[320px] bg-[var(--bg-card)]/95 backdrop-blur-3xl border-r border-[var(--primary)]/30 shadow-[20px_0_60px_rgba(0,0,0,0.8)] animate-in slide-in-from-left duration-500 flex flex-col ring-1 ring-[var(--primary)]/20 notranslate" translate="no">
                         <div className="scanline opacity-10"></div>
                         
                         <div className="p-6 flex items-center justify-between border-b border-[var(--border)]/60 bg-[var(--bg-ui)]/40">
@@ -138,7 +138,7 @@ const Header = () => {
                                 <Link 
                                     key={link.path}
                                     to={link.path}
-                                    className={`group p-4 rounded-2xl flex items-center justify-between border transition-all duration-500 transform active:scale-95 ${
+                                    className={`group p-4 rounded-2xl flex items-center justify-between border transition-all duration-500 transform active:scale-95 overflow-hidden ${
                                         location.pathname === link.path 
                                         ? 'bg-[var(--primary)]/10 border-[var(--primary)] text-[var(--primary)] shadow-[0_0_20px_rgba(192,132,252,0.1)]' 
                                         : 'bg-[var(--bg-ui)]/40 border-[var(--border)] text-[var(--text-soft)] hover:border-[var(--primary)]/40'
@@ -148,9 +148,9 @@ const Header = () => {
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:rotate-12 ${location.pathname === link.path ? 'bg-[var(--primary)] text-white' : 'bg-[var(--bg-ui)] border border-[var(--border)]'}`}>
                                             <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
                                         </div>
-                                        <div className="flex flex-col">
-                                            <span className="text-[11px] font-black uppercase tracking-[0.25em] italic leading-none">{link.label}</span>
-                                            <span className="text-[7px] font-mono opacity-40 uppercase tracking-widest mt-1.5">{location.pathname === link.path ? 'ACTIVE_SESSION' : `0x${idx}${idx}`}</span>
+                                        <div className="flex flex-col min-w-0 overflow-hidden notranslate" translate="no">
+                                            <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] italic leading-none truncate block"><span>{link.label}</span></span>
+                                            <span className="text-[7px] font-mono opacity-40 uppercase tracking-widest mt-1.5 truncate block">{location.pathname === link.path ? 'ACTIVE_SESSION' : `0x${idx}${idx}`}</span>
                                         </div>
                                     </div>
                                     <span className="material-symbols-outlined text-sm opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all">keyboard_double_arrow_right</span>
@@ -168,9 +168,9 @@ const Header = () => {
                                     <span className="material-symbols-outlined text-xs">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span> {theme.toUpperCase()}
                                 </button>
                             </div>
-                            <div className="flex justify-center flex-col items-center gap-1.5">
+                            <div className="flex justify-center flex-col items-center gap-1.5 notranslate" translate="no">
                                 <span className="font-mono text-[6px] text-green-500/60 tracking-widest uppercase"><span>{t('sys_encryption')}</span></span>
-                                <span className="font-mono text-[7px] text-[var(--text-muted)] tracking-widest opacity-30 uppercase">ANAHI_LOZANO_v6.4</span>
+                                <span className="font-mono text-[7px] text-[var(--text-muted)] tracking-widest opacity-30 uppercase"><span>ANAHI_LOZANO_v6.4</span></span>
                             </div>
                         </div>
                     </div>
