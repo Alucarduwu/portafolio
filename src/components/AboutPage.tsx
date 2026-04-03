@@ -10,9 +10,9 @@ const AboutPage = () => {
         <main className="section-container space-y-8 md:space-y-10 py-4 relative">
             <div className="grid lg:grid-cols-12 gap-6 md:gap-10 items-end border-b border-[var(--border)] pb-8 text-center md:text-left">
                 <div className="lg:col-span-8 space-y-4">
-                    <div className="system-label animate-pulse justify-center md:justify-start">BIO_DUMP_v.6.4</div>
+                    <div className="system-label animate-pulse justify-center md:justify-start notranslate" translate="no"><span>BIO_DUMP_v.6.4</span></div>
                     <h1 className="text-[var(--text-main)] uppercase leading-none italic font-black shadow-sm">
-                        {t('about_title')}
+                        <span>{t('about_title')}</span>
                     </h1>
                 </div>
             </div>
@@ -105,7 +105,7 @@ const AboutPage = () => {
                             <div className="space-y-2">
                                 <p className="text-[10px] font-mono font-bold text-[var(--primary)] opacity-60 tracking-widest">FRAMEWORKS</p>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {['React', 'Angular', 'Vue.js', 'Next.js', 'Astro'].map(t => (
+                                    {['React', 'Angular', 'Vue.js', 'Next.js', 'Astro', 'HTML5', 'CSS3'].map(t => (
                                         <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
                                     ))}
                                 </div>
@@ -113,7 +113,7 @@ const AboutPage = () => {
                             <div className="space-y-2 pt-2">
                                 <p className="text-[10px] font-mono font-bold text-[var(--primary)] opacity-60 tracking-widest">LANGUAGES & UI</p>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {['TypeScript', 'JavaScript', 'Tailwind CSS', 'SCSS', 'Material UI'].map(t => (
+                                    {['TypeScript', 'JavaScript', 'Tailwind CSS', 'SCSS', 'Bootstrap', 'Material UI'].map(t => (
                                         <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
                                     ))}
                                 </div>
@@ -129,14 +129,15 @@ const AboutPage = () => {
                         <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">⚙️ BACKEND</h3>
                         <div className="space-y-4">
                             <div className="flex flex-wrap gap-1.5">
-                                {['Node.js', 'Express', 'NestJS', 'Laravel', 'C# / .NET', 'Django'].map(t => (
+                                {['Node.js', 'Express', 'NestJS', 'Laravel', 'C# / .NET', 'Django', 'Flask', 'FastAPI', 'ASP.NET Core', 'Python', 'Java', 'PHP'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
                                 ))}
                             </div>
                             <ul className="text-[11px] text-[var(--text-muted)] space-y-1 list-none font-mono pt-2 border-t border-[var(--border)]/30">
                                 <li>› APIs REST / Auth / RBAC</li>
-                                <li>› Arquitectura Modular</li>
-                                <li>› Integración Sistemas</li>
+                                <li>› MVC / MVVM / Clean Arch</li>
+                                <li>› Architecture Cliente-Servidor</li>
+                                <li>› Programming OOP</li>
                             </ul>
                         </div>
                     </div>
@@ -155,7 +156,7 @@ const AboutPage = () => {
                                 ))}
                             </div>
                             <div className="flex flex-wrap gap-1.5 pt-2">
-                                {['PostgreSQL', 'MySQL', 'SQL Server', 'SQLite'].map(t => (
+                                {['MongoDB', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
                                 ))}
                             </div>
@@ -170,7 +171,7 @@ const AboutPage = () => {
                         <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">📱 PLATFORMS</h3>
                         <div className="space-y-4">
                             <div className="flex flex-wrap gap-1.5">
-                                {['Kotlin', 'Jetpack Compose', 'Flutter', 'React Native'].map(t => (
+                                {['Kotlin', 'Jetpack Compose', 'Android SDK', 'Flutter (Dart)', 'React Native'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded text-[9px] font-mono font-bold text-emerald-400">{t}</span>
                                 ))}
                             </div>
@@ -190,11 +191,27 @@ const AboutPage = () => {
                         <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">☁️ CLOUD / OPS</h3>
                         <div className="space-y-4">
                             <div className="flex flex-wrap gap-1.5">
-                                {['AWS', 'Docker', 'GitHub Actions', 'Vercel'].map(t => (
+                                {['AWS', 'Docker', 'GitHub Actions', 'GitLab CI', 'Vercel', 'Postman', 'VS Code'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-violet-500/5 border border-violet-500/20 rounded text-[9px] font-mono font-bold text-violet-400">{t}</span>
                                 ))}
                             </div>
                             <p className="text-[11px] text-[var(--text-muted)] italic font-mono opacity-60 tracking-tighter pt-2 border-t border-[var(--border)]/30">GIT / DEPLOY / SCALE</p>
+                        </div>
+                    </div>
+
+                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-red-500/50 h-fit">
+                        <div className="flex justify-between items-start mb-6">
+                            <span className="material-symbols-outlined text-red-500 text-3xl">bug_report</span>
+                            <span className="system-label text-[8px] opacity-40">MOD_QA_06</span>
+                        </div>
+                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">🧪 TESTING & QA</h3>
+                        <div className="space-y-4">
+                            <div className="flex flex-wrap gap-1.5">
+                                {['Cypress', 'Playwright', 'PyTest', 'Jest', 'Mocha'].map(t => (
+                                    <span key={t} className="px-2 py-0.5 bg-red-500/5 border border-red-500/20 rounded text-[9px] font-mono font-bold text-red-400">{t}</span>
+                                ))}
+                            </div>
+                            <p className="text-[11px] text-[var(--text-muted)] italic font-mono opacity-60 tracking-tighter pt-2 border-t border-[var(--border)]/30">E2E / UNIT / AUTOMATION</p>
                         </div>
                     </div>
 

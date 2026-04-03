@@ -23,14 +23,14 @@ const Footer = () => {
                     <a href={CONTACT_CONFIG.linkedin} target="_blank" rel="noreferrer" className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.4em] text-[var(--text-soft)] hover:text-[var(--primary)] transition-all hover:scale-110 active:scale-95 light:hover:text-[var(--accent-secondary)]">LINKEDIN_PROF</a>
                 </div>
 
-                <div className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.5em] text-[var(--text-muted)] order-2 md:order-3 light:text-[var(--text-soft)]">
-                    © 2026 // <span className="text-[var(--text-main)] font-black italic tracking-tighter opacity-80">ANAHÍ BETZABE</span>
+                <div className="text-[9.5px] md:text-[11px] font-black uppercase tracking-[0.5em] text-[var(--text-muted)] order-2 md:order-3 light:text-[var(--text-soft)] notranslate" translate="no">
+                    © 2026 // <span className="text-[var(--text-main)] font-black italic tracking-tighter opacity-80"><span>ANAHÍ BETZABE</span></span>
                 </div>
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--primary)]/20 to-transparent group-hover:via-[var(--primary)]/40 transition-all duration-1000"></div>
-            <div className="absolute top-0 right-0 p-10 opacity-[0.03] select-none pointer-events-none hidden md:block">
-                <span className="font-mono text-[60px] font-black italic tracking-tighter">IO_PROTOCOL</span>
+            <div className="absolute top-0 right-0 p-10 opacity-[0.03] select-none pointer-events-none hidden md:block notranslate" translate="no">
+                <span className="font-mono text-[60px] font-black italic tracking-tighter"><span>IO_PROTOCOL</span></span>
             </div>
         </footer>
     );

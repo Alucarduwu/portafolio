@@ -61,16 +61,16 @@ const ProjectsPage = () => {
             <div className="p-5 md:p-6 flex-grow flex flex-col space-y-4 md:space-y-5 bg-[var(--bg-card)] z-20">
                 <div className="space-y-2">
                     <h3 className="text-lg md:text-xl font-black text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors leading-tight uppercase tracking-tight italic">
-                        {p.title}
+                        <span>{p.title}</span>
                     </h3>
                     <p className="text-[13px] md:text-[14px] text-[var(--text-soft)] leading-relaxed italic opacity-85 group-hover:opacity-100 transition-opacity line-clamp-3">
-                        {p.description}
+                        <span>{p.description}</span>
                     </p>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
                     {(p.stack || []).slice(0, 4).map(tech => (
-                        <span key={tech} className="px-2 py-0.5 md:px-2.5 md:py-1 rounded bg-[var(--bg-ui)] text-[var(--text-soft)] text-[9px] md:text-[10px] font-bold font-mono uppercase tracking-widest border border-[var(--border)] group-hover:border-[var(--primary)]/30 group-hover:text-[var(--primary)] transition-colors">
+                        <span key={tech} className="px-2 py-0.5 md:px-2.5 md:py-1 rounded bg-[var(--bg-ui)] text-[var(--text-soft)] text-[9px] md:text-[10px] font-bold font-mono uppercase tracking-widest border border-[var(--border)] group-hover:border-[var(--primary)]/30 group-hover:text-[var(--primary)] transition-colors notranslate" translate="no">
                             {tech}
                         </span>
                     ))}
@@ -103,10 +103,10 @@ const ProjectsPage = () => {
     return (
         <main className="section-container pt-4 md:pt-8 pb-12 relative overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[var(--border)] pb-6 mb-8 gap-6 md:gap-8">
-                <div className="space-y-2">
-                    <div className="system-label text-[9px] opacity-70 tracking-[0.3em] font-black italic">{lang === 'es' ? 'NÚCLEO_REPOSITORIOS' : 'CORE_REPOSITORIES'} <span className="typing-cursor h-2.5 w-1"></span></div>
+                <div className="space-y-2 notranslate" translate="no">
+                    <div className="system-label text-[9px] opacity-70 tracking-[0.3em] font-black italic"><span>{lang === 'es' ? 'NÚCLEO_REPOSITORIOS' : 'CORE_REPOSITORIES'}</span> <span className="typing-cursor h-2.5 w-1"></span></div>
                     <h1 className="text-[var(--text-main)] font-black italic leading-[0.85] tracking-tighter uppercase text-left">
-                        {t('projects_title') || 'ÍNDICE_PROYECTOS'}
+                        <span>{t('projects_title') || 'ÍNDICE_PROYECTOS'}</span>
                     </h1>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] md:text-xs font-mono text-[var(--text-muted)] font-black uppercase tracking-[0.2em] opacity-60">
@@ -166,9 +166,9 @@ const ProjectsPage = () => {
             )}
 
             {selectedProject && (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 sm:p-4 md:p-8 lg:p-12 animate-in fade-in zoom-in-95 duration-300">
-                    <div className="absolute inset-0 bg-[var(--bg-main)]/95 backdrop-blur-3xl" onClick={closeProject}></div>
-                    <div className="premium-card max-w-5xl w-full h-full sm:h-[90vh] flex flex-col relative z-20 shadow-[0_20px_80px_rgba(0,0,0,0.8)] border-[var(--primary)]/30 bg-[var(--bg-card)] rounded-none sm:rounded-3xl overflow-hidden">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-0 sm:p-4 md:p-8 lg:p-12 animate-in fade-in zoom-in-95 duration-300">
+                    <div className="absolute inset-0 bg-black/98 backdrop-blur-3xl" onClick={closeProject}></div>
+                    <div className="premium-card max-w-5xl w-full h-full sm:h-[90vh] flex flex-col relative z-[10000] shadow-[0_20px_100px_rgba(0,0,0,1)] border-[var(--primary)]/40 bg-[var(--bg-card)] rounded-none sm:rounded-3xl overflow-hidden">
                         <div className="scanline"></div>
                         
                         {/* High-End Terminal Header */}
@@ -228,7 +228,7 @@ const ProjectsPage = () => {
                                             <span>{selectedProject.title}</span>
                                         </h2>
                                         <p className="text-sm md:text-lg text-[var(--text-soft)] leading-relaxed italic border-l-4 border-[var(--primary)]/20 pl-4 md:pl-6 py-1 md:py-2 max-w-3xl text-left">
-                                            {selectedProject.description}
+                                            <span>{selectedProject.description}</span>
                                         </p>
                                     </div>
                                     

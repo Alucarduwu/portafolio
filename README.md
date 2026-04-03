@@ -199,6 +199,7 @@ future:
     - Integración con IA
 
 repo: https://github.com/Alucarduwu/portafolio
+demo: https://portafolioanahi.vercel.app/
 
 ---
 
