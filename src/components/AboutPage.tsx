@@ -156,7 +156,7 @@ const AboutPage = () => {
                                 ))}
                             </div>
                             <div className="flex flex-wrap gap-1.5 pt-2">
-                                {['MongoDB', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite'].map(t => (
+                                {['Firebase', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
                                 ))}
                             </div>
@@ -171,7 +171,7 @@ const AboutPage = () => {
                         <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">📱 PLATFORMS</h3>
                         <div className="space-y-4">
                             <div className="flex flex-wrap gap-1.5">
-                                {['Kotlin', 'Jetpack Compose', 'Android SDK', 'Flutter (Dart)', 'React Native'].map(t => (
+                                {['Kotlin', 'Jetpack Compose', 'Android SDK', 'Flutter (Dart)', 'React Native', 'Expo', 'Genymotion'].map(t => (
                                     <span key={t} className="px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded text-[9px] font-mono font-bold text-emerald-400">{t}</span>
                                 ))}
                             </div>

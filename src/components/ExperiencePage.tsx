@@ -8,13 +8,13 @@ const ExperiencePage = () => {
     return (
         <main className="section-container pt-4 md:pt-8 pb-20 space-y-10 relative">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 border-b border-[var(--border)] pb-8 text-center md:text-left">
-                <div className="space-y-3">
+                <div className="space-y-3 notranslate" translate="no">
                     <div className="system-label text-[var(--primary)] font-black italic justify-center md:justify-start"><span>{t('exp_status')}</span></div>
-                    <h1 className="text-[var(--text-main)] font-black uppercase leading-none italic">
-                        {t('exp_title')}
+                    <h1 className="text-[var(--text-main)] font-black uppercase leading-none italic shadow-sm">
+                        <span>{t('exp_title')}</span>
                     </h1>
                 </div>
-                <div className="text-[var(--text-soft)] text-[9px] md:text-xs font-bold font-mono opacity-50 uppercase tracking-[0.3em]">
+                <div className="text-[var(--text-soft)] text-[9px] md:text-xs font-bold font-mono opacity-50 uppercase tracking-[0.3em] notranslate" translate="no">
                     <span>{t('exp_ver')}</span>
                 </div>
             </div>
@@ -40,16 +40,16 @@ const ExperiencePage = () => {
                                 
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative z-20">
                                     <div className="space-y-2 text-center md:text-left">
-                                        <div className="system-label text-[9px] md:text-[10px] uppercase text-[var(--primary)] font-black mb-1 justify-center md:justify-start">
-                                            @ {company.toUpperCase()}
+                                        <div className="system-label text-[9px] md:text-[10px] uppercase text-[var(--primary)] font-black mb-1 justify-center md:justify-start notranslate" translate="no">
+                                            @ <span>{company.toUpperCase()}</span>
                                         </div>
                                         <h3 className="text-xl md:text-2xl font-black text-[var(--text-main)] uppercase tracking-tighter italic leading-tight">
-                                            {title}
+                                            <span>{title}</span>
                                         </h3>
                                     </div>
-                                    <div className="flex items-center gap-2 justify-center md:justify-end">
+                                    <div className="flex items-center gap-2 justify-center md:justify-end notranslate" translate="no">
                                         <span className="status-dot online"></span>
-                                        <span className="text-[7px] md:text-[8px] font-mono font-black text-green-500 uppercase tracking-widest">ACTIVE_CORE</span>
+                                        <span className="text-[7px] md:text-[8px] font-mono font-black text-green-500 uppercase tracking-widest"><span>ACTIVE_CORE</span></span>
                                     </div>
                                 </div>
 
