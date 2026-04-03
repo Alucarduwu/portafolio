@@ -9,13 +9,13 @@ const ExperiencePage = () => {
         <main className="section-container pt-4 md:pt-8 pb-20 space-y-10 relative">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 border-b border-[var(--border)] pb-8 text-center md:text-left">
                 <div className="space-y-3">
-                    <div className="system-label text-[var(--primary)] font-black italic justify-center md:justify-start">{lang === 'es' ? 'REGISTRO_CARRERA_V6.0' : 'CAREER_LOG_V6.0'}</div>
+                    <div className="system-label text-[var(--primary)] font-black italic justify-center md:justify-start"><span>{t('exp_status')}</span></div>
                     <h1 className="text-[var(--text-main)] font-black uppercase leading-none italic">
-                        {t('exp_title') || 'EXPERIENCE HISTORY'}
+                        {t('exp_title')}
                     </h1>
                 </div>
                 <div className="text-[var(--text-soft)] text-[9px] md:text-xs font-bold font-mono opacity-50 uppercase tracking-[0.3em]">
-                    {lang === 'es' ? 'VERSIÓN_ESTABLE_2026' : 'STABLE_BUILD_2026'}
+                    <span>{t('exp_ver')}</span>
                 </div>
             </div>
 
@@ -97,9 +97,9 @@ const ExperiencePage = () => {
             <div className="py-12 md:py-20 text-center space-y-8 md:space-y-10">
                 <div className="h-[1px] w-full max-w-xs md:max-w-md mx-auto bg-gradient-to-r from-transparent via-[var(--border)] to-transparent opacity-30"></div>
                 <div className="space-y-4">
-                    <div className="system-label text-[8px] md:text-[9px] opacity-40 mx-auto font-black italic tracking-[0.3em]">{lang === 'es' ? 'PROSPECCIÓN_SISTEMA' : 'SYSTEM_PROSPECTION'}</div>
+                    <div className="system-label text-[8px] md:text-[9px] opacity-40 mx-auto font-black italic tracking-[0.3em]">{t('exp_prospection')}</div>
                     <h2 className="text-2xl md:text-3xl font-black text-[var(--text-soft)] uppercase tracking-tighter opacity-30 italic leading-tight">
-                        {lang === 'es' ? 'CONTINUANDO EL ' : 'CONTINUING THE '}<span className="text-[var(--primary)]">{lang === 'es' ? 'CAMINO_DE_INNOVACIÓN' : 'INNOVATION_PATHWAY'}</span>...
+                        {t('exp_innovation')}
                     </h2>
                 </div>
             </div>

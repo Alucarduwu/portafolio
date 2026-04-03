@@ -64,13 +64,13 @@ const CertificatesPage = () => {
         <main className="section-container space-y-10 pt-4 md:pt-8 pb-20 relative">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 border-b border-[var(--border)] pb-8 text-center md:text-left">
                 <div className="space-y-3">
-                    <div className="system-label text-[var(--primary)] text-[8px] tracking-[0.2em] justify-center md:justify-start">CREDENTIAL_VAULT</div>
+                    <div className="system-label text-[var(--primary)] text-[8px] tracking-[0.2em] justify-center md:justify-start"><span>{t('cert_vault')}</span></div>
                     <h1 className="font-extrabold text-[var(--text-main)] uppercase leading-none italic">
-                        {t('certs_title') || 'CERTIFICADOS'}
+                        {t('certs_title')}
                     </h1>
                 </div>
                 <span className="font-mono text-[9px] text-[var(--text-muted)] font-black uppercase tracking-widest opacity-50 text-center md:text-right">
-                    {allCerts.length} {lang === 'es' ? 'CREDENCIALES' : 'CREDENTIALS'}
+                    {allCerts.length} {t('cert_creds')}
                 </span>
             </div>
 
@@ -128,7 +128,7 @@ const CertificatesPage = () => {
 
                                     <div className="mt-auto pt-4 border-t border-[var(--border)]/40 flex justify-between items-center bg-transparent">
                                         <div>
-                                            <div className="system-label text-[7px] opacity-50 mb-0.5 justify-center md:justify-start">ISSUED</div>
+                                            <div className="system-label text-[7px] opacity-50 mb-0.5 justify-center md:justify-start">{t('cert_issued')}</div>
                                             <div className="text-[11px] font-black text-[var(--text-primary)] tracking-wide">{c.date}</div>
                                         </div>
                                         <a
@@ -137,7 +137,7 @@ const CertificatesPage = () => {
                                             rel="noreferrer"
                                             className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--primary)] text-white text-[9px] font-black uppercase tracking-widest hover:-translate-y-0.5 transition-all shadow-lg"
                                         >
-                                            VER <span className="material-symbols-outlined text-[12px]">open_in_new</span>
+                                            {t('cert_view')} <span className="material-symbols-outlined text-[12px]">open_in_new</span>
                                         </a>
                                     </div>
                                 </div>

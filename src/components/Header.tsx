@@ -119,8 +119,8 @@ const Header = () => {
                         
                         <div className="p-6 flex items-center justify-between border-b border-[var(--border)]/60 bg-[var(--bg-ui)]/40">
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-black text-[var(--primary)] tracking-[0.3em] font-mono italic uppercase">ROOT_MENU</span>
-                                <span className="text-[7px] text-[var(--text-muted)] font-mono tracking-widest opacity-60">RUNLEVEL_5 // AUTH_OK</span>
+                                <span className="text-[10px] font-black text-[var(--primary)] tracking-[0.3em] font-mono italic uppercase"><span>{t('sys_root_menu')}</span></span>
+                                <span className="text-[7px] text-[var(--text-muted)] font-mono tracking-widest opacity-60"><span>{t('sys_status')}</span></span>
                             </div>
                             <button 
                                 onClick={() => setMobileMenuOpen(false)}
@@ -132,7 +132,7 @@ const Header = () => {
 
                         <div className="flex-1 overflow-y-auto p-5 space-y-2.5 custom-scrollbar">
                             <div className="mb-4 px-1">
-                                <span className="text-[7px] font-mono text-[var(--text-muted)] uppercase tracking-[0.4em] opacity-40">SELECT_TARGET_NODE:</span>
+                                <span className="text-[7px] font-mono text-[var(--text-muted)] uppercase tracking-[0.4em] opacity-40"><span>{t('sys_select_node')}</span></span>
                             </div>
                             {navLinks.map((link, idx) => (
                                 <Link 
@@ -169,7 +169,7 @@ const Header = () => {
                                 </button>
                             </div>
                             <div className="flex justify-center flex-col items-center gap-1.5">
-                                <span className="font-mono text-[6px] text-green-500/60 tracking-widest uppercase">ENCRIPTACIÓN_ACTIVA // AES-256</span>
+                                <span className="font-mono text-[6px] text-green-500/60 tracking-widest uppercase"><span>{t('sys_encryption')}</span></span>
                                 <span className="font-mono text-[7px] text-[var(--text-muted)] tracking-widest opacity-30 uppercase">ANAHI_LOZANO_v6.4</span>
                             </div>
                         </div>
