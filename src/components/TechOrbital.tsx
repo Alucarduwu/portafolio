@@ -39,14 +39,17 @@ const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave, rad
           x: x,
           y: y,
           zIndex: isActive ? 100 : 5,
-          touchAction: 'pan-y',
       }}
-      className="pointer-events-auto"
+      className="pointer-events-auto touch-pan-y"
     >
         <div 
             className="w-14 h-14 -ml-7 -mt-7 cursor-pointer relative"
             onMouseEnter={() => onHover(item.name)}
             onMouseLeave={onLeave}
+            onClick={(e) => {
+                e.stopPropagation();
+                onHover(item.name);
+            }}
         >
             <motion.div
                 animate={{ 
@@ -107,6 +110,7 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
   const springY = useSpring(mouseY, { stiffness: 120, damping: 25 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (radius < 100) return; // Disable expensive tracking on mobile bounds
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) / 20;
@@ -201,7 +205,7 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="orbital-container flex-grow cursor-crosshair relative flex items-center justify-center p-12"
+        className="orbital-container flex-grow cursor-crosshair relative flex items-center justify-center p-12 touch-pan-y"
       >
         <motion.div 
           style={{ x: springX, y: springY }}
