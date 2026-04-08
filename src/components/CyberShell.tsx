@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from "react";
 import TrafficMonitor from "./TrafficMonitor";
 
-const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+// Isolate Uptime State to prevent global app re-renders every 1 second
+const UptimeDisplay = () => {
     const [uptime, setUptime] = useState(0);
 
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-        window.addEventListener("mousemove", handleMouseMove);
-        
         const timer = setInterval(() => {
             setUptime(prev => prev + 1);
         }, 1000);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            clearInterval(timer);
-        };
+        return () => clearInterval(timer);
     }, []);
 
     const formatUptime = (s: number) => {
@@ -26,6 +17,41 @@ const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         const secs = s % 60;
         return `00:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     };
+
+    return <span className="text-[var(--primary)] font-black opacity-100">UPTIME: {formatUptime(uptime)}</span>;
+};
+
+// Isolate Mouse Coordinate State to prevent global app re-renders on every pixel moved
+const MouseCoordinates = () => {
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        let ticking = false;
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    setMousePos({ x: e.clientX, y: e.clientY });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+        // Use passive listener for extreme performance
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
+
+    return (
+        <>
+            <span className="hidden md:inline">X: {mousePos.x}</span>
+            <span className="hidden md:inline">Y: {mousePos.y}</span>
+        </>
+    );
+};
+
+const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    // CyberShell is now a STATeless wrapper. 
+    // Moving the states out guarantees that `<App />` and all its animations don't re-render when the mouse moves.
 
     return (
         <div className="relative min-h-screen selection:bg-[var(--primary)]/30 selection:text-[var(--primary)] crt-flicker">
@@ -37,12 +63,11 @@ const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <div className="absolute top-4 left-4 md:top-6 md:left-6 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-start gap-1 uppercase tracking-widest">
                     <span className="hidden md:inline">LAT: 21.8823° N</span>
                     <span className="hidden md:inline">LON: 102.2826° W</span>
-                    <span className="text-[var(--primary)] font-black opacity-100">UPTIME: {formatUptime(uptime)}</span>
+                    <UptimeDisplay />
                 </div>
 
                 <div className="absolute top-4 right-4 md:top-6 md:right-6 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-end gap-1 text-right uppercase tracking-widest">
-                    <span className="hidden md:inline">X: {mousePos.x}</span>
-                    <span className="hidden md:inline">Y: {mousePos.y}</span>
+                    <MouseCoordinates />
                     <span className="text-green-500 font-black opacity-100">SECURE_TUNNEL</span>
                 </div>
 
