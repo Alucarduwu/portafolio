@@ -21,22 +21,28 @@ const AIBot = () => {
 
     const info = {
         es: {
-            welcome: "¡SISTEMA ACTIVO! Soy tu asistente de interfaz. ¿Qué módulo deseas consultar hoy?",
-            about: "Anahí es una apasionada de la ingeniería IT que comenzó forjando su lógica en 2016 con papel y bloc de notas. Esa curiosidad inicial ha evolucionado en una desarrolladora versátil con una visión integral, capaz de entender la tecnología desde sus bases más puras hasta las arquitecturas modernas.",
-            projects: "Accediendo a CORE... Tengo indexados proyectos de Inteligencia Artificial (SignSpeak), Sistemas Full Stack y Aplicaciones Móviles nativas. ¿Deseas explorar el índice?",
-            contact: "Protocolo de comunicación establecido. Puedes contactar directamente a la terminal de Anahí mediante estos nodos:",
-            exp: "Registro de LOGS: +3 años de inmersión total en el desarrollo Full Stack y Mobile. Especialista en React, Node.js y plataformas móviles, con un enfoque actual en la arquitectura empresarial SAP (ABAP Cloud, BTP) y sistemas de alta disponibilidad.",
-            fallback: "Entrada no reconocida. Por favor, utiliza los comandos del panel principal para una navegación óptima.",
-            typing: "Sincronizando datos de perfil..."
+            welcome: "¡CONEXIÓN ESTABLECIDA! 🚀 Soy la conciencia digital de Anahí. Estoy aquí para guiarte por su universo técnico. ¿Qué parte de nuestra historia quieres descubrir hoy?",
+            about: "Todo empezó en 2016 con un bloc de notas y una curiosidad infinita. Esa chispa ha evolucionado hasta crear una ingeniera versátil que ve el código como un arte. Anahí no solo programa; ella construye puentes entre problemas complejos y realidades digitales.",
+            projects: "Entrando al CORE... Aquí verás IA (SignSpeak) y sistemas robustos. Pero lo más importante: Anahí se especializa en crear SOLUCIONES A MEDIDA. Si tienes una visión única, ella tiene la arquitectura para hacerla realidad.",
+            contact: "Nodos de comunicación abiertos. ¿Listo para que empecemos a trabajar en tu próximo gran proyecto a medida?",
+            exp: "Registro de LOGS: +3 años de inmersión como Fullstack Web y Mobile. Esa es mi especialidad principal, pero actualmente estoy llevando mi arsenal al siguiente nivel APRENDIENDO el ecosistema SAP (ABAP Cloud, BTP) para fusionar la agilidad moderna con la potencia empresarial.",
+            hello: "¡Hola! 👋 Es un gusto saludarte. Soy la conciencia digital de Anahí, lista para contarte todo sobre su trabajo. ¿Qué tienes en mente?",
+            bye: "¡Hasta luego! 🚀 Espero que hayas disfrutado el recorrido por el sistema de Anahí. ¡Vuelve pronto!",
+            status: "¡Mis circuitos están al 100%! ⚡ Procesando datos y lista para ayudarte. ¿Tú cómo estás?",
+            fallback: "No entiendo exactamente eso, pero puedes explorar mis módulos principales aquí abajo:",
+            typing: "Sincronizando flujos de datos..."
         },
         en: {
-            welcome: "SYSTEM ACTIVE! I'm your interface assistant. Which module would you like to access today?",
-            about: "Anahi is a passionate IT engineer who began building her logic in 2016 with just paper and Notepad. That initial curiosity has evolved into a versatile developer with a comprehensive vision, capable of understanding technology from its purest foundations to modern architectures.",
-            projects: "Accessing CORE... I have indexed Artificial Intelligence projects (SignSpeak), Full Stack systems, and native Mobile apps. Would you like to explore the index?",
-            contact: "Communication protocol established. You can contact Anahi's terminal directly through these nodes:",
-            exp: "LOGS retrieved: 3+ years of total immersion in Full Stack and Mobile development. Specialist in React, Node.js, and mobile platforms, currently focused on SAP enterprise architecture (ABAP Cloud, BTP) and high-availability systems.",
-            fallback: "Input not recognized. Please use the main panel commands for optimal navigation.",
-            typing: "Syncing profile data..."
+            welcome: "CONNECTION ESTABLISHED! 🚀 I'm Anahi's digital consciousness. I'm here to guide you through her technical universe. Which part of our story shall we explore today?",
+            about: "It all began in 2016 with a notepad and infinite curiosity. That spark has evolved into a versatile engineer who sees code as an art form. Anahi doesn't just program; she builds bridges between complex problems and digital realities.",
+            projects: "Accessing CORE... You'll find AI (SignSpeak) and robust systems here. But most importantly: Anahi specializes in CUSTOM-TAILORED SOLUTIONS. If you have a unique vision, she has the architecture to make it real.",
+            contact: "Communication nodes open. Ready to start building your next custom-made masterpiece?",
+            exp: "LOGS retrieved: 3+ years of immersion as a Fullstack Web and Mobile developer. That's my main specialty, but I'm currently expanding my arsenal by LEARNING the SAP ecosystem (ABAP Cloud, BTP) to merge modern agility with enterprise power.",
+            hello: "Hello! 👋 It's a pleasure to meet you. I'm Anahi's digital consciousness, ready to tell you all about her work. What's on your mind?",
+            bye: "Goodbye! 🚀 I hope you enjoyed the tour through Anahi's system. Come back soon!",
+            status: "My circuits are at 100%! ⚡ Processing data and ready to help. How are you doing?",
+            fallback: "I don't quite understand that, but you can explore my main modules below:",
+            typing: "Syncing data streams..."
         }
     };
 
@@ -64,7 +70,10 @@ const AIBot = () => {
         let response = current.fallback;
         let opts: any = {};
 
-        if (lower.includes('bio') || lower.includes('about')) response = current.about;
+        if (lower.includes('hola') || lower.includes('hello') || lower.includes('hi')) response = current.hello;
+        else if (lower.includes('adios') || lower.includes('bye') || lower.includes('chao') || lower.includes('nos vemos')) response = current.bye;
+        else if (lower.includes('como estas') || lower.includes('how are you') || lower.includes('tal estas')) response = current.status;
+        else if (lower.includes('bio') || lower.includes('about')) response = current.about;
         else if (lower.includes('core') || lower.includes('proyect')) { response = current.projects; opts.link = "/projects"; opts.label = "CORE"; }
         else if (lower.includes('io') || lower.includes('contact')) { response = current.contact; opts.isContact = true; }
         else if (lower.includes('exp') || lower.includes('log')) { response = current.exp; opts.link = "/experience"; opts.label = "LOGS"; }

@@ -66,7 +66,11 @@ const Header = () => {
                         </div>
                         <div className="hidden sm:flex flex-col leading-none shrink-0 notranslate" translate="no">
                             <span className="font-ex-bold text-[9px] tracking-widest text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic font-black"><span>ANAHÍ BETZABE</span></span>
-                            <span className="text-[7px] font-mono text-[var(--text-muted)] tracking-widest mt-0.5 opacity-60 uppercase"><span>SYSTEM_OS_v6.4</span></span>
+                            <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-[6px] font-mono text-[var(--text-muted)] tracking-widest opacity-60 uppercase"><span>SYSTEM_OS_v6.4</span></span>
+                                <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse"></div>
+                                <span className="text-[6px] font-mono text-green-500/60 uppercase tracking-tighter">CPU: {(Math.random() * 5 + 10).toFixed(1)}%</span>
+                            </div>
                         </div>
                     </Link>
                 </div>

@@ -49,6 +49,7 @@ const sections: { key: string; labelEs: string; labelEn: string; icon: string; c
     labelEn: "SAP & ENTERPRISE",
     icon: "corporate_fare",
     certs: [
+      { title: "Learn SAP ABAP Fundamentals and Core Programming Concepts", issuer: "Board Infinity", date: "Apr 2026", idCode: "61KNUO38PPT3", file: "#", featured: true },
       { title: "Software Development on SAP HANA", issuer: "SkillUp / Coursera", date: "Mar 2026", idCode: "CQVWE7LWLIHQ", file: "https://coursera.org/verify/CQVWE7LWLIHQ", featured: true },
     ],
   },

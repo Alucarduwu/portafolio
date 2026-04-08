@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { useGithubProjects } from "../hooks/useGithubProjects";
+import TechOrbital from "./TechOrbital";
 
 const AboutPage = () => {
     const { t, lang } = useContext(GlobalContext);
@@ -11,7 +12,7 @@ const AboutPage = () => {
             <div className="grid lg:grid-cols-12 gap-6 md:gap-10 items-end border-b border-[var(--border)] pb-8 text-center md:text-left">
                 <div className="lg:col-span-8 space-y-4">
                     <div className="system-label animate-pulse justify-center md:justify-start notranslate" translate="no"><span>BIO_DUMP_v.6.4</span></div>
-                    <h1 className="text-[var(--text-main)] uppercase leading-none italic font-black shadow-sm">
+                    <h1 className="text-[var(--text-main)] uppercase leading-none italic font-black shadow-sm glitch-text" data-text={t('about_title')}>
                         <span>{t('about_title')}</span>
                     </h1>
                 </div>
@@ -94,154 +95,66 @@ const AboutPage = () => {
                     </div>
                 </div>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-[var(--primary)] h-fit">
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-[var(--primary)] text-3xl">desktop_windows</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_FRONT_01</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">🖥️ FRONTEND</h3>
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <p className="text-[10px] font-mono font-bold text-[var(--primary)] opacity-60 tracking-widest">FRAMEWORKS</p>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {['React', 'Angular', 'Vue.js', 'Next.js', 'Astro', 'HTML5', 'CSS3'].map(t => (
-                                        <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="space-y-2 pt-2">
-                                <p className="text-[10px] font-mono font-bold text-[var(--primary)] opacity-60 tracking-widest">LANGUAGES & UI</p>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {['TypeScript', 'JavaScript', 'Tailwind CSS', 'SCSS', 'Bootstrap', 'Material UI'].map(t => (
-                                        <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                    <TechOrbital 
+                        title="🖥️ FRONTEND" 
+                        icon="desktop_windows"
+                        items={[
+                            'React', 'Angular', 'Vue.js', 'Next.js', 'Astro', 'HTML5', 'CSS3', 
+                            'TypeScript', 'JavaScript', 'Tailwind CSS', 'SCSS', 'Bootstrap', 'Material UI'
+                        ].map(t => ({ name: t }))}
+                    />
+                    
+                    <TechOrbital 
+                        title="⚙️ BACKEND" 
+                        icon="settings_ethernet"
+                        items={[
+                            'Node.js', 'Express', 'NestJS', 'Laravel', 'C#', '.NET', 'ASP.NET Core',
+                            'Django', 'Flask', 'FastAPI', 'Python', 'Java', 'PHP'
+                        ].map(t => ({ name: t }))}
+                    />
 
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-amber-500/50 h-fit">
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-amber-500 text-3xl">settings_ethernet</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_BACK_02</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">⚙️ BACKEND</h3>
-                        <div className="space-y-4">
-                            <div className="flex flex-wrap gap-1.5">
-                                {['Node.js', 'Express', 'NestJS', 'Laravel', 'C# / .NET', 'Django', 'Flask', 'FastAPI', 'ASP.NET Core', 'Python', 'Java', 'PHP'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
-                                ))}
-                            </div>
-                            <ul className="text-[11px] text-[var(--text-muted)] space-y-1 list-none font-mono pt-2 border-t border-[var(--border)]/30">
-                                <li>› APIs REST / Auth / RBAC</li>
-                                <li>› MVC / MVVM / Clean Arch</li>
-                                <li>› Architecture Cliente-Servidor</li>
-                                <li>› Programming OOP</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <TechOrbital 
+                        title="🧠 SAP / DATA" 
+                        icon="corporate_fare"
+                        items={[
+                            'SAP BTP', 'ABAP', 'HANA', 'RAP', 'CDS Views',
+                            'Firebase', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQL Server'
+                        ].map(t => ({ name: t }))}
+                    />
 
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-blue-500/50 h-fit relative">
-                        <div className="absolute top-0 right-0 p-2 bg-blue-500/10 text-blue-500 text-[8px] font-black italic rounded-bl">ENTERPRISE</div>
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-blue-500 text-3xl">corporate_fare</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_ENT_03</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">🧠 SAP / DATA</h3>
-                        <div className="space-y-4">
-                            <div className="flex flex-wrap gap-1.5">
-                                {['SAP BTP', 'ABAP Cloud', 'RAP', 'CDS Views', 'HANA'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-blue-500/5 border border-blue-500/20 rounded text-[9px] font-mono font-bold text-blue-400">{t}</span>
-                                ))}
-                            </div>
-                            <div className="flex flex-wrap gap-1.5 pt-2">
-                                {['Firebase', 'MongoDB', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-[var(--bg-ui)] border border-[var(--border)] rounded text-[9px] font-mono font-bold text-[var(--text-secondary)]">{t}</span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    <TechOrbital 
+                        title="📱 MOBILE" 
+                        icon="smartphone"
+                        items={['Kotlin', 'Android', 'Jetpack Compose', 'Flutter', 'Dart', 'React Native', 'Expo', 'Swift'].map(t => ({ name: t }))}
+                    />
 
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-emerald-500/50 h-fit">
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-emerald-500 text-3xl">smartphone</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_PLAT_04</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">📱 PLATFORMS</h3>
-                        <div className="space-y-4">
-                            <div className="flex flex-wrap gap-1.5">
-                                {['Kotlin', 'Jetpack Compose', 'Android SDK', 'Flutter (Dart)', 'React Native', 'Expo', 'Genymotion'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-emerald-500/5 border border-emerald-500/20 rounded text-[9px] font-mono font-bold text-emerald-400">{t}</span>
-                                ))}
-                            </div>
-                            <ul className="text-[11px] text-[var(--text-muted)] space-y-1 list-none font-mono pt-2 border-t border-[var(--border)]/30">
-                                <li>› Apps Offline-First</li>
-                                <li>› MVVM Architectures</li>
-                                <li>› Native Performance</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <TechOrbital 
+                        title="☁️ CLOUD / OPS" 
+                        icon="cloud"
+                        items={['AWS', 'Docker', 'GitHub Actions', 'GitLab', 'Vercel', 'Postman', 'Git', 'VS Code'].map(t => ({ name: t }))}
+                    />
 
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-violet-500/50 h-fit">
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-violet-500 text-3xl">cloud</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_OPS_05</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">☁️ CLOUD / OPS</h3>
-                        <div className="space-y-4">
-                            <div className="flex flex-wrap gap-1.5">
-                                {['AWS', 'Docker', 'GitHub Actions', 'GitLab CI', 'Vercel', 'Postman', 'VS Code'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-violet-500/5 border border-violet-500/20 rounded text-[9px] font-mono font-bold text-violet-400">{t}</span>
-                                ))}
-                            </div>
-                            <p className="text-[11px] text-[var(--text-muted)] italic font-mono opacity-60 tracking-tighter pt-2 border-t border-[var(--border)]/30">GIT / DEPLOY / SCALE</p>
-                        </div>
-                    </div>
+                    <TechOrbital 
+                        title="🎨 DESIGN & UX" 
+                        icon="auto_awesome"
+                        items={['Figma', 'Stitch', 'Modern UI', 'Glassmorphism', 'Animations'].map(t => ({ name: t }))}
+                    />
 
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-red-500/50 h-fit">
-                        <div className="flex justify-between items-start mb-6">
-                            <span className="material-symbols-outlined text-red-500 text-3xl">bug_report</span>
-                            <span className="system-label text-[8px] opacity-40">MOD_QA_06</span>
-                        </div>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic mb-4 font-mono">🧪 TESTING & QA</h3>
-                        <div className="space-y-4">
-                            <div className="flex flex-wrap gap-1.5">
-                                {['Cypress', 'Playwright', 'PyTest', 'Jest', 'Mocha'].map(t => (
-                                    <span key={t} className="px-2 py-0.5 bg-red-500/5 border border-red-500/20 rounded text-[9px] font-mono font-bold text-red-400">{t}</span>
-                                ))}
-                            </div>
-                            <p className="text-[11px] text-[var(--text-muted)] italic font-mono opacity-60 tracking-tighter pt-2 border-t border-[var(--border)]/30">E2E / UNIT / AUTOMATION</p>
-                        </div>
-                    </div>
-
-                    <div className="premium-card p-5 group bg-[var(--bg-card)] border-t-2 border-t-pink-500/50 h-fit flex flex-col justify-center items-center text-center">
-                        <span className="material-symbols-outlined text-pink-500 text-4xl mb-3 animate-pulse">auto_awesome</span>
-                        <h3 className="text-lg font-black text-[var(--text-main)] uppercase italic font-mono leading-none">🎨 DISEÑO + UX</h3>
-                        <div className="mt-4 space-y-4 w-full">
-                            <div className="flex flex-wrap justify-center gap-1.5">
-                                {['Modern UI', 'Glassmorphism', 'Animations'].map(i => (
-                                    <span key={i} className="text-[9px] font-mono text-[var(--text-muted)]">[{i}]</span>
-                                ))}
-                            </div>
-                            <div className="pt-2 border-t border-pink-500/20">
-                                <p className="text-[10px] font-mono font-black text-pink-400 uppercase tracking-widest mb-2 italic">🧰 HERRAMIENTA</p>
-                                <div className="flex justify-center gap-3 flex-wrap">
-                                    <span className="px-3 md:px-4 py-1.5 bg-pink-500/10 border border-pink-500/30 rounded-full text-pink-500 text-[10px] md:text-[11px] font-black tracking-widest uppercase italic shadow-[0_0_15px_rgba(236,72,153,0.2)]">Figma</span>
-                                    <span className="px-3 md:px-4 py-1.5 bg-pink-500/10 border border-pink-500/30 rounded-full text-pink-500 text-[10px] md:text-[11px] font-black tracking-widest uppercase italic shadow-[0_0_15px_rgba(236,72,153,0.2)]">Stitch</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <TechOrbital 
+                        title="🧪 TESTING" 
+                        icon="bug_report"
+                        items={['Cypress', 'Playwright', 'PyTest', 'Jest', 'Mocha'].map(t => ({ name: t }))}
+                    />
                 </div>
 
-                <div className="grid lg:grid-cols-12 gap-6 pt-6">
-                    <div className="lg:col-span-8 p-6 md:p-8 rounded-2xl bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-ui)] border border-[var(--border)] border-l-4 border-l-[var(--primary)] shadow-2xl relative group overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-25 transition-opacity">
-                            <span className="material-symbols-outlined text-4xl md:text-6xl">format_quote</span>
+                <div className="grid lg:grid-cols-12 gap-5 pt-4">
+                    <div className="lg:col-span-8 p-5 md:p-6 rounded-2xl bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-ui)] border border-[var(--border)] border-l-4 border-l-[var(--primary)] shadow-2xl relative group overflow-hidden">
+                        <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <span className="material-symbols-outlined text-3xl md:text-4xl text-[var(--primary)]">format_quote</span>
                         </div>
-                        <h3 className="system-label text-[10px] mb-4 opacity-70 justify-center md:justify-start">🚀 PROFILE_DUMP</h3>
-                        <p className="text-sm md:text-lg text-[var(--text-secondary)] leading-relaxed italic font-bold tracking-tight uppercase max-w-3xl">
+                        <h3 className="system-label text-[9px] mb-3 opacity-70 justify-center md:justify-start">🚀 PROFILE_DUMP</h3>
+                        <p className="text-xs md:text-[15px] text-[var(--text-secondary)] leading-relaxed italic font-bold tracking-tight uppercase max-w-2xl">
                             {lang === 'es' 
                                 ? 'Ingeniera en TIC especializada en desarrollo de apps avanzadas del software. Enfocada en sistemas integrales de alto rendimiento para web, móvil y entornos empresariales SAP.'
                                 : 'ICT Engineer specialized in Advanced Software Application Development. Focused on high-performance web, mobile, and SAP enterprise ecosystems.'
@@ -249,12 +162,12 @@ const AboutPage = () => {
                         </p>
                     </div>
 
-                    <div className="lg:col-span-4 p-6 md:p-8 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/40 flex flex-col justify-center items-center text-center space-y-4">
-                        <span className="material-symbols-outlined text-4xl md:text-5xl text-[var(--primary)] animate-bounce font-black">shield_with_heart</span>
-                        <div className="space-y-1">
-                           <h3 className="text-xl font-black text-[var(--text-main)] italic uppercase">{lang === 'es' ? '💎 VALOR ESTRATÉGICO' : '💎 STRATEGIC VALUE'}</h3>
+                    <div className="lg:col-span-4 p-5 md:p-6 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/40 flex flex-col justify-center items-center text-center space-y-3">
+                        <span className="material-symbols-outlined text-3xl text-[var(--primary)] animate-bounce font-black">shield_with_heart</span>
+                        <div className="space-y-0.5">
+                           <h3 className="text-sm font-black text-[var(--text-main)] italic uppercase">{lang === 'es' ? '💎 VALOR ESTRATÉGICO' : '💎 STRATEGIC VALUE'}</h3>
                         </div>
-                        <div className="text-[10px] md:text-[11px] text-[var(--text-soft)] font-mono font-black italic space-y-2 uppercase text-left w-full sm:w-auto">
+                        <div className="text-[9px] md:text-[10px] text-[var(--text-soft)] font-mono font-black italic space-y-1.5 uppercase text-left w-full sm:w-auto">
                             {lang === 'es' ? (
                                 <>
                                     <p className="flex items-center gap-2"><span className="text-[var(--primary)]">›</span> Arquitectura Full-Stack Avanzada</p>

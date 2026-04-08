@@ -62,8 +62,8 @@ export const experience: ExperienceItem[] = [
   },
   {
     id: "exp-02",
-    titleEs: "Servicio Social – Sistema de Automatización Inteligente",
-    titleEn: "Social Service – Intelligent Automation System",
+    titleEs: "Sistema de Automatización Inteligente - Ss",
+    titleEn: "Intelligent Automation System - Ss",
     companyEs: "Instituto Tecnológico de Aguascalientes",
     companyEn: "Instituto Tecnológico de Aguascalientes",
     periodEs: "Enero 2025 – Agosto 2025",
