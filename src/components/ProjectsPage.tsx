@@ -47,7 +47,7 @@ const ProjectsPage = () => {
 
         return (
             <motion.div 
-                className="premium-card group relative flex flex-col h-full bg-[var(--bg-card)]/40 border-[var(--border)] hover:border-[var(--primary)] transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_var(--primary-glow)] rounded-2xl overflow-hidden"
+                className="premium-card group relative flex flex-col h-full bg-[var(--bg-card)]/40 border-[var(--border)] hover:border-[var(--primary)] transition-all duration-500 hover:shadow-[0_20px_50px_var(--shadow-base),0_0_30px_var(--primary-glow)] rounded-2xl overflow-hidden"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05, duration: 0.5 }}
@@ -66,7 +66,7 @@ const ProjectsPage = () => {
                 </div>
 
                 {/* Integrated Preview Engine */}
-                <div className="aspect-video w-full bg-black relative overflow-hidden group-hover:cursor-pointer border-b border-[var(--border)]">
+                <div className="aspect-video w-full bg-[var(--bg-primary)] relative overflow-hidden group-hover:cursor-pointer border-b border-[var(--border)]">
                     {!imgError && firstImage ? (
                         <motion.img 
                             src={firstImage} 
@@ -82,7 +82,7 @@ const ProjectsPage = () => {
                     )}
                     
                     {/* Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
                     <div className="scanline"></div>
                     
                     <div className="absolute top-3 left-3 flex items-center gap-2">
@@ -95,13 +95,13 @@ const ProjectsPage = () => {
                 <div className="p-4 flex flex-col flex-1 space-y-3">
                     {/* Project Title */}
                     <div className="space-y-1">
-                        <h3 className="text-sm font-black text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic tracking-tighter line-clamp-1">
+                        <h3 className="text-sm font-black text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic tracking-tighter leading-snug line-clamp-2 md:line-clamp-1">
                             {p.title}
                         </h3>
                     </div>
 
                     {/* Terminal Metadata Block — visible BEFORE click */}
-                    <div className="flex-1 rounded-lg bg-black/40 border border-[var(--primary)]/15 group-hover:border-[var(--primary)]/40 transition-all duration-500 overflow-hidden font-mono text-[10px] leading-relaxed">
+                    <div className="flex-1 rounded-lg bg-[var(--bg-ui)]/40 border border-[var(--primary)]/15 group-hover:border-[var(--primary)]/40 transition-all duration-500 overflow-hidden font-mono text-[10px] leading-relaxed">
                         {/* Block header */}
                         <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-[var(--primary)]/10 bg-[var(--primary)]/5">
                             <span className="text-[var(--primary)] opacity-50 text-[8px] font-black tracking-widest uppercase">PROJECT.json</span>
@@ -219,7 +219,7 @@ const ProjectsPage = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="absolute inset-0 bg-black/85 backdrop-blur-2xl" 
+                                className="absolute inset-0 bg-[var(--bg-primary)]/85 backdrop-blur-2xl" 
                                 onClick={closeProject}
                             />
                             <motion.div 
@@ -239,7 +239,7 @@ const ProjectsPage = () => {
                                             <div className="w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-[#27c93f] shadow-[0_0_12px_#27c93f]"></div>
                                         </div>
                                         <div className="h-5 w-px bg-[var(--border)] mx-1 opacity-50"></div>
-                                        <span className="system-label text-[9px] md:text-[11px] font-black tracking-[0.25em] md:tracking-[0.4em] text-[var(--primary)] uppercase italic truncate max-w-[150px] xs:max-w-[250px] md:max-w-none">
+                                        <span className="system-label text-[9px] md:text-[11px] font-black tracking-[0.25em] md:tracking-[0.4em] text-[var(--primary)] uppercase italic leading-tight">
                                             {selectedProject.title}
                                         </span>
                                     </div>
@@ -370,7 +370,7 @@ const ProjectsPage = () => {
             )}
 
             {zoomedImage && (
-                <div className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out" onClick={() => setZoomedImage(null)}>
+                <div className="fixed inset-0 z-[100000] bg-[var(--bg-primary)]/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out" onClick={() => setZoomedImage(null)}>
                     <img src={zoomedImage} alt="Zoom" className="max-w-full max-h-full object-contain shadow-2xl" />
                 </div>
             )}
