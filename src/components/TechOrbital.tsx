@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import { motion, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 
 interface TechItem {
@@ -12,10 +12,83 @@ interface TechOrbitalProps {
   icon: string;
 }
 
+interface TechItemNodeProps {
+  item: TechItem;
+  index: number;
+  total: number;
+  isActive: boolean;
+  onHover: (name: string) => void;
+  onLeave: () => void;
+}
+
+const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave }: TechItemNodeProps) => {
+  const [hasFailed, setHasFailed] = useState(false);
+  
+  const angle = (index / total) * Math.PI * 2;
+  const dist = 125; 
+  const x = Math.cos(angle) * dist;
+  const y = Math.sin(angle) * dist;
+  
+  const techId = item.name.toLowerCase().trim().replace(/ /g, '').replace(/\.js/g, 'dotjs').replace(/\#/g, 'sharp');
+
+  return (
+    <motion.div
+      style={{
+          position: 'absolute',
+          x: x,
+          y: y,
+          zIndex: isActive ? 100 : 5,
+      }}
+      className="pointer-events-auto"
+    >
+        <div 
+            className="w-14 h-14 -ml-7 -mt-7 cursor-pointer relative"
+            onMouseEnter={() => onHover(item.name)}
+            onMouseLeave={onLeave}
+        >
+            <motion.div
+                animate={{ 
+                    scale: isActive ? 1.8 : 1,
+                    y: isActive ? -30 : 0,
+                    rotate: isActive ? -5 : 0 
+                }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className={`w-full h-full rounded-xl border flex items-center justify-center transition-all duration-500 relative overflow-hidden ${isActive ? 'bg-[var(--bg-card)] border-[var(--primary)] shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_var(--primary-glow)]' : 'bg-[var(--bg-ui)]/20 border-[var(--border)]'}`}
+            >
+                {!hasFailed ? (
+                    <img 
+                        src={`https://cdn.simpleicons.org/${techId}`} 
+                        alt={item.name}
+                        loading="lazy"
+                        className={`w-[60%] h-[60%] object-contain transition-all duration-500 ${isActive ? 'grayscale-0 opacity-100 scale-110' : 'grayscale opacity-50 contrast-125'}`}
+                        style={{
+                            filter: isActive ? 'none' : 'grayscale(1) brightness(0.8)'
+                        }}
+                        onError={() => setHasFailed(true)}
+                    />
+                ) : (
+                    <span className="text-[10px] font-black font-mono text-[var(--primary)] opacity-60">
+                        {item.name.substring(0, 2).toUpperCase()}
+                    </span>
+                )}
+
+                {isActive && (
+                    <motion.div 
+                        initial={{ top: -100 }}
+                        animate={{ top: 100 }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--primary)]/10 to-transparent w-full h-1/2"
+                    />
+                )}
+            </motion.div>
+        </div>
+    </motion.div>
+  );
+});
+
 const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
-  const [failedIcons, setFailedIcons] = useState<Set<string>>(new Set());
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -39,9 +112,8 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
     setHoveredTech(null);
   };
 
-  const handleIconError = (name: string) => {
-    setFailedIcons(prev => new Set(prev).add(name));
-  };
+  const handleHover = useCallback((name: string) => setHoveredTech(name), []);
+  const handleItemLeave = useCallback(() => setHoveredTech(null), []);
 
   const activeTech = hoveredTech; 
 
@@ -72,8 +144,9 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
           />
 
           {/* Grid coordinates */}
-          <div className="absolute top-2 right-4 font-mono text-[6px] text-[var(--primary)] opacity-40">
-             [X: {Math.floor(springX.get() * 100)}, Y: {Math.floor(springY.get() * 100)}]
+          <div className="absolute top-2 right-4 font-mono text-[8px] text-[var(--primary)] opacity-40 text-right uppercase">
+             SYS_TRACKING_ON<br/>
+             [{title.replace(/ /g, '_')}]
           </div>
       </div>
 
@@ -134,74 +207,17 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
           />
         </motion.div>
 
-        {items.map((item, index) => {
-          const total = items.length;
-          const angle = (index / total) * Math.PI * 2;
-          const dist = 125; 
-          const x = Math.cos(angle) * dist;
-          const y = Math.sin(angle) * dist;
-          
-          const techId = item.name.toLowerCase().trim().replace(/ /g, '').replace(/\.js/g, 'dotjs').replace(/\#/g, 'sharp');
-          const isActive = hoveredTech === item.name;
-          const hasFailed = failedIcons.has(item.name);
-
-          return (
-            <motion.div
-              key={item.name}
-              style={{
-                  position: 'absolute',
-                  x: x,
-                  y: y,
-                  zIndex: isActive ? 100 : 5,
-              }}
-              className="pointer-events-auto"
-            >
-                {/* Stable Detection Zone */}
-                <div 
-                    className="w-14 h-14 -ml-7 -mt-7 cursor-pointer relative"
-                    onMouseEnter={() => setHoveredTech(item.name)}
-                    onMouseLeave={() => setHoveredTech(null)}
-                >
-                    {/* Visual Shell */}
-                    <motion.div
-                        animate={{ 
-                            scale: isActive ? 1.8 : 1,
-                            y: isActive ? -30 : 0,
-                            rotate: isActive ? -5 : 0 
-                        }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                        className={`w-full h-full rounded-xl border flex items-center justify-center transition-all duration-500 relative overflow-hidden ${isActive ? 'bg-[var(--bg-card)] border-[var(--primary)] shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_var(--primary-glow)]' : 'bg-[var(--bg-ui)]/20 border-[var(--border)]'}`}
-                    >
-                        {!hasFailed ? (
-                            <img 
-                                src={`https://cdn.simpleicons.org/${techId}`} 
-                                alt={item.name}
-                                className={`w-[60%] h-[60%] object-contain transition-all duration-500 ${isActive ? 'grayscale-0 opacity-100 scale-110' : 'grayscale opacity-50 contrast-125'}`}
-                                style={{
-                                    filter: isActive ? 'none' : 'grayscale(1) brightness(0.8)'
-                                }}
-                                onError={() => handleIconError(item.name)}
-                            />
-                        ) : (
-                            <span className="text-[10px] font-black font-mono text-[var(--primary)] opacity-60">
-                                {item.name.substring(0, 2).toUpperCase()}
-                            </span>
-                        )}
-
-                        {/* Scanner Beam Effect */}
-                        {isActive && (
-                            <motion.div 
-                                initial={{ top: -100 }}
-                                animate={{ top: 100 }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                                className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--primary)]/10 to-transparent w-full h-1/2"
-                            />
-                        )}
-                    </motion.div>
-                </div>
-            </motion.div>
-          );
-        })}
+        {items.map((item, index) => (
+          <TechItemNode
+            key={item.name}
+            item={item}
+            index={index}
+            total={items.length}
+            isActive={hoveredTech === item.name}
+            onHover={handleHover}
+            onLeave={handleItemLeave}
+          />
+        ))}
       </div>
     </div>
   );
