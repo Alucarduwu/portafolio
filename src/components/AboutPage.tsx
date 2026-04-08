@@ -95,7 +95,7 @@ const AboutPage = () => {
                 </div>
 
                 {/* ── Cyber Deck: Optimized Skill Manifest ── */}
-                <div className="premium-card bg-[#06060a] border-t-2 border-t-[var(--primary)] overflow-hidden relative group/stack hacker-brackets">
+                <div className="premium-card bg-[var(--bg-card)] border-t-2 border-t-[var(--primary)] overflow-hidden relative group/stack hacker-brackets">
                     {/* Corner Markers */}
                     <div className="corner-marker marker-tl animate-pulse"></div>
                     <div className="corner-marker marker-tr animate-pulse delay-75"></div>
@@ -123,7 +123,7 @@ const AboutPage = () => {
                     <div className="scanline opacity-[0.03]"></div>
 
                     {/* Card header: Cyber UI - Tighter */}
-                    <div className="terminal-header bg-black/95 backdrop-blur-md px-4 py-2 border-b border-[var(--primary)]/20 flex items-center justify-between relative z-20">
+                    <div className="terminal-header bg-[var(--bg-ui)]/95 backdrop-blur-md px-4 py-2 border-b border-[var(--primary)]/20 flex items-center justify-between relative z-20">
                         <div className="flex items-center gap-3">
                             <div className="flex gap-1">
                                 <div className="w-1.5 h-1.5 rounded-full bg-red-500/40"></div>
