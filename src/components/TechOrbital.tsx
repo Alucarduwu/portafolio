@@ -19,17 +19,18 @@ interface TechItemNodeProps {
   isActive: boolean;
   onHover: (name: string) => void;
   onLeave: () => void;
+  radius: number;
 }
 
-const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave }: TechItemNodeProps) => {
+const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave, radius }: TechItemNodeProps) => {
   const [hasFailed, setHasFailed] = useState(false);
   
   const angle = (index / total) * Math.PI * 2;
-  const dist = 125; 
-  const x = Math.cos(angle) * dist;
-  const y = Math.sin(angle) * dist;
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
   
   const techId = item.name.toLowerCase().trim().replace(/ /g, '').replace(/\.js/g, 'dotjs').replace(/\#/g, 'sharp');
+  const isMobile = radius < 100;
 
   return (
     <motion.div
@@ -38,6 +39,7 @@ const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave }: T
           x: x,
           y: y,
           zIndex: isActive ? 100 : 5,
+          touchAction: 'pan-y',
       }}
       className="pointer-events-auto"
     >
@@ -48,8 +50,8 @@ const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave }: T
         >
             <motion.div
                 animate={{ 
-                    scale: isActive ? 1.8 : 1,
-                    y: isActive ? -30 : 0,
+                    scale: isActive ? (isMobile ? 1.3 : 1.8) : 1,
+                    y: isActive ? (isMobile ? -10 : -30) : 0,
                     rotate: isActive ? -5 : 0 
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -89,6 +91,13 @@ const TechItemNode = memo(({ item, index, total, isActive, onHover, onLeave }: T
 const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
+  const [radius, setRadius] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768 ? 90 : 125);
+
+  React.useEffect(() => {
+    const handleResize = () => setRadius(window.innerWidth < 768 ? 90 : 125);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -121,6 +130,7 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
     <div 
         className="premium-card hacker-brackets p-6 bg-[var(--bg-card)] border-t-2 border-t-[var(--primary)] overflow-hidden flex flex-col h-[420px] relative group/orbital"
         onMouseLeave={handleMouseLeave}
+        onClick={() => setHoveredTech(null)}
     >
       {/* Background Decorative Icon */}
       <div className="absolute top-[-20px] right-[-20px] p-4 opacity-[0.03] pointer-events-none group-hover/orbital:scale-110 transition-transform duration-1000">
@@ -216,6 +226,7 @@ const TechOrbital: React.FC<TechOrbitalProps> = ({ title, items, icon }) => {
             isActive={hoveredTech === item.name}
             onHover={handleHover}
             onLeave={handleItemLeave}
+            radius={radius}
           />
         ))}
       </div>
