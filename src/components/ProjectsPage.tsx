@@ -92,34 +92,56 @@ const ProjectsPage = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="p-5 flex flex-col flex-1 space-y-4">
-                    <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 mb-1">
-                             <span className="text-[var(--primary)] font-mono font-bold text-[10px] tracking-tighter opacity-50 italic">[{String(p.category || 'GEN').substring(0,3).toUpperCase()}]</span>
-                             <div className="h-px flex-1 bg-gradient-to-r from-[var(--primary)]/20 to-transparent"></div>
-                        </div>
+                <div className="p-4 flex flex-col flex-1 space-y-3">
+                    {/* Project Title */}
+                    <div className="space-y-1">
                         <h3 className="text-sm font-black text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors uppercase italic tracking-tighter line-clamp-1">
-                             {p.title}
+                            {p.title}
                         </h3>
                     </div>
 
-                    <p className="text-[11px] text-[var(--text-soft)] italic line-clamp-2 opacity-70 group-hover:opacity-100 transition-opacity leading-relaxed flex-1">
-                        {p.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 pt-2">
-                        {(p.stack || []).slice(0, 4).map(tech => (
-                            <span key={tech} className="px-1.5 py-0.5 rounded bg-[var(--bg-ui)] text-[var(--primary)]/70 text-[8px] font-mono font-bold uppercase border border-[var(--border)] group-hover:border-[var(--primary)]/30 transition-all">
-                                #{tech}
-                            </span>
-                        ))}
+                    {/* Terminal Metadata Block — visible BEFORE click */}
+                    <div className="flex-1 rounded-lg bg-black/40 border border-[var(--primary)]/15 group-hover:border-[var(--primary)]/40 transition-all duration-500 overflow-hidden font-mono text-[10px] leading-relaxed">
+                        {/* Block header */}
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-[var(--primary)]/10 bg-[var(--primary)]/5">
+                            <span className="text-[var(--primary)] opacity-50 text-[8px] font-black tracking-widest uppercase">PROJECT.json</span>
+                        </div>
+                        {/* Meta rows */}
+                        <div className="px-3 py-2.5 space-y-1.5">
+                            {/* type */}
+                            <div className="flex items-start gap-1.5">
+                                <span className="text-[var(--primary)] opacity-60 flex-shrink-0 mt-0.5">›</span>
+                                <span className="text-[var(--text-muted)] flex-shrink-0">type:</span>
+                                <span className="text-[var(--text-soft)] group-hover:text-[var(--text-main)] transition-colors line-clamp-1 italic opacity-80">
+                                    {p.description}
+                                </span>
+                            </div>
+                            {/* stack */}
+                            <div className="flex items-start gap-1.5">
+                                <span className="text-[var(--primary)] opacity-60 flex-shrink-0 mt-0.5">›</span>
+                                <span className="text-[var(--text-muted)] flex-shrink-0">stack:</span>
+                                <span className="text-[var(--primary)] opacity-80 group-hover:opacity-100 transition-opacity line-clamp-1">
+                                    {(p.stack || []).join(' | ')}
+                                </span>
+                            </div>
+                            {/* features */}
+                            {p.features && p.features.length > 0 && (
+                                <div className="flex items-start gap-1.5">
+                                    <span className="text-[var(--primary)] opacity-60 flex-shrink-0 mt-0.5">›</span>
+                                    <span className="text-[var(--text-muted)] flex-shrink-0">features:</span>
+                                    <span className="text-green-400/70 group-hover:text-green-400 transition-colors line-clamp-1">
+                                        {p.features.slice(0,3).join(', ')}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 {/* Footer Interaction */}
-                <div className="px-5 py-3 border-t border-[var(--border)] flex items-center justify-between opacity-50 group-hover:opacity-100 transition-opacity bg-[var(--bg-ui)]/20">
-                     <span className="text-[8px] font-mono font-black text-[var(--text-muted)] tracking-widest uppercase italic">Data_Source: GH_API</span>
-                     <span className="material-symbols-outlined text-sm text-[var(--primary)]">arrow_forward_ios</span>
+                <div className="px-4 py-2.5 border-t border-[var(--border)] flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 bg-[var(--bg-ui)]/20">
+                     <span className="text-[8px] font-mono font-black text-[var(--primary)] tracking-widest uppercase italic opacity-70">open_record →</span>
+                     <span className="material-symbols-outlined text-sm text-[var(--primary)] group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
                 </div>
             </motion.div>
         );
