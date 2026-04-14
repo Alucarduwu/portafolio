@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 const HackerBackground = () => {
     // Generate random columns of falling data
