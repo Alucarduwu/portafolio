@@ -14,6 +14,11 @@ export interface Project {
   solution?: string;
   features?: string[];
   architecture?: string;
+  technical_challenges?: string;
+  improvements?: string;
+  learning?: string;
+  status?: string;
+  future?: string;
   date?: string;
 }
 
@@ -28,7 +33,7 @@ export function useGithubProjects(language: "es" | "en") {
       setError(null);
 
       try {
-        const currentVersion = 'v23';
+        const currentVersion = 'v26';
         const cacheKey = `gh_optimized_${currentVersion}_${language}`;
         
         // 1. CLEANUP: Delete any other "gh_optimized" keys that are not this version

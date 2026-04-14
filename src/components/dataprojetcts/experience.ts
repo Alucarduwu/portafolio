@@ -23,80 +23,119 @@ export interface ExperienceItem {
 export const experience: ExperienceItem[] = [
   {
     id: "exp-01",
-    titleEs: "Desarrolladora Full Stack – Sistema Web Empresarial",
-    titleEn: "Full Stack Developer – Business Web Platform",
+    titleEs: "Líder de Arquitectura & Full Stack – Sistema de Gobernanza Empresarial",
+    titleEn: "Lead Architect & Full Stack Developer – Enterprise Governance System",
     companyEs: "Lemaboox / Instituto Tecnológico de Aguascalientes",
     companyEn: "Lemaboox / Instituto Tecnológico de Aguascalientes",
-    periodEs: "Agosto 2025 – Marzo 2026",
-    periodEn: "August 2025 – March 2026",
+    periodEs: "Agosto 2025 – Actualidad",
+    periodEn: "August 2025 – Present",
     descriptionEs:
-      "Diseñé y desarrollé una aplicación web empresarial robusta enfocada en la gestión estructurada de información y control administrativo.",
+      "Dirección técnica en el diseño y despliegue de una plataforma web de alta disponibilidad para la gestión estratégica de activos institucionales y procesos administrativos complejos.",
     descriptionEn:
-      "Designed and developed a robust enterprise web application focused on structured information management and administrative control.",
-    stack: "Angular • Node.js • MySQL • REST APIs • RBAC",
+      "Technical direction in the design and deployment of a high-availability web platform for strategic institutional asset management and complex administrative processes.",
+    stack: "Angular • Node.js • MySQL • Cloud Integration • RBAC Security",
     icon: Briefcase,
     details: {
       featuresEs: [
-        "Implementación de APIs REST seguras para consumo de datos institucionales.",
-        "Sistema de autenticación con control de acceso basado en roles (RBAC).",
-        "Dashboard administrativo responsivo con visualización de datos en tiempo real.",
-        "Modelado relacional complejo para optimización de consultas SQL."
+        "Ingeniería de APIs robustas bajo estándares industriales de seguridad y escalabilidad.",
+        "Implementación de esquemas RBAC avanzados para la protección de datos sensibles.",
+        "Optimización de lógica de negocio en servidor reduciendo tiempos de respuesta en un 30%.",
+        "Diseño de interfaces de usuario de alta densidad para analítica en tiempo real."
       ],
       featuresEn: [
-        "Implementation of secure REST APIs for institutional data consumption.",
-        "Authentication system with role-based access control (RBAC).",
-        "Responsive administrative dashboard with real-time data visualization.",
-        "Complex relational modeling for SQL query optimization."
+        "Engineering of robust APIs under industrial security and scalability standards.",
+        "Implementation of advanced RBAC schemes for sensitive data protection.",
+        "Server-side business logic optimization reducing response times by 30%.",
+        "Design of high-density user interfaces for real-time analytics."
       ],
       architectureEs: [
-        "Arquitectura desacoplada Angular/Node.js para escalabilidad vertical.",
-        "Implementación de Middleware para validación de sesiones y seguridad.",
-        "Diseño de base de datos normalizada para integridad de datos críticos."
+        "Arquitectura escalable basada en microservicios y patrones de diseño limpios.",
+        "Middleware de seguridad personalizado para validación y saneamiento de datos.",
+        "Modelado de bases de datos altamente normalizado para integridad referencial."
       ],
       architectureEn: [
-        "Decoupled Angular/Node.js architecture for vertical scalability.",
-        "Middleware implementation for session validation and security.",
-        "Normalized database design for critical data integrity."
+        "Scalable architecture based on microservices and clean design patterns.",
+        "Custom security middleware for data validation and sanitization.",
+        "Highly normalized database modeling for referential integrity."
       ]
     }
   },
   {
     id: "exp-02",
-    titleEs: "Sistema de Automatización Inteligente - Ss",
-    titleEn: "Intelligent Automation System - Ss",
+    titleEs: "Especialista en Ingeniería de Sistemas AI – Unidad de Control Lógica Difusa",
+    titleEn: "AI Systems Engineering Specialist – Fuzzy Logic Control Unit",
     companyEs: "Instituto Tecnológico de Aguascalientes",
     companyEn: "Instituto Tecnológico de Aguascalientes",
     periodEs: "Enero 2025 – Agosto 2025",
     periodEn: "January 2025 – August 2025",
     descriptionEs:
-      "Desarrollo de un núcleo de inteligencia basado en lógica difusa para la automatización de entornos domésticos mediante variables ambientales.",
+      "Investigación y desarrollo de un núcleo de inteligencia computacional basado en lógica difusa para la automatización predictiva de procesos industriales y ambientales.",
     descriptionEn:
-      "Development of an intelligence core based on fuzzy logic for home automation using environmental variables.",
-    stack: "JavaScript • MATLAB • Fuzzy Logic • Artificial Intelligence",
+      "Research and development of a computational intelligence core based on fuzzy logic for predictive automation of industrial and environmental processes.",
+    stack: "JavaScript • MATLAB • Artificial Intelligence • Fuzzy Logic • R&D",
     icon: Cpu,
     details: {
       featuresEs: [
-        "Diseño de algoritmos de inferencia difusa para toma de decisiones dinámicas.",
-        "Desarrollo de lógica de control en JavaScript para prototipado rápido.",
-        "Validación funcional del sistema mediante simulación en entornos controlados.",
-        "Definición de funciones de membresía para variables de entrada/salida."
+        "Modelado de algoritmos de inferencia difusa para la toma de decisiones autónomas.",
+        "Creación de prototipos funcionales de alta fidelidad integrando lógica matemática compleja.",
+        "Validación de fiabilidad del sistema mediante simulaciones de estrés en entornos MATLAB.",
+        "Definición estratégica de variables lingüísticas y funciones de membresía."
       ],
       featuresEn: [
-        "Design of fuzzy inference algorithms for dynamic decision making.",
-        "Control logic development in JavaScript for rapid prototyping.",
-        "Functional system validation through simulation in controlled environments.",
-        "Definition of membership functions for input/output variables."
+        "Modeling of fuzzy inference algorithms for autonomous decision making.",
+        "Creation of high-fidelity functional prototypes integrating complex mathematical logic.",
+        "System reliability validation through stress simulations in MATLAB environments.",
+        "Strategic definition of linguistic variables and membership functions."
       ],
       architectureEs: [
-        "Integración Híbrida mediante lógica difusa y procesamiento en tiempo real.",
-        "Modelado matemático en MATLAB para el ajuste de reglas de decisión.",
-        "Implementación basada en reglas para garantizar la fiabilidad del sistema."
+        "Integración de sistemas expertos para el control dinámico en tiempo real.",
+        "Motor de reglas personalizado diseñado para la escalabilidad de funciones AI.",
+        "Optimización de procesamiento de señales mediante lógica computacional avanzada."
       ],
       architectureEn: [
-        "Hybrid integration through fuzzy logic and real-time processing.",
-        "Mathematical modeling in MATLAB for decision rule tuning.",
-        "Rule-based implementation to ensure system reliability."
+        "Integration of expert systems for dynamic real-time control.",
+        "Custom rule engine designed for AI function scalability.",
+        "Signal processing optimization through advanced computational logic."
       ]
     }
   },
-];
+  {
+    id: "exp-03",
+    titleEs: "Consultoría Técnica Estratégica & Desarrollo Independiente",
+    titleEn: "Strategic Technical Consultant & Independent Development",
+    companyEs: "Independent / Freelance Portfolio",
+    companyEn: "Independent / Freelance Portfolio",
+    periodEs: "2024 – Presente",
+    periodEn: "2024 – Present",
+    descriptionEs:
+      "Gestión y ejecución de soluciones tecnológicas personalizadas para clientes independientes, enfocándome en la arquitectura de software y el valor de negocio.",
+    descriptionEn:
+      "Management and execution of custom technological solutions for independent clients, focusing on software architecture and business value.",
+    stack: "React • TypeScript • Next.js • TailwindCSS • System Design",
+    icon: Briefcase,
+    details: {
+      featuresEs: [
+        "Despliegue de arquitecturas web modernas con enfoque en SEO y performance.",
+        "Consultoría en digitalización de procesos para pequeñas y medianas empresas.",
+        "Desarrollo de landing pages de alta conversión y sistemas de control ligero.",
+        "Liderazgo en la selección del stack tecnológico para proyectos de rápido crecimiento."
+      ],
+      featuresEn: [
+        "Deployment of modern web architectures with a focus on SEO and performance.",
+        "Consultancy on process digitalization for small and medium-sized enterprises.",
+        "Development of high-conversion landing pages and lightweight control systems.",
+        "Leadership in tech stack selection for rapid-growth projects."
+      ],
+      architectureEs: [
+        "Patrones de diseño orientados a componentes y mantenibilidad a largo plazo.",
+        "Implementación de CI/CD para despliegues automatizados y seguros.",
+        "Arquitectura de frontend modular para escalabilidad de funciones futuras."
+      ],
+      architectureEn: [
+        "Component-oriented design patterns and long-term maintainability.",
+        "CI/CD implementation for automated and secure deployments.",
+        "Modular frontend architecture for future feature scalability."
+      ]
+    }
+  }
+];

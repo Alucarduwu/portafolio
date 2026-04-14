@@ -43,55 +43,86 @@ const parseProjectData = (readme: string) => {
   if (!readme || typeof readme !== 'string') return meta;
   
   try {
-    // Auto-extract Title from first H1
+    // 1. Auto-extract Title from first H1
     const h1Match = readme.match(/^#\s+(.*)/m);
-    if (h1Match) {
-      meta.title_auto = h1Match[1].replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
-    }
+    if (h1Match) meta.title_auto = h1Match[1].replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
 
-    // Auto-extract first paragraph as description
+    // 2. Auto-extract first paragraph as default description
     const lines_all = readme.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#') && !l.startsWith('!') && !l.startsWith('<'));
-    if (lines_all.length > 0) {
-      meta.description_auto = lines_all[0];
-    }
+    if (lines_all.length > 0) meta.description_auto = lines_all[0];
 
-    // More flexible regex for the metadata section
-    const sectionMatch = readme.match(/##?\s*PROJECT[_-]DATA([\s\S]*?)(?:\n---|\n#|\n##|$)/i);
-    if (!sectionMatch) return meta;
-
-    const lines = sectionMatch[1].split('\n');
-    let currentKey = "";
+    // 3. Find Global Data Block (extracts until --- or 💎 is found)
+    const blockMatch = readme.match(/(?:⚙️\s*SYSTEM\s*DATA)[\s\S]*?(?:PROJECT[_-]DATA\s*\n)([\s\S]*?)(?:\n---|💎|$)/i);
     
-    lines.forEach((line, i) => {
-      const trimmed = line.trim();
-      if (!trimmed) return;
+    if (!blockMatch) return meta;
 
-      if (trimmed.includes(':') && !line.startsWith('  ')) {
-        currentKey = trimmed.split(':')[0].trim().toLowerCase();
-        const firstVal = trimmed.split(':').slice(1).join(':').trim();
-        if (firstVal && currentKey === 'stack') meta.stack.push(...firstVal.replace(/[\[\]]/g, '').split(',').map(s => s.trim()));
-        else if (firstVal) meta[currentKey] = firstVal;
-      } 
-      else if (trimmed.startsWith('en:') || trimmed.startsWith('es:')) {
-        const lang = trimmed.startsWith('en:') ? 'en' : 'es';
-        const val = trimmed.split(':').slice(1).join(':').trim();
-        if (currentKey && val) meta[`${currentKey}_${lang}`] = val;
-      }
-      else if (trimmed.startsWith('-')) {
-        const val = trimmed.substring(1).trim();
-        if (currentKey === 'stack') meta.stack.push(val);
-        if (currentKey === 'features') {
-            let context = "en";
-            for (let j = i - 1; j >= 0; j--) {
-                const prevTrim = lines[j].trim();
-                if (prevTrim.startsWith('es:')) { context = "es"; break; }
-                if (prevTrim.startsWith('en:')) { context = "en"; break; }
+    const block = blockMatch[1];
+    let currentKey = "";
+    let currentLang: 'en' | 'es' | null = null;
+    
+    const lines = block.split('\n');
+    lines.forEach(line => {
+        if (!line.trim()) return;
+        
+        // Detect if line is indented
+        const isIndented = line.startsWith('  ') || line.startsWith('\t');
+        const trimmed = line.trim();
+        
+        // Root key: no indentation, ends with colon "name:"
+        const rootKeyMatch = line.match(/^([a-z0-9_-]+):(?:\s*(.*))?$/i);
+        if (rootKeyMatch && !isIndented) {
+            currentKey = rootKeyMatch[1].toLowerCase();
+            currentLang = null; // reset language context
+            const val = rootKeyMatch[2] ? rootKeyMatch[2].trim() : "";
+            if (val && currentKey === 'repo') meta.repo = val;
+            if (val && currentKey === 'demo') meta.demo = val;
+            // Also support inline root definitions
+            if (val && currentKey !== 'repo' && currentKey !== 'demo') {
+                meta[currentKey] = val;
             }
-            if (context === "es") meta.features_es.push(val);
-            else meta.features_en.push(val);
+            return;
         }
-      }
+        
+        // Language key: "en:" or "es:" (either indented or root if poorly formatted)
+        const langMatch = trimmed.match(/^(en|es):(?:\s*(.*))?$/i);
+        if (langMatch) {
+            currentLang = langMatch[1].toLowerCase() as 'en' | 'es';
+            const val = langMatch[2] ? langMatch[2].trim() : "";
+            if (val && currentKey && currentKey !== 'features') {
+                meta[`${currentKey}_${currentLang}`] = val;
+            }
+            return;
+        }
+        
+        // Lists & Content aggregation
+        if (currentKey) {
+            const isList = trimmed.startsWith('-');
+            const content = isList ? trimmed.substring(1).trim() : trimmed;
+            
+            if (currentKey === 'features') {
+                const target = currentLang || 'en';
+                meta[`features_${target}`].push(content);
+            } else if (currentKey === 'stack') {
+                meta.stack.push(content);
+            } else {
+                const targetKey = currentLang ? `${currentKey}_${currentLang}` : currentKey;
+                const formattedContent = isList ? `- ${content}` : content;
+                meta[targetKey] = (meta[targetKey] ? meta[targetKey] + "\n" : "") + formattedContent;
+            }
+        }
     });
+
+    // 4. Fallback Logic (Option A: If one language is missing, use the other)
+    const keysToCheck = ['name', 'description', 'problem', 'solution', 'architecture', 'technical_challenges', 'improvements', 'learning', 'status', 'future'];
+    keysToCheck.forEach(k => {
+      if (!meta[`${k}_es`] && meta[`${k}_en`]) meta[`${k}_es`] = meta[`${k}_en`];
+      if (!meta[`${k}_en`] && meta[`${k}_es`]) meta[`${k}_en`] = meta[`${k}_es`];
+      
+      // Features fallback
+      if (meta[`features_es`].length === 0 && meta[`features_en`].length > 0) meta.features_es = [...meta.features_en];
+      if (meta[`features_en`].length === 0 && meta[`features_es`].length > 0) meta.features_en = [...meta.features_es];
+    });
+
   } catch (e) {
     console.warn("Parse error", e);
   }
@@ -146,6 +177,11 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
         solution: isEs ? (meta.solution_es || meta.solution || staticMatch?.solutionEs) : (meta.solution_en || meta.solution || staticMatch?.solutionEn),
         features: isEs ? (meta.features_es.length ? meta.features_es : (staticMatch?.features_es || [])) : (meta.features_en.length ? meta.features_en : (staticMatch?.features_en || [])),
         architecture: isEs ? (meta.architecture_es || meta.architecture || staticMatch?.architectureEs) : (meta.architecture_en || meta.architecture || staticMatch?.architectureEn),
+        technical_challenges: isEs ? (meta.technical_challenges_es || meta.technical_challenges) : (meta.technical_challenges_en || meta.technical_challenges),
+        improvements: isEs ? (meta.improvements_es || meta.improvements) : (meta.improvements_en || meta.improvements),
+        learning: isEs ? (meta.learning_es || meta.learning) : (meta.learning_en || meta.learning),
+        status: isEs ? (meta.status_es || meta.status) : (meta.status_en || meta.status),
+        future: isEs ? (meta.future_es || meta.future) : (meta.future_en || meta.future),
         date: repo.pushed_at
       };
     })
