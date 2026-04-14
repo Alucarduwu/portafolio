@@ -1,13 +1,18 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { useGithubProjects } from "../hooks/useGithubProjects";
+import RHAboutPage from "./rh/RHAboutPage";
 
 const AboutPage = () => {
-    const { t, lang } = useContext(GlobalContext);
+    const { t, lang, perspective } = useContext(GlobalContext);
     const { projects, isLoading } = useGithubProjects(lang as "es" | "en");
 
+    if (perspective === 'rh') {
+        return <RHAboutPage />;
+    }
+
     return (
-        <main className="section-container space-y-8 md:space-y-10 py-4 relative">
+        <main className="section-container space-y-8 md:space-y-10 pt-24 md:pt-32 pb-4 relative">
             <div className="grid lg:grid-cols-12 gap-6 md:gap-10 items-end border-b border-[var(--border)] pb-8 text-center md:text-left">
                 <div className="lg:col-span-8 space-y-4">
                     <div className="system-label animate-pulse justify-center md:justify-start notranslate" translate="no"><span>BIO_DUMP_v.6.4</span></div>
@@ -123,17 +128,17 @@ const AboutPage = () => {
                     <div className="scanline opacity-[0.03]"></div>
 
                     {/* Card header: Cyber UI - Tighter */}
-                    <div className="terminal-header bg-[var(--bg-ui)]/95 backdrop-blur-md px-4 py-2 border-b border-[var(--primary)]/20 flex items-center justify-between relative z-20">
-                        <div className="flex items-center gap-3">
+                    <div className="terminal-header bg-[var(--bg-ui)]/95 backdrop-blur-md px-4 py-3 border-b border-[var(--primary)]/20 flex flex-wrap items-center justify-between gap-3 relative z-20 min-w-0">
+                        <div className="flex items-center gap-3 min-w-0 overflow-hidden">
                             <div className="flex gap-1">
                                 <div className="w-1.5 h-1.5 rounded-full bg-red-500/40"></div>
                                 <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/40"></div>
                                 <div className="w-1.5 h-1.5 rounded-full bg-green-500/40"></div>
                             </div>
                             <div className="h-3 w-px bg-[var(--primary)]/10 mx-1"></div>
-                            <span className="font-mono text-[10px] text-[var(--primary)] tracking-[0.3em] font-black uppercase" data-text="OS_SKILLS_DUMP_v4">OS_SKILLS_DUMP_v4</span>
+                            <span className="font-mono text-[9px] md:text-[10px] text-[var(--primary)] tracking-[0.2em] md:tracking-[0.3em] font-black uppercase truncate block" data-text="OS_SKILLS_DUMP_v4">OS_SKILLS_DUMP_v4</span>
                         </div>
-                        <div className="flex items-center gap-3 text-[9px] font-mono opacity-60 italic">
+                        <div className="flex items-center gap-3 text-[8px] md:text-[9px] font-mono opacity-60 italic whitespace-nowrap">
                            <span>SCANNER_MODE: ACTIVE</span>
                         </div>
                     </div>
@@ -194,18 +199,18 @@ const AboutPage = () => {
                                 { label: 'ops / tst', color: 'text-cyan-400', border: 'border-cyan-500/20', items: ['Docker', 'AWS', 'GitHub Actions', 'Vercel', 'Git', 'Bitbucket', 'Playwright', 'Cypress', 'Jest', 'Mocha', 'Postman'] },
                                 { label: 'ux / design', color: 'text-pink-400', border: 'border-pink-500/20', items: ['Figma', 'Stitch', 'Framer Motion', 'Animations', 'Clean Architecture', 'SOLID', 'Agile', 'SCRUM', 'JIRA'] },
                             ].map(cat => (
-                                <div key={cat.label} className="grid grid-cols-[65px_1fr] md:grid-cols-[75px_1fr] gap-3 items-start group/cat pb-2.5 border-b border-white/[0.03] last:border-0 last:pb-0">
-                                    <div className={`${cat.color} text-[9px] font-black uppercase tracking-tighter flex-shrink-0 pt-1 flex items-center gap-1.5`}>
+                                <div key={cat.label} className="grid grid-cols-[65px_1fr] md:grid-cols-[75px_1fr] gap-3 items-start group/cat pb-2.5 border-b border-[var(--border)] last:border-0 last:pb-0 min-w-0">
+                                    <div className={`${cat.color} text-[9px] font-black uppercase tracking-tighter flex-shrink-0 pt-1 flex items-center gap-1.5 break-words`}>
                                         <span className="w-0.5 h-2.5 bg-current opacity-30 rounded-full"></span>
                                         {cat.label}
                                     </div>
-                                    <div className="flex flex-wrap gap-1.5">
+                                    <div className="flex flex-wrap gap-1.5 min-w-0">
                                         {cat.items.map(item => {
                                             const iconUrl = getIcon(item);
                                             return (
                                                 <span
                                                     key={item}
-                                                    className={`group/tag flex items-center gap-1.5 px-2 py-0.5 rounded-lg border ${cat.border} bg-black/50 backdrop-blur-sm text-[var(--text-main)] text-[10px] md:text-[11px] font-extrabold uppercase tracking-tight transition-all duration-300 hover:border-[var(--primary)]/60 hover:bg-white/[0.08] hover:scale-105 active:scale-95`}
+                                                    className={`group/tag flex items-center gap-1.5 px-2 py-0.5 rounded-lg border ${cat.border} bg-[var(--bg-ui)]/80 backdrop-blur-sm text-[var(--text-main)] text-[10px] md:text-[11px] font-extrabold uppercase tracking-tight transition-all duration-300 hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/10 hover:scale-105 active:scale-95`}
                                                 >
                                                     {iconUrl ? (
                                                         <img src={iconUrl} alt={item} className="w-3.5 h-3.5 object-contain" />
@@ -222,12 +227,12 @@ const AboutPage = () => {
                         })()}
 
                         {/* Status Footer - Tighter */}
-                        <div className="pt-3 border-t border-[var(--primary)]/10 flex items-center justify-between gap-4">
-                            <div className="flex items-center gap-2">
-                                <span className="text-[var(--primary)] text-[10px] font-black opacity-40">$</span>
-                                <span className="text-[8px] text-[var(--text-muted)] uppercase tracking-[0.2em] font-mono italic opacity-40">scanner_active_manifest_v4.run</span>
+                        <div className="pt-3 border-t border-[var(--primary)]/10 flex flex-wrap items-center justify-between gap-3 min-w-0">
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                                <span className="text-[var(--primary)] text-[10px] font-black opacity-40 shrink-0">$</span>
+                                <span className="text-[8px] text-[var(--text-muted)] uppercase tracking-[0.2em] font-mono italic opacity-40 truncate block">scanner_active_manifest_v4.run</span>
                             </div>
-                            <div className="flex items-center gap-3 text-[8px] font-mono text-[var(--text-muted)] opacity-40 uppercase">
+                            <div className="flex items-center gap-3 text-[7px] md:text-[8px] font-mono text-[var(--text-muted)] opacity-40 uppercase shrink-0 whitespace-nowrap">
                                 <span className="flex items-center gap-1"><span className="w-1 h-1 bg-green-500 rounded-full"></span> OK</span>
                                 <span className="flex items-center gap-1"><span className="w-1 h-1 bg-[var(--primary)] rounded-full animate-pulse"></span> SYNCING</span>
                             </div>

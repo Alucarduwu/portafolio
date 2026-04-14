@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
-@media (min-width: 1024px) {
-  * {
-    cursor: none !important;
-  }
-}
+
 
 /* Base Responsive Utilities */
 .system-label {
@@ -17,9 +13,9 @@
 }
 
 :root {
-  --bg-primary:  #0a0a0c;
-  --bg-card:     #111118;
-  --bg-ui:       #16161f;
+  --bg-primary:  #000000;
+  --bg-card:     #050505;
+  --bg-ui:       #0a0a0a;
   --text-primary:   #f1f1f3;
   --text-secondary: #a1a1b0;
   --text-muted:     #606070;
@@ -187,16 +183,19 @@
   h1 {
     font-size: clamp(28px, 4.8vw, 48px);
     @apply font-black tracking-tighter uppercase leading-[0.9] italic;
+    font-family: var(--font-mono);
     color: var(--text-primary);
   }
   h2 {
     font-size: clamp(18px, 3.2vw, 24px);
     @apply font-black tracking-tight uppercase leading-tight;
+    font-family: var(--font-mono);
     color: var(--text-primary);
   }
   h3 {
     font-size: 16px;
     @apply font-bold uppercase tracking-widest;
+    font-family: var(--font-mono);
     color: var(--accent-primary);
   }
   p {
@@ -221,7 +220,7 @@
 .premium-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 1.25rem;
+  border-radius: 0 !important;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-base);
@@ -326,10 +325,10 @@
   inset: 0;
   pointer-events: none;
   z-index: 5;
-  opacity: 0.04;
-  background: linear-gradient(to bottom, transparent 50%, var(--accent-primary) 50.5%, transparent 51%);
-  background-size: 100% 8px;
-  animation: scan 16s linear infinite;
+  opacity: 0.08; /* Increased for better technical feeling */
+  background: linear-gradient(to bottom, transparent 50%, var(--primary) 50.5%, transparent 51%);
+  background-size: 100% 4px; /* Thinner lines for higher density */
+  animation: scan 12s linear infinite;
 }
 
 @keyframes scan {
@@ -562,7 +561,7 @@
   }
   
   .premium-card {
-    border-radius: 1rem;
+    border-radius: 0 !important;
   }
   
   .tech-btn {
@@ -602,4 +601,13 @@
   .nav-height {
     --nav-height: 60px;
   }
+}
+
+@keyframes matrix-fall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-matrix-fall {
+  animation: matrix-fall linear infinite;
 }

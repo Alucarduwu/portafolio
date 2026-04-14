@@ -1,8 +1,13 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import RHContactPage from "./rh/RHContactPage";
 
 const ContactPage = () => {
-    const { t, lang } = useContext(GlobalContext);
+    const { t, lang, perspective } = useContext(GlobalContext);
+
+    if (perspective === 'rh') {
+        return <RHContactPage />;
+    }
 
     return (
         <main className="section-container space-y-10 md:space-y-12 pt-4 md:pt-6 pb-20 relative">

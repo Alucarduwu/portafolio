@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { useGithubProjects, type Project } from "../hooks/useGithubProjects";
 import { motion, AnimatePresence } from "framer-motion";
+import RHProjects from "./rh/RHProjects";
 
 const isMobile = (p: Project) => {
     const stack = (p.stack || []).join(' ').toLowerCase();
@@ -10,14 +11,14 @@ const isMobile = (p: Project) => {
 };
 
 const ProjectsPage = () => {
-    const { t, lang } = useContext(GlobalContext);
+    const { t, lang, perspective } = useContext(GlobalContext);
     const { projects, isLoading } = useGithubProjects(lang as "es" | "en");
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+    const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
 
     const closeProject = () => {
         setSelectedProject(null);
-        setZoomedImage(null);
+        setActiveImageIndex(null);
     };
 
     useEffect(() => {
@@ -40,6 +41,10 @@ const ProjectsPage = () => {
         { key: 'web',        label: t('cat_web'),        icon: 'public',         items: webProjects        },
         { key: 'mobile',     label: t('cat_mobile'),     icon: 'smartphone',     items: mobileProjects     },
     ], [enterpriseProjects, webProjects, mobileProjects, t]);
+
+    if (perspective === 'rh') {
+        return <RHProjects />;
+    }
 
     const ProjectCard = ({ p, index }: { p: Project; index: number }) => {
         const [imgError, setImgError] = useState(false);
@@ -259,7 +264,7 @@ const ProjectsPage = () => {
                                                             src={imgUrl}
                                                             alt={`${selectedProject.title} ${i + 1}`}
                                                             className="w-full h-full object-cover cursor-zoom-in group-hover/img:scale-110 transition-transform duration-1000"
-                                                            onDoubleClick={() => setZoomedImage(imgUrl)}
+                                                            onClick={() => setActiveImageIndex(i)}
                                                             onError={(e) => { e.currentTarget.parentElement!.style.display = 'none'; }}
                                                         />
                                                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/40 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity pointer-events-none"></div>
@@ -291,7 +296,7 @@ const ProjectsPage = () => {
                                             </div>
                                             
                                             <div className="flex flex-row md:flex-col gap-2 md:gap-3 min-w-0 md:min-w-[240px]">
-                                                {selectedProject.demo && selectedProject.demo.trim() !== '' && selectedProject.demo !== 'null' && selectedProject.demo !== '#' && (
+                                                {selectedProject.demo && selectedProject.demo.trim() !== '' && selectedProject.demo !== 'null' && selectedProject.demo !== '#' && selectedProject.demo.startsWith('http') && (
                                                     <a href={selectedProject.demo} target="_blank" rel="noreferrer" className="tech-btn btn-primary flex-1 py-3 md:py-4 rounded-xl shadow-[0_5px_15px_var(--primary-glow)]">
                                                         <span className="material-symbols-outlined text-base md:text-lg">rocket_launch</span>
                                                         <span className="hidden xs:inline">LIVE</span>
@@ -303,6 +308,36 @@ const ProjectsPage = () => {
                                                         <span className="hidden xs:inline">{t('cat_back') === 'Backend' ? 'SOURCE' : 'CÓDIGO'}</span>
                                                     </a>
                                                 )}
+                                            </div>
+                                        </div>
+
+                                        {/* HIGH-RELEVANCE TECH STACK (Moved up for Dev Mode) */}
+                                        <div className="relative p-6 md:p-8 rounded-2xl border border-[var(--primary)]/20 bg-[var(--primary)]/[0.02] overflow-hidden group/dna">
+                                            <div className="absolute top-0 right-0 p-4 opacity-[0.03] font-black text-[60px] md:text-[80px] select-none pointer-events-none tracking-tighter italic font-mono">_DNA</div>
+                                            <div className="relative z-10 space-y-6">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-2 h-2 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary)]"></span>
+                                                        <span className="system-label text-[10px] md:text-xs font-black text-white/90 tracking-[0.3em] uppercase">{t('tech_stack') || 'CORE_TECH_DNA'}</span>
+                                                    </div>
+                                                    <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--primary)]/40 to-transparent opacity-30"></div>
+                                                </div>
+                                                <div className="flex flex-wrap gap-3 md:gap-4">
+                                                    {(selectedProject.stack || []).map((tech: string) => {
+                                                        const techId = tech.toLowerCase().trim().replace(/ /g, '').replace(/\.js/g, 'dotjs');
+                                                        return (
+                                                            <div key={tech} className="group/chip flex items-center gap-3 px-4 py-3 md:px-5 md:py-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[var(--primary)]/50 transition-all duration-300 shadow-lg hover:-translate-y-1">
+                                                                <img 
+                                                                    src={`https://cdn.simpleicons.org/${techId}/ffffff`} 
+                                                                    alt={tech} 
+                                                                    className="w-4 h-4 md:w-5 md:h-5 object-contain opacity-40 group-hover/chip:opacity-100 transition-opacity" 
+                                                                    onError={(e) => { e.currentTarget.style.display = 'none'; }} 
+                                                                />
+                                                                <span className="text-[10px] md:text-[12px] font-black text-white/70 group-hover/chip:text-white tracking-widest uppercase font-mono">{tech}</span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -332,24 +367,85 @@ const ProjectsPage = () => {
                                             )}
                                         </div>
 
-                                        {/* Features & Technical Stack */}
-                                        <div className="p-5 md:p-10 rounded-2xl md:rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-ui)]/30 space-y-6 md:space-y-8">
-                                            <div className="flex items-center gap-4">
-                                                <span className="system-label text-[9px] md:text-[10px] opacity-100 text-[var(--primary)] uppercase tracking-[0.4em] font-black">{t('stk_architecture')}</span>
-                                                <div className="flex-1 h-px bg-gradient-to-r from-[var(--primary)]/30 to-transparent"></div>
-                                            </div>
-                                            <div className="flex flex-wrap gap-2 md:gap-4">
-                                                {(selectedProject.stack || []).map((tech: string) => {
-                                                    const techId = tech.toLowerCase().trim().replace(/ /g, '').replace(/\.js/g, 'dotjs');
-                                                    return (
-                                                        <div key={tech} className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl bg-[var(--bg-card)] text-[var(--primary)] text-[9px] md:text-[11px] font-black font-mono uppercase tracking-widest border border-[var(--primary)]/20 shadow-md hover:-translate-y-1 transition-all duration-300 group/badge">
-                                                            <img src={`https://cdn.simpleicons.org/${techId}/f43f5e`} alt={tech} className="w-3.5 h-3.5 md:w-5 md:h-5 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                                                            <span>{tech}</span>
+                                        {/* Professional Dossier Extension */}
+                                        {(selectedProject.technical_challenges || selectedProject.learning) && (
+                                            <div className="space-y-6">
+                                                {selectedProject.technical_challenges && (
+                                                    <div className="p-6 md:p-8 rounded-2xl border border-[var(--primary)]/10 bg-[var(--bg-ui)]/20 space-y-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className="material-symbols-outlined text-[var(--primary)] text-sm">engineering</span>
+                                                            <span className="system-label text-[9px] uppercase tracking-widest text-[var(--primary)] opacity-70">TECHNICAL_CHALLENGES_LOG</span>
                                                         </div>
-                                                    );
-                                                })}
+                                                        <p className="text-[12px] md:text-[14px] text-[var(--text-soft)] leading-relaxed italic opacity-80 whitespace-pre-line">{selectedProject.technical_challenges}</p>
+                                                    </div>
+                                                )}
+                                                {selectedProject.learning && (
+                                                    <div className="p-6 md:p-8 rounded-2xl border border-blue-500/10 bg-blue-500/[0.02] space-y-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className="material-symbols-outlined text-blue-400 text-sm">psychology</span>
+                                                            <span className="system-label text-[9px] uppercase tracking-widest text-blue-400 opacity-70">KNOWLEDGE_ACQUIRED</span>
+                                                        </div>
+                                                        <p className="text-[12px] md:text-[14px] text-[var(--text-soft)] leading-relaxed italic opacity-80">{selectedProject.learning}</p>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
+                                        )}
+
+                                        {/* Status & Future Roadmap */}
+                                        {selectedProject.status && (
+                                            <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-green-500/[0.03] to-transparent border border-green-500/10">
+                                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                                        <div className="flex flex-col">
+                                                            <span className="system-label text-[8px] text-green-500 opacity-60 uppercase tracking-widest">CURRENT_STATUS</span>
+                                                            <span className="text-[11px] font-black uppercase tracking-widest text-white">{selectedProject.status}</span>
+                                                        </div>
+                                                    </div>
+                                                    {selectedProject.future && (
+                                                        <div className="flex-1 md:ml-12 border-l md:border-l border-white/5 pl-6">
+                                                            <span className="system-label text-[8px] text-[var(--primary)] opacity-60 uppercase tracking-widest block mb-1">ROADMAP_v2.0</span>
+                                                            <p className="text-[10px] text-[var(--text-muted)] italic leading-tight">{selectedProject.future}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Core Features */}
+                                        {selectedProject.features && selectedProject.features.length > 0 && (
+                                            <div className="p-5 md:p-10 rounded-2xl md:rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-ui)]/30 space-y-6 md:space-y-8">
+                                                <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6 mb-6">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)] border border-[var(--primary)]/20">
+                                                            <span className="material-symbols-outlined text-xl md:text-2xl">architecture</span>
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <h3 className="text-xl md:text-2xl font-black text-[var(--text-main)] uppercase tracking-tighter">System Architecture</h3>
+                                                            <span className="system-label text-[8px] md:text-[10px] text-[var(--primary)]/60 uppercase tracking-[0.2em] md:tracking-[0.4em] block">FEATURE_MANIFEST v2.1.0</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {selectedProject.architecture && (
+                                                        <div className="flex-1 mt-4 md:mt-0 p-4 border-l-2 border-[var(--primary)]/30 bg-[var(--primary)]/[0.02]">
+                                                            <p className="text-[12px] md:text-[13px] text-[var(--text-soft)] italic font-medium leading-relaxed">
+                                                                <strong className="text-[var(--primary)] uppercase text-[10px] tracking-widest block mb-1">Architecture Pattern:</strong>
+                                                                {selectedProject.architecture}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                                    {selectedProject.features.map((feature, i) => (
+                                                        <div key={i} className="flex gap-4 p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-[var(--primary)]/20 transition-all duration-300 group/item">
+                                                            <span className="text-[var(--primary)] text-[10px] md:text-xs font-black opacity-30 group-hover:opacity-100 transition-opacity">{(i + 1).toString().padStart(2, '0')}</span>
+                                                            <p className="text-[12px] md:text-[14px] text-[var(--text-soft)] font-bold italic opacity-80 group-hover:opacity-100 transition-opacity flex-1">{feature}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -369,10 +465,69 @@ const ProjectsPage = () => {
                 document.body
             )}
 
-            {zoomedImage && (
-                <div className="fixed inset-0 z-[100000] bg-[var(--bg-primary)]/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out" onClick={() => setZoomedImage(null)}>
-                    <img src={zoomedImage} alt="Zoom" className="max-w-full max-h-full object-contain shadow-2xl" />
-                </div>
+            {/* Dev Mode Lightbox Carousel Portal */}
+            {createPortal(
+                <AnimatePresence>
+                    {activeImageIndex !== null && selectedProject && selectedProject.images && (
+                        <div className="fixed inset-0 z-[200000] flex items-center justify-center bg-[var(--bg-primary)]/95 backdrop-blur-2xl">
+                            {/* Close Button */}
+                            <button 
+                                onClick={() => setActiveImageIndex(null)}
+                                className="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all z-50 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                            >
+                                <span className="material-symbols-outlined text-xl md:text-3xl">close</span>
+                            </button>
+
+                            {/* Main Image View */}
+                            <motion.div 
+                                key={activeImageIndex}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.3 }}
+                                className="w-full h-full p-4 md:p-12 lg:p-20 flex items-center justify-center"
+                            >
+                                <img 
+                                    src={selectedProject.images[activeImageIndex]} 
+                                    alt="Project Preview" 
+                                    className="max-w-full max-h-full object-contain rounded-xl shadow-2xl drop-shadow-[0_0_50px_var(--primary-glow)]"
+                                />
+                            </motion.div>
+
+                            {/* Navigation Prev */}
+                            {selectedProject.images.length > 1 && (
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveImageIndex(prev => prev === null ? 0 : (prev - 1 + selectedProject.images!.length) % selectedProject.images!.length);
+                                    }}
+                                    className="absolute left-2 md:left-12 top-1/2 -translate-y-1/2 w-10 h-10 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--text-soft)] hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all z-50 group shadow-lg"
+                                >
+                                    <span className="material-symbols-outlined text-2xl md:text-4xl group-hover:-translate-x-1 transition-transform">chevron_left</span>
+                                </button>
+                            )}
+
+                            {/* Navigation Next */}
+                            {selectedProject.images.length > 1 && (
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveImageIndex(prev => prev === null ? 0 : (prev + 1) % selectedProject.images!.length);
+                                    }}
+                                    className="absolute right-2 md:right-12 top-1/2 -translate-y-1/2 w-10 h-10 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[var(--text-soft)] hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] hover:border-[var(--primary)] transition-all z-50 group shadow-lg"
+                                >
+                                    <span className="material-symbols-outlined text-2xl md:text-4xl group-hover:translate-x-1 transition-transform">chevron_right</span>
+                                </button>
+                            )}
+
+                            {/* Photo Counter */}
+                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-white/10 border border-[var(--primary)]/30 backdrop-blur-md text-[var(--primary)] font-black tracking-widest text-xs shadow-[0_0_15px_var(--primary-glow)]">
+                                {activeImageIndex + 1} / {selectedProject.images.length}
+                            </div>
+                        </div>
+                    )}
+                </AnimatePresence>,
+                document.body
             )}
         </main>
     );

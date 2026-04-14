@@ -1,13 +1,14 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState, useContext } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { GlobalStateProvider } from "./context/GlobalContext";
+import { GlobalStateProvider, GlobalContext } from "./context/GlobalContext";
 import AIBot from "./components/AIBot";
 import CyberShell from "./components/CyberShell";
-import SpaceCursor from "./components/SpaceCursor";
-// import { Analytics } from "@vercel/analytics/react"; // Vercel Analytics
+import ExecutiveShell from "./components/rh/ExecutiveShell";
+import PerspectiveSelector from "./components/PerspectiveSelector";
+import HackerBackground from "./components/HackerBackground";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -79,36 +80,53 @@ const LoadingScreen = () => {
   );
 };
 
-const App = () => {
+const AppContent = () => {
   const location = useLocation();
+  const { perspective } = useContext(GlobalContext);
+
+  if (!perspective) {
+    return <PerspectiveSelector />;
+  }
+
+  const Shell = perspective === 'rh' ? ExecutiveShell : CyberShell;
+
+  return (
+    <div className="min-h-screen transition-colors duration-500 relative overflow-hidden">
+      <Shell>
+        {perspective === 'dev' && (
+          <>
+            <HackerBackground />
+            <div className="bg-dots"></div>
+            <div className="bg-grid"></div>
+            <div className="edge-glow-tl"></div>
+            <div className="edge-glow-br"></div>
+          </>
+        )}
+        <ScrollToTop />
+        <Header />
+        <Suspense fallback={<LoadingScreen />}>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+              <Route path="/experience" element={<PageTransition><ExperiencePage /></PageTransition>} />
+              <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
+              <Route path="/certificates" element={<PageTransition><CertificatesPage /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+        <Footer />
+        <AIBot />
+      </Shell>
+    </div>
+  );
+};
+
+const App = () => {
   return (
     <GlobalStateProvider>
-      <CyberShell>
-        <div className="min-h-screen transition-colors duration-500 relative overflow-hidden">
-          <div className="bg-dots"></div>
-          <div className="bg-grid"></div>
-          <div className="edge-glow-tl"></div>
-          <div className="edge-glow-br"></div>
-          <ScrollToTop />
-          <Header />
-          <Suspense fallback={<LoadingScreen />}>
-            <AnimatePresence mode="popLayout">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
-                <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
-                <Route path="/experience" element={<PageTransition><ExperiencePage /></PageTransition>} />
-                <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
-                <Route path="/certificates" element={<PageTransition><CertificatesPage /></PageTransition>} />
-                <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
-              </Routes>
-            </AnimatePresence>
-          </Suspense>
-          <Footer />
-          <AIBot />
-          {/* <Analytics /> */}
-          <SpaceCursor />
-        </div>
-      </CyberShell>
+      <AppContent />
     </GlobalStateProvider>
   );
 };

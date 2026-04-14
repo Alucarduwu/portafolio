@@ -50,8 +50,16 @@ const MouseCoordinates = () => {
 };
 
 const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    // CyberShell is now a STATeless wrapper. 
-    // Moving the states out guarantees that `<App />` and all its animations don't re-render when the mouse moves.
+    useEffect(() => {
+        // Only set the hacker font.
+        // We let index.css handle the variables for both dark and light themes smoothly
+        // without JS color blocking.
+        document.body.style.fontFamily = "'JetBrains Mono', monospace";
+        
+        return () => {
+            document.body.style.fontFamily = ""; // Clear on unmount
+        };
+    }, []);
 
     return (
         <div className="relative min-h-screen selection:bg-[var(--primary)]/30 selection:text-[var(--primary)] crt-flicker">
@@ -59,34 +67,46 @@ const CyberShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <div className="scanline opacity-[0.03]"></div>
                 <div className="noise opacity-[0.02]"></div>
                 
-                {/* Corner Coordinates - Subtler and theme-aware */}
-                <div className="absolute top-4 left-4 md:top-6 md:left-6 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-start gap-1 uppercase tracking-widest">
+                {/* Corner Coordinates - Enhanced Hacker-Tech meta */}
+                <div className="absolute top-4 left-4 md:top-8 md:left-8 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-start gap-1 uppercase tracking-widest notranslate" translate="no">
+                    <span className="hidden md:inline font-black text-[var(--secondary)]">TTY: /dev/pts/0</span>
                     <span className="hidden md:inline">LAT: 21.8823° N</span>
                     <span className="hidden md:inline">LON: 102.2826° W</span>
+                    <span className="hidden md:inline font-black text-blue-400">KERNEL: 6.4.2-LQX</span>
                     <UptimeDisplay />
                 </div>
 
-                <div className="absolute top-4 right-4 md:top-6 md:right-6 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-end gap-1 text-right uppercase tracking-widest">
+                <div className="absolute top-4 right-4 md:top-8 md:right-8 font-mono text-[7px] text-[var(--text-muted)] opacity-60 flex flex-col items-end gap-1 text-right uppercase tracking-widest notranslate" translate="no">
                     <MouseCoordinates />
-                    <span className="text-green-500 font-black opacity-100">SECURE_TUNNEL</span>
+                    <span className="text-green-500 font-black opacity-100 italic">SYSTEM_LOAD: 0.12, 0.15, 0.08</span>
+                    <span className="hidden md:inline text-[var(--primary)] font-black">TCP_ESTABLISHED: port:3000</span>
                 </div>
 
-                {/* Bottom indicators - Traffic & Access Logs */}
-                <div className="absolute bottom-6 left-6 z-[1000]">
+                {/* Bottom indicators - Enhanced Traffic & Metrics */}
+                <div className="absolute bottom-10 left-8 z-[1000] hidden lg:block">
                     <TrafficMonitor />
                 </div>
 
-                <div className="absolute bottom-4 right-6 font-mono text-[6px] text-[var(--text-muted)] opacity-30 flex flex-col items-end gap-0.5 text-right uppercase tracking-tighter hidden md:flex">
-                    <span>BITRATE: 12.4 MB/S</span>
-                    <span>ENCRYPTION: AES-256</span>
+                <div className="absolute bottom-8 right-8 font-mono text-[6px] text-[var(--text-muted)] opacity-40 flex flex-col items-end gap-0.5 text-right uppercase tracking-widest hidden md:flex notranslate" translate="no">
+                    <div className="flex gap-2">
+                        <span className="text-[var(--primary)] font-black">RX: {(Math.random() * 50).toFixed(2)} KB/S</span>
+                        <span className="text-[var(--secondary)] font-black">TX: {(Math.random() * 20).toFixed(2)} KB/S</span>
+                    </div>
+                    <span>SYSTEM_OS: ANAHI_V6.4_LQX</span>
+                    <span>KERNEL_AUTH: RE_LEVEL_7</span>
                 </div>
 
-                {/* Decorative Brackets around the viewport */}
-                <div className="absolute inset-2 md:inset-4 border border-[var(--primary)]/5 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[var(--primary)]/20"></div>
-                    <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[var(--primary)]/20"></div>
-                    <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[var(--primary)]/20"></div>
-                    <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[var(--primary)]/20"></div>
+                {/* Decorative Sharp Brackets */}
+                <div className="absolute inset-4 md:inset-8 border border-[var(--primary)]/5 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--secondary)]/30"></div>
+                    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[var(--primary)]/30"></div>
+                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[var(--primary)]/30"></div>
+                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[var(--secondary)]/30"></div>
+                    
+                    {/* Interior Crosshairs */}
+                    <div className="absolute top-1/2 left-4 w-4 h-[1px] bg-[var(--primary)]/10"></div>
+                    <div className="absolute top-1/2 right-4 w-4 h-[1px] bg-[var(--primary)]/10"></div>
+                    <div className="absolute bottom-4 left-1/2 w-[1px] h-4 bg-[var(--primary)]/10"></div>
                 </div>
             </div>
 

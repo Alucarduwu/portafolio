@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { experience } from "./dataprojetcts/experience";
+import RHExperience from "./rh/RHExperience";
 
 const ExperiencePage = () => {
-    const { t, lang } = useContext(GlobalContext);
+    const { t, lang, perspective } = useContext(GlobalContext);
+
+    if (perspective === 'rh') {
+        return <RHExperience />;
+    }
 
     return (
         <main className="section-container pt-4 md:pt-8 pb-20 space-y-10 relative">
@@ -39,11 +44,11 @@ const ExperiencePage = () => {
                                 <div className="scanline"></div>
                                 
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative z-20">
-                                    <div className="space-y-2 text-center md:text-left">
-                                        <div className="system-label text-[9px] md:text-[10px] uppercase text-[var(--primary)] font-black mb-1 justify-center md:justify-start notranslate" translate="no">
+                                    <div className="space-y-2 text-center md:text-left min-w-0 flex-1">
+                                        <div className="system-label text-[9px] md:text-[10px] uppercase text-[var(--primary)] font-black mb-1 justify-center md:justify-start flex-wrap break-words whitespace-normal max-w-full notranslate" translate="no">
                                             @ <span>{company.toUpperCase()}</span>
                                         </div>
-                                        <h3 className="text-xl md:text-2xl font-black text-[var(--text-main)] uppercase tracking-tighter italic leading-tight">
+                                        <h3 className="text-xl md:text-2xl font-black text-[var(--text-main)] uppercase tracking-tighter italic leading-tight break-words hyphens-auto max-w-full">
                                             <span>{title}</span>
                                         </h3>
                                     </div>

@@ -219,14 +219,14 @@ const AIBot = () => {
 
     const ProjectCard = ({ card }: { card: { name: string; type: string; stack: string; features: string; url: string } }) => (
         <div className="mt-3 rounded-xl border border-[var(--primary)]/30 bg-black/40 overflow-hidden font-mono text-[10px] animate-in fade-in duration-500">
-            <div className="px-3 py-1.5 bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 flex items-center justify-between">
+            <div className="px-3 py-1.5 bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 flex items-center justify-between" translate="no">
                 <span className="text-[var(--primary)] font-black text-[9px] uppercase tracking-widest">{card.name.toUpperCase()}.json</span>
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
             </div>
-            <div className="px-3 py-2.5 space-y-1.5">
-                <div className="flex gap-2"><span className="text-[var(--primary)]/60">›</span><span className="text-[var(--text-muted)]">type:</span><span className="text-[var(--text-soft)] italic">{card.type}</span></div>
-                <div className="flex gap-2"><span className="text-[var(--primary)]/60">›</span><span className="text-[var(--text-muted)]">stack:</span><span className="text-[var(--primary)]">{card.stack}</span></div>
-                <div className="flex gap-2"><span className="text-[var(--primary)]/60">›</span><span className="text-[var(--text-muted)]">features:</span><span className="text-green-400">{card.features}</span></div>
+            <div className="px-3 py-2 space-y-1">
+                <div className="flex gap-2 items-start"><span className="text-[var(--primary)]/60 mt-0.5">›</span><span className="text-[var(--text-muted)] shrink-0">type:</span><span className="text-[var(--text-soft)] italic leading-tight">{card.type}</span></div>
+                <div className="flex gap-2 items-start"><span className="text-[var(--primary)]/60 mt-0.5">›</span><span className="text-[var(--text-muted)] shrink-0">stack:</span><span className="text-[var(--primary)] leading-tight">{card.stack}</span></div>
+                <div className="flex gap-2 items-start"><span className="text-[var(--primary)]/60 mt-0.5">›</span><span className="text-[var(--text-muted)] shrink-0">features:</span><span className="text-green-400 leading-tight">{card.features}</span></div>
             </div>
             <Link to={card.url} onClick={() => setIsOpen(false)} className="flex items-center justify-center gap-2 py-2 bg-[var(--primary)]/5 hover:bg-[var(--primary)]/15 border-t border-[var(--primary)]/20 text-[var(--primary)] text-[9px] font-black uppercase tracking-widest transition-all">
                 <span className="material-symbols-outlined text-sm">open_in_new</span>
@@ -268,10 +268,10 @@ const AIBot = () => {
             <div className="mt-3 space-y-2.5 animate-in fade-in duration-500 font-mono text-[9px]">
                 {categories.map(cat => (
                     <div key={cat.label}>
-                        <div className="text-[var(--primary)] opacity-60 uppercase tracking-widest mb-1">&gt; {cat.label}</div>
+                        <div className="text-[var(--primary)] opacity-60 uppercase tracking-[0.2em] mb-1 font-black">&gt; {cat.label}</div>
                         <div className="flex flex-wrap gap-1">
                             {cat.items.map(item => (
-                                <span key={item} className="px-2 py-0.5 rounded bg-[var(--bg-ui)] border border-[var(--border)] text-[var(--text-soft)] font-bold text-[8px] uppercase tracking-wide hover:border-[var(--primary)]/50 hover:text-[var(--primary)] transition-all cursor-default">{item}</span>
+                                <span key={item} className="px-2 py-0.5 rounded bg-[var(--bg-ui)] border border-[var(--border)] text-[var(--text-soft)] font-bold text-[8px] uppercase tracking-wide hover:border-[var(--primary)]/50 hover:text-[var(--primary)] transition-all cursor-default notranslate" translate="no">{item}</span>
                             ))}
                         </div>
                     </div>
