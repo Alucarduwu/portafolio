@@ -33,7 +33,7 @@ export function useGithubProjects(language: "es" | "en") {
       setError(null);
 
       try {
-        const currentVersion = 'v26';
+        const currentVersion = 'v27';
         const cacheKey = `gh_optimized_${currentVersion}_${language}`;
         
         // 1. CLEANUP: Delete any other "gh_optimized" keys that are not this version
