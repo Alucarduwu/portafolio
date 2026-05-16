@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import * as githubService from "../services/githubService";
+import { projects as staticProjectsData } from "../components/dataprojetcts/projects";
 
 export interface Project {
   id: string | number;
@@ -22,6 +23,26 @@ export interface Project {
   date?: string;
 }
 
+const toStaticProjects = (language: "es" | "en"): Project[] => {
+  const isEs = language === "es";
+
+  return staticProjectsData.map((p: any, idx) => ({
+    ...p,
+    id: `static-${idx}`,
+    title: isEs ? (p.titleEs || p.title) : (p.titleEn || p.title),
+    description: isEs ? (p.descriptionEs || p.description) : (p.descriptionEn || p.description),
+    stack: p.stack ? (Array.isArray(p.stack) ? p.stack : p.stack.split(" • ")) : [],
+    features: isEs ? (p.features_es || []) : (p.features_en || []),
+    problem: isEs ? (p.problemEs || "") : (p.problemEn || ""),
+    solution: isEs ? (p.solutionEs || "") : (p.solutionEn || ""),
+    images: p.images || [],
+    github: p.github || "",
+    demo: p.demo || null,
+    category: p.category || "completo",
+    date: new Date().toISOString()
+  }));
+};
+
 export function useGithubProjects(language: "es" | "en") {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,13 +53,13 @@ export function useGithubProjects(language: "es" | "en") {
       setIsLoading(true);
       setError(null);
 
+      const currentVersion = "v29";
+      const cacheKey = `gh_optimized_${currentVersion}_${language}`;
+      const staticProjects = toStaticProjects(language);
+
       try {
-        const currentVersion = 'v28';
-        const cacheKey = `gh_optimized_${currentVersion}_${language}`;
-        
-        // 1. CLEANUP: Delete any other "gh_optimized" keys that are not this version
-        Object.keys(localStorage).forEach(key => {
-          if (key.startsWith('gh_optimized_') && !key.includes(currentVersion)) {
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith("gh_optimized_") && !key.includes(currentVersion)) {
             localStorage.removeItem(key);
           }
         });
@@ -46,8 +67,8 @@ export function useGithubProjects(language: "es" | "en") {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
-          // 15-minute refresh cycle (Production balance)
-          if (Date.now() - timestamp < 15 * 60 * 1000) { 
+
+          if (Array.isArray(data) && data.length > 0 && Date.now() - timestamp < 15 * 60 * 1000) {
             setProjects(data);
             setIsLoading(false);
             return;
@@ -55,19 +76,19 @@ export function useGithubProjects(language: "es" | "en") {
         }
 
         const enriched = await githubService.getEnrichedProjects(language);
-        if (enriched && enriched.length > 0) {
-          setProjects(enriched as Project[]);
-          localStorage.setItem(cacheKey, JSON.stringify({ data: enriched, timestamp: Date.now() }));
-        } else if (cached) {
-          setProjects(JSON.parse(cached).data);
-        }
+        const nextProjects = enriched && enriched.length > 0 ? enriched : staticProjects;
+
+        setProjects(nextProjects as Project[]);
+        localStorage.setItem(cacheKey, JSON.stringify({ data: nextProjects, timestamp: Date.now() }));
       } catch (err) {
         setError("Error fetching projects");
         console.error(err);
+        setProjects(staticProjects);
       } finally {
         setIsLoading(false);
       }
     }
+
     syncProjects();
   }, [language]);
 
