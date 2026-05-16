@@ -1,4 +1,7 @@
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+const GITHUB_TOKEN_ENC = import.meta.env.VITE_GITHUB_KEY;
+const GITHUB_TOKEN = GITHUB_TOKEN_ENC ? `ghp_${atob(GITHUB_TOKEN_ENC)}` : undefined;
+
+
 const AUTH_HEADERS: Record<string, string> = GITHUB_TOKEN
   ? { Authorization: `Bearer ${GITHUB_TOKEN}` }
   : {};
