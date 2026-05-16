@@ -3,137 +3,344 @@ import { Link } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 import { motion } from "framer-motion";
 
+const GOLD = "#C9A84C";
+const GOLD_DIM = "rgba(201,168,76,0.12)";
+const GOLD_BORDER = "rgba(201,168,76,0.20)";
+
 const RHHomePage = () => {
     const { lang } = useContext(GlobalContext);
 
     const content = {
         es: {
-            greeting: "Ingeniería de Software & Soluciones de Negocio",
-            role: "Software Developer Fullstack",
-            tagline: "Desarrollo estratégico de alta fidelidad con enfoque en escalabilidad institucional.",
-            about: "Soy Ingeniera en Tecnologías de la Información con especialidad en Aplicaciones Avanzadas. Mi valor reside en la intersección de la solvencia técnica y el impacto estratégico, garantizando soluciones robustas para el sector empresarial.",
-            experience_btn: "TRAYECTORIA",
-            contact_btn: "CONTACTO",
+            eyebrow: "Ingeniería de Software · Soluciones Empresariales",
+            role: "Desarrolladora Fullstack",
+            tagline: "Arquitecto sistemas que escalan. Resuelvo problemas que importan.",
+            about: "Ingeniera en TIC con especialidad en Aplicaciones Avanzadas. Mi enfoque está en la intersección de la arquitectura robusta y el impacto institucional real — construyo software que los equipos de negocio pueden confiar.",
+            experience_btn: "Ver Trayectoria",
+            contact_btn: "Iniciar Conversación",
+            availability: "Disponible para nuevas oportunidades",
             metrics: [
-                { label: "Trayectoria Tecnológica", value: "Desde 2024" },
-                { label: "Soluciones de Alto Impacto", value: "10+" },
-                { label: "Arquitectura & Backend", value: "Junior Mid" }
+                { label: "Años activa", value: "2+", sub: "en desarrollo profesional" },
+                { label: "Proyectos", value: "10+", sub: "soluciones implementadas" },
+                { label: "Nivel", value: "Senior Jr.", sub: "Fullstack · Cloud · SAP" }
             ],
             expertise: [
-                { area: "Arquitectura de Software", detail: "Diseño de sistemas distribuidos y patrones de diseño corporativos." },
-                { area: "Fullstack Engineering", detail: "Especialista en React, Node.js y ecosistemas Cloud escalables." },
-                { area: "Enterprise Solutions", detail: "Desarrollo de herramientas de gestión de alto rendimiento." },
-                { area: "Liderazgo Técnico", detail: "Capacidad de toma de decisiones arquitectónicas y mentoría." }
+                { icon: "layers", area: "Arquitectura de Software", detail: "Diseño de sistemas distribuidos, APIs REST/GraphQL, patrones Clean Architecture." },
+                { icon: "code", area: "Fullstack Engineering", detail: "React, Node.js, Angular, Next.js — desde el dato hasta la UI." },
+                { icon: "cloud", area: "Cloud & Enterprise", detail: "SAP BTP, ABAP Cloud, Firebase, Docker. Infraestructura que escala." },
+                { icon: "psychology", area: "Resolución Estratégica", detail: "Toma de decisiones técnicas orientada a resultados de negocio medibles." }
             ]
         },
         en: {
-            greeting: "Software Engineering & Business Solutions",
+            eyebrow: "Software Engineering · Enterprise Solutions",
             role: "Fullstack Software Developer",
-            tagline: "High-fidelity strategic development focused on institutional scalability.",
-            about: "I am an Information Technology Engineer specialized in Advanced Applications. My value lies at the intersection of technical excellence and strategic impact, ensuring robust solutions for the business sector.",
-            experience_btn: "EXPERIENCE",
-            contact_btn: "CONTACT",
+            tagline: "I architect systems that scale. I solve problems that matter.",
+            about: "ICT Engineer specialized in Advanced Applications. My focus is at the intersection of solid architecture and real institutional impact — I build software that business teams can trust.",
+            experience_btn: "View Trajectory",
+            contact_btn: "Start a Conversation",
+            availability: "Open to new opportunities",
             metrics: [
-                { label: "Technological Path", value: "Since 2024" },
-                { label: "High Impact Solutions", value: "10+" },
-                { label: "Architecture & Backend", value: "Junior Mid" }
+                { label: "Years active", value: "2+", sub: "in professional development" },
+                { label: "Projects", value: "10+", sub: "implemented solutions" },
+                { label: "Level", value: "Sr. Junior", sub: "Fullstack · Cloud · SAP" }
             ],
             expertise: [
-                { area: "Software Architecture", areaTitle: "Software Architecture", detail: "Design of distributed systems and corporate design patterns." },
-                { area: "Fullstack Engineering", areaTitle: "Fullstack Engineering", detail: "Specialist in React, Node.js, and scalable Cloud ecosystems." },
-                { area: "Enterprise Solutions", areaTitle: "Enterprise Solutions", detail: "Development of high-performance management tools." },
-                { area: "Technical Leadership", areaTitle: "Technical Leadership", detail: "Architectural decision-making and mentorship capabilities." }
+                { icon: "layers", area: "Software Architecture", detail: "Distributed systems, REST/GraphQL APIs, Clean Architecture patterns." },
+                { icon: "code", area: "Fullstack Engineering", detail: "React, Node.js, Angular, Next.js — from data to UI." },
+                { icon: "cloud", area: "Cloud & Enterprise", detail: "SAP BTP, ABAP Cloud, Firebase, Docker. Infrastructure that scales." },
+                { icon: "psychology", area: "Strategic Problem Solving", detail: "Technical decision-making oriented toward measurable business outcomes." }
             ]
         }
     };
 
-    const t_rh = content[lang as 'es' | 'en'] || content.es;
+    const t = content[lang as 'es' | 'en'] || content.es;
+
+    const fadeUp = (delay = 0) => ({
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }
+    });
 
     return (
-        <main className="max-w-[1200px] mx-auto px-6 py-20 lg:py-32 flex flex-col items-center">
-            <div className="grid lg:grid-cols-2 gap-16 items-center w-full">
-                <motion.div 
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1 }}
-                    className="space-y-12"
+        <main className="max-w-[1280px] mx-auto px-5 sm:px-8 py-24 lg:py-36">
+
+            {/* ── Top eyebrow ──────────────────────────────────────── */}
+            <motion.div {...fadeUp(0)} className="flex items-center gap-3 mb-16">
+                <div className="w-8 h-px" style={{ background: GOLD }} />
+                <span
+                    className="text-[10px] font-black uppercase tracking-[0.35em]"
+                    style={{ color: GOLD }}
                 >
-                    <div className="space-y-8">
+                    {t.eyebrow}
+                </span>
+            </motion.div>
+
+            {/* ── Hero grid ────────────────────────────────────────── */}
+            <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+                {/* ── LEFT: Identity ───────────────────────────────── */}
+                <div className="space-y-10">
+
+                    <motion.div {...fadeUp(0.05)} className="space-y-5">
+                        {/* Name */}
+                        <h1
+                            className="text-5xl sm:text-6xl lg:text-7xl font-serif italic text-[#F8F5F0] leading-[1.05] tracking-tight"
+                            style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                            Anahí{" "}
+                            <span style={{ color: GOLD }}>Lozano</span>
+                        </h1>
+
+                        {/* Role */}
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-px bg-[var(--primary)] opacity-50"></div>
-                            <span className="text-[var(--primary)] font-black tracking-[0.3em] uppercase text-[10px]">
-                               {t_rh.greeting}
+                            <div className="w-0.5 h-8 rounded-full" style={{ background: `linear-gradient(to bottom, ${GOLD}, transparent)` }} />
+                            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#9E9E93]">
+                                {t.role}
+                            </p>
+                        </div>
+                    </motion.div>
+
+                    {/* Tagline */}
+                    <motion.p
+                        {...fadeUp(0.12)}
+                        className="text-2xl sm:text-3xl text-[#D8D4CC] font-serif italic leading-[1.4]"
+                        style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                        {t.tagline}
+                    </motion.p>
+
+                    {/* Bio */}
+                    <motion.div
+                        {...fadeUp(0.18)}
+                        className="relative p-7 rounded-2xl"
+                        style={{
+                            background: GOLD_DIM,
+                            border: `1px solid ${GOLD_BORDER}`,
+                        }}
+                    >
+                        <div
+                            className="absolute left-0 top-4 bottom-4 w-0.5 rounded-full"
+                            style={{ background: `linear-gradient(to bottom, ${GOLD}, transparent)` }}
+                        />
+                        <p className="text-base text-[#B0ACA4] leading-[1.85] font-normal pl-4">
+                            {t.about}
+                        </p>
+                    </motion.div>
+
+                    {/* Expertise chips */}
+                    <motion.div {...fadeUp(0.24)} className="grid sm:grid-cols-2 gap-4">
+                        {t.expertise.map((exp, i) => (
+                            <div
+                                key={i}
+                                className="flex items-start gap-4 p-5 rounded-xl transition-all duration-400 group cursor-default"
+                                style={{
+                                    background: "rgba(255,255,255,0.02)",
+                                    border: "1px solid rgba(255,255,255,0.05)",
+                                }}
+                                onMouseEnter={e => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
+                                    (e.currentTarget as HTMLElement).style.background = GOLD_DIM;
+                                }}
+                                onMouseLeave={e => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)";
+                                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
+                                }}
+                            >
+                                <div
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                                    style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}
+                                >
+                                    <span
+                                        className="material-symbols-outlined text-[16px]"
+                                        style={{ color: GOLD }}
+                                    >
+                                        {exp.icon}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p
+                                        className="text-[10px] font-black uppercase tracking-widest mb-1.5"
+                                        style={{ color: GOLD }}
+                                    >
+                                        {exp.area}
+                                    </p>
+                                    <p className="text-[12px] text-[#7A7872] leading-[1.65] font-normal">
+                                        {exp.detail}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>
+
+                    {/* CTA Buttons */}
+                    <motion.div {...fadeUp(0.30)} className="flex flex-wrap gap-4 pt-2">
+                        <Link
+                            to="/experience"
+                            className="relative px-8 py-4 rounded-full font-black uppercase tracking-[0.2em] text-[11px] text-black overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-[0_8px_30px_rgba(201,168,76,0.35)]"
+                            style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}
+                        >
+                            {/* shimmer */}
+                            <span
+                                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+                                style={{
+                                    background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)",
+                                    backgroundSize: "200% 100%",
+                                    animation: "shimmer 1.5s infinite",
+                                }}
+                            />
+                            <span className="relative">{t.experience_btn}</span>
+                        </Link>
+                        <Link
+                            to="/contact"
+                            className="px-8 py-4 rounded-full font-black uppercase tracking-[0.2em] text-[11px] text-[#C8C4BB] transition-all duration-300 hover:text-[#F8F5F0] active:scale-95"
+                            style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: `1px solid rgba(255,255,255,0.10)`,
+                            }}
+                            onMouseEnter={e => {
+                                (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
+                            }}
+                            onMouseLeave={e => {
+                                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.10)";
+                            }}
+                        >
+                            {t.contact_btn}
+                        </Link>
+                    </motion.div>
+                </div>
+
+                {/* ── RIGHT: Visual panel ──────────────────────────── */}
+                <motion.div
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative flex flex-col items-center gap-6"
+                >
+                    {/* Monogram / Avatar */}
+                    <div className="relative">
+                        {/* Outer rotating ring */}
+                        <div
+                            className="absolute inset-[-16px] rounded-full"
+                            style={{
+                                border: `1px solid ${GOLD_BORDER}`,
+                                animation: "spin 24s linear infinite",
+                            }}
+                        />
+                        {/* Middle ring */}
+                        <div
+                            className="absolute inset-[-8px] rounded-full"
+                            style={{
+                                border: `1px dashed rgba(201,168,76,0.10)`,
+                            }}
+                        />
+                        {/* Avatar circle */}
+                        <div
+                            className="w-44 h-44 sm:w-52 sm:h-52 rounded-full flex items-center justify-center relative"
+                            style={{
+                                background: `radial-gradient(135deg at 30% 30%, rgba(201,168,76,0.18), rgba(8,9,10,0.9))`,
+                                border: `2px solid ${GOLD_BORDER}`,
+                                boxShadow: `0 0 60px rgba(201,168,76,0.12), inset 0 0 40px rgba(201,168,76,0.06)`,
+                            }}
+                        >
+                            <span
+                                className="text-7xl font-serif italic select-none"
+                                style={{ color: GOLD, fontFamily: "'Playfair Display', serif", textShadow: `0 0 30px rgba(201,168,76,0.4)` }}
+                            >
+                                AL
                             </span>
                         </div>
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-serif text-[var(--text-main)] tracking-tight leading-[1.2] italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-                            Anahí <br />
-                            <span className="text-[var(--primary)]">Lozano</span>
-                        </h1>
-                        <h2 className="text-lg md:text-xl font-medium text-[var(--text-soft)] uppercase tracking-[0.2em] border-l border-[var(--primary)]/30 pl-6 py-1">
-                            {t_rh.role}
-                        </h2>
+                        {/* Availability badge */}
+                        <div
+                            className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap"
+                            style={{
+                                background: "#111214",
+                                border: `1px solid rgba(34,197,94,0.3)`,
+                                boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                            }}
+                        >
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+                            <span className="text-[9px] font-black uppercase tracking-widest text-green-400">
+                                {t.availability}
+                            </span>
+                        </div>
                     </div>
 
-                    <p className="text-lg text-[var(--text-soft)] leading-[1.8] font-normal max-w-xl italic opacity-90 border-l border-[var(--primary)]/20 pl-6">
-                        {t_rh.tagline}
-                    </p>
-
-                    <div className="p-10 bg-[var(--bg-ui)]/30 backdrop-blur-md rounded-3xl border border-[var(--border)] space-y-4 relative overflow-hidden group hover:border-[var(--primary)]/30 transition-all duration-500">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[var(--primary)] to-transparent opacity-50"></div>
-                        <p className="text-base text-[var(--text-muted)] leading-[1.9] font-normal">
-                            {t_rh.about}
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
-                        {(t_rh.expertise as any[]).map((exp, i) => (
-                            <div key={i} className="p-6 bg-[var(--bg-ui)]/20 border border-[var(--border)]/50 rounded-2xl hover:border-[var(--primary)]/30 transition-colors">
-                                <p className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-[0.2em] mb-3">{exp.area}</p>
-                                <p className="text-[13px] text-[var(--text-muted)] font-normal leading-[1.7]">{exp.detail}</p>
-                            </div>
+                    {/* Metrics */}
+                    <div className="w-full grid grid-cols-3 gap-4 mt-10">
+                        {t.metrics.map((m, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.25 + i * 0.1, duration: 0.6 }}
+                                className="flex flex-col items-center text-center p-5 rounded-2xl transition-all duration-400"
+                                style={{
+                                    background: "rgba(255,255,255,0.02)",
+                                    border: `1px solid ${GOLD_BORDER}`,
+                                }}
+                                onMouseEnter={e => {
+                                    (e.currentTarget as HTMLElement).style.background = GOLD_DIM;
+                                }}
+                                onMouseLeave={e => {
+                                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
+                                }}
+                            >
+                                <span
+                                    className="text-3xl sm:text-4xl font-serif italic leading-none"
+                                    style={{ color: GOLD, fontFamily: "'Playfair Display', serif" }}
+                                >
+                                    {m.value}
+                                </span>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-[#7A7872] mt-2">
+                                    {m.label}
+                                </span>
+                                <span className="text-[9px] text-[#4A4A44] mt-1 leading-tight hidden sm:block">
+                                    {m.sub}
+                                </span>
+                            </motion.div>
                         ))}
                     </div>
 
-                    <div className="flex flex-wrap gap-6 pt-6">
-                        <Link to="/experience" className="px-10 py-5 bg-[var(--primary)] text-white rounded-full font-bold tracking-[0.2em] uppercase text-[11px] shadow-2xl shadow-[var(--primary)]/20 hover:shadow-[var(--primary)]/40 hover:-translate-y-1 active:scale-95 transition-all">
-                            {t_rh.experience_btn}
-                        </Link>
-                        <Link to="/contact" className="px-10 py-5 bg-transparent text-[var(--text-main)] border border-[var(--border)] rounded-full font-bold tracking-[0.2em] uppercase text-[11px] hover:bg-[var(--bg-ui)] active:scale-95 transition-all">
-                            {t_rh.contact_btn}
-                        </Link>
-                    </div>
-                </motion.div>
-
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, delay: 0.3 }}
-                    className="relative"
-                >
-                    <div className="relative z-10 grid grid-cols-2 gap-6">
-                        {t_rh.metrics.map((metric, i) => (
-                            <div key={i} className={`p-6 md:p-8 bg-[var(--bg-ui)]/20 backdrop-blur-xl rounded-[2rem] md:rounded-3xl border border-[var(--border)] flex flex-col items-center justify-center text-center space-y-3 hover:-translate-y-2 hover:border-[var(--primary)]/30 transition-all duration-500 ${i === 0 ? 'col-span-2 py-10 md:py-14 bg-[var(--bg-ui)]/30' : ''}`}>
-                                <span className={`font-serif italic tracking-tight text-[var(--text-main)] ${i === 0 ? 'text-4xl sm:text-5xl md:text-6xl text-[var(--primary)]' : 'text-2xl sm:text-3xl md:text-4xl'}`} style={{ fontFamily: "'Playfair Display', serif" }}>
-                                    {metric.value}
-                                </span>
-                                <span className="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-[var(--text-muted)] uppercase px-2">
-                                    {metric.label}
-                                </span>
-                            </div>
-                        ))}
-
-                        <div className="col-span-2 p-6 md:p-10 bg-gradient-to-br from-[var(--primary)]/10 to-transparent rounded-[2rem] md:rounded-[2.5rem] border border-[var(--primary)]/20 text-[var(--text-main)] flex flex-col md:flex-row items-center justify-between overflow-hidden relative group gap-6 md:gap-0 text-center md:text-left">
-                            <div className="relative z-10 space-y-2">
-                                <p className="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-[var(--primary)] uppercase">Status</p>
-                                <p className="text-xl sm:text-2xl md:text-3xl font-serif italic tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>Executive Consultation Ready</p>
-                            </div>
-                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/30 flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]">
-                                <span className="material-symbols-outlined text-[var(--primary)] text-2xl md:text-3xl">verified</span>
-                            </div>
+                    {/* Bottom decorative card */}
+                    <div
+                        className="w-full p-6 rounded-2xl flex items-center justify-between"
+                        style={{
+                            background: `linear-gradient(135deg, ${GOLD_DIM}, transparent)`,
+                            border: `1px solid ${GOLD_BORDER}`,
+                        }}
+                    >
+                        <div>
+                            <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: GOLD }}>
+                                Status
+                            </p>
+                            <p
+                                className="text-lg font-serif italic text-[#F8F5F0]"
+                                style={{ fontFamily: "'Playfair Display', serif" }}
+                            >
+                                {lang === 'es' ? "Consultas Técnicas Abiertas" : "Open for Technical Consulting"}
+                            </p>
+                        </div>
+                        <div
+                            className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
+                            style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}
+                        >
+                            <span className="material-symbols-outlined text-2xl" style={{ color: GOLD }}>verified</span>
                         </div>
                     </div>
                 </motion.div>
             </div>
+
+            {/* Shimmer keyframe */}
+            <style>{`
+                @keyframes shimmer {
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
+                }
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
         </main>
     );
 };
