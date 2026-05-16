@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import * as githubService from "../services/githubService";
 import { projects as staticProjectsData } from "../components/dataprojetcts/projects";
 
@@ -44,18 +44,19 @@ const toStaticProjects = (language: "es" | "en"): Project[] => {
 };
 
 export function useGithubProjects(language: "es" | "en") {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const fallbackProjects = useMemo(() => toStaticProjects(language), [language]);
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const isLoading = false;
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function syncProjects() {
-      setIsLoading(true);
       setError(null);
 
-      const currentVersion = "v29";
+      const currentVersion = "v30";
       const cacheKey = `gh_optimized_${currentVersion}_${language}`;
-      const staticProjects = toStaticProjects(language);
 
       try {
         Object.keys(localStorage).forEach((key) => {
@@ -69,28 +70,29 @@ export function useGithubProjects(language: "es" | "en") {
           const { data, timestamp } = JSON.parse(cached);
 
           if (Array.isArray(data) && data.length > 0 && Date.now() - timestamp < 15 * 60 * 1000) {
-            setProjects(data);
-            setIsLoading(false);
+            if (!cancelled) setProjects(data);
             return;
           }
         }
 
         const enriched = await githubService.getEnrichedProjects(language);
-        const nextProjects = enriched && enriched.length > 0 ? enriched : staticProjects;
+        const nextProjects = enriched && enriched.length > 0 ? enriched : fallbackProjects;
 
-        setProjects(nextProjects as Project[]);
+        if (!cancelled) setProjects(nextProjects as Project[]);
         localStorage.setItem(cacheKey, JSON.stringify({ data: nextProjects, timestamp: Date.now() }));
       } catch (err) {
         setError("Error fetching projects");
         console.error(err);
-        setProjects(staticProjects);
-      } finally {
-        setIsLoading(false);
       }
     }
 
+    setProjects(fallbackProjects);
     syncProjects();
-  }, [language]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fallbackProjects, language]);
 
   return { projects, isLoading, error };
 }

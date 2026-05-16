@@ -12,7 +12,8 @@ const GITHUB_HEADERS: Record<string, string> = {
 export const fetchAllRepos = async (): Promise<any[]> => {
   try {
     const response = await axios.get(`${BASE_URL}?sort=pushed&per_page=100`, {
-      headers: GITHUB_HEADERS
+      headers: GITHUB_HEADERS,
+      timeout: 3500
     });
     return Array.isArray(response.data) ? response.data : [];
   } catch (error: any) {
@@ -155,13 +156,9 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
 
   const filteredRepos = repos.filter((r: any) => !r.fork && r.name !== GITHUB_USERNAME);
   
-  // With authenticated token: 5000 req/hr — fetch READMEs for all repos
-  const enriched = await Promise.all(
-    filteredRepos.map(async (repo) => {
-      const readme = await fetchRepoReadme(repo.name);
-      // Optimized construction of the enriched project object
+  const enriched = filteredRepos.map((repo) => {
       const staticMatch = staticProjectsData.find(sp => sp.github.toLowerCase().includes(repo.name.toLowerCase())) as any;
-      const meta = readme ? parseProjectData(readme) : {};
+      const meta = parseProjectData("");
       
       return {
         id: repo.id,
@@ -183,8 +180,7 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
         future: isEs ? (meta.future_es || meta.future) : (meta.future_en || meta.future),
         date: repo.pushed_at
       };
-    })
-  );
+    });
 
   return enriched.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
