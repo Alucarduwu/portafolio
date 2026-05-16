@@ -43,6 +43,29 @@ const toStaticProjects = (language: "es" | "en"): Project[] => {
   }));
 };
 
+const mergeProjects = (baseProjects: Project[], remoteProjects: Project[]) => {
+  const byGithub = new Map<string, Project>();
+
+  [...baseProjects, ...remoteProjects].forEach((project) => {
+    const key = project.github?.toLowerCase() || String(project.id);
+    const existing = byGithub.get(key);
+    byGithub.set(key, {
+      ...existing,
+      ...project,
+      images: project.images?.length ? project.images : existing?.images || [],
+      description: project.description || existing?.description || "",
+      stack: project.stack?.length ? project.stack : existing?.stack || [],
+      features: project.features?.length ? project.features : existing?.features || [],
+    });
+  });
+
+  return Array.from(byGithub.values()).sort((a, b) => {
+    const aTime = a.date ? new Date(a.date).getTime() : 0;
+    const bTime = b.date ? new Date(b.date).getTime() : 0;
+    return bTime - aTime;
+  });
+};
+
 export function useGithubProjects(language: "es" | "en") {
   const fallbackProjects = useMemo(() => toStaticProjects(language), [language]);
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
@@ -55,7 +78,7 @@ export function useGithubProjects(language: "es" | "en") {
     async function syncProjects() {
       setError(null);
 
-      const currentVersion = "v30";
+      const currentVersion = "v31";
       const cacheKey = `gh_optimized_${currentVersion}_${language}`;
 
       try {
@@ -75,8 +98,10 @@ export function useGithubProjects(language: "es" | "en") {
           }
         }
 
-        const enriched = await githubService.getEnrichedProjects(language);
-        const nextProjects = enriched && enriched.length > 0 ? enriched : fallbackProjects;
+        const remoteProjects = await githubService.getEnrichedProjects(language);
+        const nextProjects = remoteProjects && remoteProjects.length > 0
+          ? mergeProjects(fallbackProjects, remoteProjects as Project[])
+          : fallbackProjects;
 
         if (!cancelled) setProjects(nextProjects as Project[]);
         localStorage.setItem(cacheKey, JSON.stringify({ data: nextProjects, timestamp: Date.now() }));
