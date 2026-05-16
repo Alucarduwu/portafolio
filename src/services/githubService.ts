@@ -3,14 +3,10 @@ import { projects as staticProjectsData } from "../components/dataprojetcts/proj
 
 const GITHUB_USERNAME = "Alucarduwu";
 const BASE_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos`;
-const GITHUB_TOKEN_ENC = import.meta.env.VITE_GITHUB_KEY;
-const GITHUB_TOKEN = GITHUB_TOKEN_ENC ? `ghp_${atob(GITHUB_TOKEN_ENC)}` : undefined;
-
 
 const GITHUB_HEADERS: Record<string, string> = {
   "Accept": "application/vnd.github.v3.raw",
   "X-GitHub-Api-Version": "2022-11-28",
-  ...(GITHUB_TOKEN ? { "Authorization": `Bearer ${GITHUB_TOKEN}` } : {})
 };
 
 export const fetchAllRepos = async (): Promise<any[]> => {
