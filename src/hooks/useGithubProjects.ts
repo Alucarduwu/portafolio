@@ -78,7 +78,7 @@ export function useGithubProjects(language: "es" | "en") {
     async function syncProjects() {
       setError(null);
 
-      const currentVersion = "v31";
+      const currentVersion = "v32";
       const cacheKey = `gh_optimized_${currentVersion}_${language}`;
 
       try {

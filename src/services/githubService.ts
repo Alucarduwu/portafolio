@@ -1,4 +1,5 @@
 import axios from "axios";
+import YAML from "yaml";
 import { projects as staticProjectsData } from "../components/dataprojetcts/projects";
 
 const GITHUB_USERNAME = "Alucarduwu";
@@ -28,7 +29,7 @@ export const fetchRepoReadme = async (repoName: string): Promise<string | null> 
   try {
     const response = await axios.get(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/readme`, {
       headers: GITHUB_HEADERS,
-      timeout: 10000,
+      timeout: 4500,
       responseType: 'text'
     });
     return response.data;
@@ -40,92 +41,78 @@ export const fetchRepoReadme = async (repoName: string): Promise<string | null> 
 
 const parseProjectData = (readme: string) => {
   const meta: any = { features_es: [], features_en: [], stack: [] };
-  if (!readme || typeof readme !== 'string') return meta;
-  
+  if (!readme || typeof readme !== "string") return meta;
+
   try {
-    // 1. Auto-extract Title from first H1
     const h1Match = readme.match(/^#\s+(.*)/m);
-    if (h1Match) meta.title_auto = h1Match[1].replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+    if (h1Match) meta.title_auto = h1Match[1].replace(/[\u{1F300}-\u{1F9FF}]/gu, "").trim();
 
-    // 2. Auto-extract first paragraph as default description
-    const lines_all = readme.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#') && !l.startsWith('!') && !l.startsWith('<'));
-    if (lines_all.length > 0) meta.description_auto = lines_all[0];
+    const lines = readme
+      .split("\n")
+      .map(line => line.trim())
+      .filter(line => line && !line.startsWith("#") && !line.startsWith("!") && !line.startsWith("<"));
+    if (lines.length > 0) meta.description_auto = lines[0];
 
-    // 3. Find Global Data Block (extracts until --- or 💎 is found)
-    const blockMatch = readme.match(/(?:⚙️\s*SYSTEM\s*DATA)[\s\S]*?(?:PROJECT[_-]DATA\s*\n)([\s\S]*?)(?:\n---|💎|$)/i);
-    
+    const blockMatch = readme.match(/PROJECT[_-]DATA\s*\n([\s\S]*?)(?:\n---|\n#{1,6}\s|$)/i);
     if (!blockMatch) return meta;
 
-    const block = blockMatch[1];
-    let currentKey = "";
-    let currentLang: 'en' | 'es' | null = null;
-    
-    const lines = block.split('\n');
-    lines.forEach(line => {
-        if (!line.trim()) return;
-        
-        // Detect if line is indented
-        const isIndented = line.startsWith('  ') || line.startsWith('\t');
-        const trimmed = line.trim();
-        
-        // Root key: no indentation, ends with colon "name:"
-        const rootKeyMatch = line.match(/^([a-z0-9_-]+):(?:\s*(.*))?$/i);
-        if (rootKeyMatch && !isIndented) {
-            currentKey = rootKeyMatch[1].toLowerCase();
-            currentLang = null; // reset language context
-            const val = rootKeyMatch[2] ? rootKeyMatch[2].trim() : "";
-            if (val && currentKey === 'repo') meta.repo = val;
-            if (val && currentKey === 'demo') meta.demo = val;
-            // Also support inline root definitions
-            if (val && currentKey !== 'repo' && currentKey !== 'demo') {
-                meta[currentKey] = val;
-            }
-            return;
-        }
-        
-        // Language key: "en:" or "es:" (either indented or root if poorly formatted)
-        const langMatch = trimmed.match(/^(en|es):(?:\s*(.*))?$/i);
-        if (langMatch) {
-            currentLang = langMatch[1].toLowerCase() as 'en' | 'es';
-            const val = langMatch[2] ? langMatch[2].trim() : "";
-            if (val && currentKey && currentKey !== 'features') {
-                meta[`${currentKey}_${currentLang}`] = val;
-            }
-            return;
-        }
-        
-        // Lists & Content aggregation
-        if (currentKey) {
-            const isList = trimmed.startsWith('-');
-            const content = isList ? trimmed.substring(1).trim() : trimmed;
-            
-            if (currentKey === 'features') {
-                const target = currentLang || 'en';
-                meta[`features_${target}`].push(content);
-            } else if (currentKey === 'stack') {
-                meta.stack.push(content);
-            } else {
-                const targetKey = currentLang ? `${currentKey}_${currentLang}` : currentKey;
-                const formattedContent = isList ? `- ${content}` : content;
-                meta[targetKey] = (meta[targetKey] ? meta[targetKey] + "\n" : "") + formattedContent;
-            }
-        }
+    const parsed = YAML.parse(blockMatch[1]);
+    if (!parsed || typeof parsed !== "object") return meta;
+
+    const localizedKeys = [
+      "name",
+      "description",
+      "problem",
+      "solution",
+      "architecture",
+      "technical_challenges",
+      "improvements",
+      "learning",
+      "status",
+      "future",
+    ];
+
+    Object.entries(parsed as Record<string, any>).forEach(([rawKey, value]) => {
+      const key = rawKey.toLowerCase();
+
+      if (key === "features" && value && typeof value === "object" && !Array.isArray(value)) {
+        meta.features_en = Array.isArray(value.en) ? value.en : [];
+        meta.features_es = Array.isArray(value.es) ? value.es : [];
+        return;
+      }
+
+      if (key === "stack") {
+        meta.stack = Array.isArray(value)
+          ? value
+          : String(value || "").split(/[•,|]/).map(item => item.trim()).filter(Boolean);
+        return;
+      }
+
+      if (key === "repo" || key === "demo" || key === "category") {
+        meta[key] = value || "";
+        return;
+      }
+
+      if (localizedKeys.includes(key) && value && typeof value === "object" && !Array.isArray(value)) {
+        meta[`${key}_en`] = value.en || "";
+        meta[`${key}_es`] = value.es || "";
+        return;
+      }
+
+      meta[key] = value;
     });
 
-    // 4. Fallback Logic (Option A: If one language is missing, use the other)
-    const keysToCheck = ['name', 'description', 'problem', 'solution', 'architecture', 'technical_challenges', 'improvements', 'learning', 'status', 'future'];
-    keysToCheck.forEach(k => {
-      if (!meta[`${k}_es`] && meta[`${k}_en`]) meta[`${k}_es`] = meta[`${k}_en`];
-      if (!meta[`${k}_en`] && meta[`${k}_es`]) meta[`${k}_en`] = meta[`${k}_es`];
-      
-      // Features fallback
-      if (meta[`features_es`].length === 0 && meta[`features_en`].length > 0) meta.features_es = [...meta.features_en];
-      if (meta[`features_en`].length === 0 && meta[`features_es`].length > 0) meta.features_en = [...meta.features_es];
+    localizedKeys.forEach(key => {
+      if (!meta[`${key}_es`] && meta[`${key}_en`]) meta[`${key}_es`] = meta[`${key}_en`];
+      if (!meta[`${key}_en`] && meta[`${key}_es`]) meta[`${key}_en`] = meta[`${key}_es`];
     });
 
+    if (meta.features_es.length === 0 && meta.features_en.length > 0) meta.features_es = [...meta.features_en];
+    if (meta.features_en.length === 0 && meta.features_es.length > 0) meta.features_en = [...meta.features_es];
   } catch (e) {
     console.warn("Parse error", e);
   }
+
   return meta;
 };
 
@@ -156,9 +143,11 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
 
   const filteredRepos = repos.filter((r: any) => !r.fork && r.name !== GITHUB_USERNAME);
   
-  const enriched = filteredRepos.map((repo) => {
+  const enriched = await Promise.all(
+    filteredRepos.map(async (repo) => {
       const staticMatch = staticProjectsData.find(sp => sp.github.toLowerCase().includes(repo.name.toLowerCase())) as any;
-      const meta = parseProjectData("");
+      const readme = await fetchRepoReadme(repo.name);
+      const meta = readme ? parseProjectData(readme) : parseProjectData("");
       
       return {
         id: repo.id,
@@ -180,7 +169,8 @@ export const getEnrichedProjects = async (lang: "es" | "en") => {
         future: isEs ? (meta.future_es || meta.future) : (meta.future_en || meta.future),
         date: repo.pushed_at
       };
-    });
+    })
+  );
 
   return enriched.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
