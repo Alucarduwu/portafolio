@@ -229,5 +229,5 @@ npm run dev
 ---
 
 <p align="center">
-💜 Built to showcase real developer growth
+💜 Built to showcase real developer growth.
 </p>
