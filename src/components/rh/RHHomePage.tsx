@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
-import { motion } from "framer-motion";
+import { motion, type Transition } from "framer-motion";
 
 const GOLD = "#C9A84C";
 const GOLD_DIM = "rgba(201,168,76,0.12)";
@@ -55,10 +55,16 @@ const RHHomePage = () => {
 
     const t = content[lang as 'es' | 'en'] || content.es;
 
+    const fadeUpTransition = (delay = 0): Transition => ({
+        duration: 0.8,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+    });
+
     const fadeUp = (delay = 0) => ({
         initial: { opacity: 0, y: 24 },
         animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }
+        transition: fadeUpTransition(delay)
     });
 
     return (
