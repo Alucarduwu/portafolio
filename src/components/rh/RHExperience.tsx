@@ -3,159 +3,293 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { experience } from "../dataprojetcts/experience";
 import { motion } from "framer-motion";
 
+const GOLD = "#C9A84C";
+const GOLD_DIM = "rgba(201,168,76,0.10)";
+const GOLD_BORDER = "rgba(201,168,76,0.18)";
+
 const RHExperience = () => {
     const { lang } = useContext(GlobalContext);
 
     const labels = {
-        es: { title: "Trayectoria Profesional", subtitle: "Cronología de Impacto Institucional", download: "DESCARGAR CURRÍCULUM" },
-        en: { title: "Professional Path", subtitle: "Institutional Impact Timeline", download: "DOWNLOAD RESUME" }
+        es: {
+            eyebrow: "Cronología de Impacto",
+            title: "Trayectoria Profesional",
+            desc: "Una historia definida por arquitectura sólida y entrega de soluciones que optimizan procesos críticos.",
+            results: "Resultados & Impacto",
+            arch: "Stack & Arquitectura",
+            cta_eyebrow: "¿Siguiente paso?",
+            cta_title: "Conversemos sobre su próximo proyecto.",
+            download: "Descargar Currículum",
+            contact: "Ir a Contacto",
+        },
+        en: {
+            eyebrow: "Impact Timeline",
+            title: "Professional Trajectory",
+            desc: "A story defined by solid architecture and delivering solutions that optimize critical processes.",
+            results: "Results & Impact",
+            arch: "Stack & Architecture",
+            cta_eyebrow: "Next step?",
+            cta_title: "Let's talk about your next project.",
+            download: "Download Resume",
+            contact: "Go to Contact",
+        }
     };
 
-    const t_rh = labels[lang as 'es' | 'en'] || labels.es;
+    const t = labels[lang as 'es' | 'en'] || labels.es;
 
     return (
-        <main className="max-w-[1400px] mx-auto px-6 py-20 lg:py-40">
-            <motion.div 
+        <main className="max-w-[1100px] mx-auto px-5 sm:px-8 py-24 lg:py-40">
+
+            {/* ── Header ──────────────────────────────────────────── */}
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                className="mb-32 text-left space-y-8 border-l-4 border-[#C5A059] pl-8 md:pl-12"
+                transition={{ duration: 0.9 }}
+                className="mb-20 pl-7 md:pl-10 space-y-5"
+                style={{ borderLeft: `3px solid ${GOLD}` }}
             >
-                <div className="space-y-4">
-                    <span className="text-sm md:text-lg text-[#C5A059] font-black tracking-[0.5em] uppercase opacity-80">
-                        {t_rh.subtitle}
-                    </span>
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif text-white tracking-tighter leading-[1.1] italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {t_rh.title}
-                    </h1>
-                </div>
-                
-                <div className="max-w-3xl">
-                    <p className="text-xl md:text-2xl text-gray-400 font-serif italic leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {lang === 'es' 
-                            ? "Una trayectoria definida por la arquitectura técnica sólida y la entrega de soluciones institucionales que optimizan procesos críticos."
-                            : "A trajectory defined by solid technical architecture and the delivery of institutional solutions that optimize critical processes."}
-                    </p>
-                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.45em]" style={{ color: GOLD }}>
+                    {t.eyebrow}
+                </span>
+                <h1
+                    className="text-3xl sm:text-4xl md:text-5xl font-serif italic text-[#F8F5F0] tracking-tight leading-[1.1]"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                    {t.title}
+                </h1>
+                <p
+                    className="text-lg md:text-xl text-[#7A7872] font-serif italic leading-relaxed max-w-2xl"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                    {t.desc}
+                </p>
             </motion.div>
 
-            <div className="space-y-32 relative">
-                {/* Visual Timeline Line - High Contrast */}
-                <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#C5A059] via-[#C5A059]/10 to-transparent z-0 opacity-20"></div>
+            {/* ── Vertical Timeline ────────────────────────────────── */}
+            <div className="relative">
+                {/* Vertical line */}
+                <div
+                    className="absolute left-8 md:left-10 top-0 bottom-0 w-px"
+                    style={{ background: `linear-gradient(to bottom, ${GOLD}60, ${GOLD}10, transparent)` }}
+                />
 
-                {experience.map((ex, i) => {
-                    const title = lang === 'es' ? ex.titleEs : ex.titleEn;
-                    const period = lang === 'es' ? ex.periodEs : ex.periodEn;
-                    const company = lang === 'es' ? ex.companyEs : ex.companyEn;
-                    const desc = lang === 'es' ? ex.descriptionEs : ex.descriptionEn;
-                    const features = lang === 'es' ? (ex.details?.featuresEs || []) : (ex.details?.featuresEn || []);
-                    const architecture = lang === 'es' ? (ex.details?.architectureEs || []) : (ex.details?.architectureEn || []);
+                <div className="space-y-12">
+                    {experience.map((ex, i) => {
+                        const title = lang === 'es' ? ex.titleEs : ex.titleEn;
+                        const period = lang === 'es' ? ex.periodEs : ex.periodEn;
+                        const company = lang === 'es' ? ex.companyEs : ex.companyEn;
+                        const desc = lang === 'es' ? ex.descriptionEs : ex.descriptionEn;
+                        const features = lang === 'es' ? (ex.details?.featuresEs || []) : (ex.details?.featuresEn || []);
+                        const architecture = lang === 'es' ? (ex.details?.architectureEs || []) : (ex.details?.architectureEn || []);
 
-                    const isEven = i % 2 === 0;
-
-                    return (
-                        <motion.div 
-                            key={ex.id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: i * 0.1 }}
-                            className={`relative flex flex-col md:flex-row gap-12 lg:gap-20 items-stretch ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                        >
-                            {/* Marker on timeline */}
-                            <div className="absolute left-[16px] md:left-1/2 md:-ml-[5px] top-12 w-2.5 h-2.5 rounded-full bg-[#0b0c0e] border-2 border-[#C5A059] z-10 shadow-[0_0_15px_rgba(197,160,89,0.5)]"></div>
-
-                            <div className={`w-full md:w-1/2 pt-12 md:pt-16 ${isEven ? 'md:text-right md:pr-16 lg:pr-24' : 'md:text-left md:pl-16 lg:pl-24'}`}>
-                                <div className="space-y-6">
-                                    <div className={`flex items-center gap-4 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                                        <span className="text-[10px] font-black tracking-[0.4em] text-[#C5A059] uppercase order-2">
-                                            {period}
-                                        </span>
-                                        <div className="h-px w-8 bg-[#C5A059]/30 order-1"></div>
-                                    </div>
-                                    <h3 className="text-3xl md:text-5xl font-serif italic text-white leading-tight break-words hyphens-auto max-w-full" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                        {company}
-                                    </h3>
-                                    <div className={`flex flex-col gap-2 w-full ${isEven ? 'md:items-end' : 'md:items-start'}`}>
-                                        <p className="text-sm font-black text-gray-400 uppercase tracking-widest bg-white/[0.03] px-4 py-2 rounded-lg border border-white/5 inline-block break-words whitespace-normal max-w-full">
-                                            {title}
-                                        </p>
-                                    </div>
+                        return (
+                            <motion.div
+                                key={ex.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.7, delay: i * 0.08 }}
+                                className="relative pl-20 md:pl-24"
+                            >
+                                {/* Timeline dot */}
+                                <div
+                                    className="absolute left-[26px] md:left-[30px] top-8 w-5 h-5 rounded-full flex items-center justify-center"
+                                    style={{
+                                        background: "#08090a",
+                                        border: `2px solid ${GOLD}`,
+                                        boxShadow: `0 0 12px rgba(201,168,76,0.4)`,
+                                    }}
+                                >
+                                    <div
+                                        className="w-2 h-2 rounded-full"
+                                        style={{ background: GOLD }}
+                                    />
                                 </div>
-                            </div>
 
-                            <div className="w-full md:w-1/2">
-                                <div className="h-full p-6 md:p-12 bg-white/[0.02] backdrop-blur-2xl rounded-3xl md:rounded-[2.5rem] border border-white/5 space-y-8 md:space-y-10 group hover:bg-white/[0.04] transition-all duration-700 relative overflow-hidden flex flex-col justify-between">
-                                    <div className="absolute top-0 left-0 w-px h-0 group-hover:h-full bg-gradient-to-b from-[#C5A059] to-transparent transition-all duration-1000"></div>
-                                    
-                                    <div className="space-y-10">
-                                        <p className="text-xl md:text-2xl text-gray-300 font-serif italic leading-relaxed opacity-90" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                {/* Period badge */}
+                                <div
+                                    className="absolute left-[52px] md:left-[58px] top-[26px] h-5 w-px"
+                                    style={{ background: `${GOLD}30` }}
+                                />
+
+                                {/* Card */}
+                                <div
+                                    className="rounded-2xl overflow-hidden transition-all duration-500 group"
+                                    style={{
+                                        background: "rgba(255,255,255,0.02)",
+                                        border: "1px solid rgba(255,255,255,0.05)",
+                                    }}
+                                    onMouseEnter={e => {
+                                        (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
+                                        (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
+                                    }}
+                                    onMouseLeave={e => {
+                                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)";
+                                        (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
+                                    }}
+                                >
+                                    {/* Card header */}
+                                    <div
+                                        className="px-8 pt-8 pb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4"
+                                        style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+                                    >
+                                        <div className="space-y-2.5">
+                                            <div className="flex items-center gap-3">
+                                                <span
+                                                    className="text-[9px] font-black uppercase tracking-[0.35em]"
+                                                    style={{ color: GOLD }}
+                                                >
+                                                    {period}
+                                                </span>
+                                            </div>
+                                            <h2
+                                                className="text-2xl md:text-3xl font-serif italic text-[#F8F5F0] leading-tight"
+                                                style={{ fontFamily: "'Playfair Display', serif" }}
+                                            >
+                                                {company}
+                                            </h2>
+                                        </div>
+                                        <span
+                                            className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl shrink-0 self-start"
+                                            style={{
+                                                background: GOLD_DIM,
+                                                color: GOLD,
+                                                border: `1px solid ${GOLD_BORDER}`,
+                                            }}
+                                        >
+                                            {title}
+                                        </span>
+                                    </div>
+
+                                    {/* Card body */}
+                                    <div className="p-8 space-y-8">
+                                        <p
+                                            className="text-base text-[#9E9E93] font-serif italic leading-relaxed"
+                                            style={{ fontFamily: "'Playfair Display', serif" }}
+                                        >
                                             {desc}
                                         </p>
-                                        
-                                        <div className="grid sm:grid-cols-2 gap-10">
-                                            <div className="space-y-6">
-                                                <p className="text-[9px] font-black text-[#C5A059] uppercase tracking-[0.3em]">Resultados & Impacto</p>
-                                                <ul className="space-y-4">
-                                                    {features.map((feat: string, fIdx: number) => (
-                                                        <li key={fIdx} className="flex items-start gap-4 text-xs text-gray-400 font-bold leading-relaxed group/item">
-                                                            <div className="w-1 h-1 rounded-full bg-[#C5A059] mt-2 group-hover/item:scale-150 transition-transform"></div>
-                                                            <span className="group-hover:text-white transition-colors">{feat}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
 
-                                            {architecture && architecture.length > 0 && (
-                                                <div className="space-y-6 lg:border-l lg:border-white/5 lg:pl-10">
-                                                    <p className="text-[9px] font-black text-[#C5A059] uppercase tracking-[0.3em]">Arquitectura</p>
-                                                    <ul className="space-y-4">
-                                                        {architecture.map((arch: string, aIdx: number) => (
-                                                            <li key={aIdx} className="flex items-start gap-4 text-xs text-gray-500 font-bold leading-relaxed border-b border-white/[0.02] pb-2 italic">
-                                                                <span className="material-symbols-outlined text-[10px] text-[#C5A059]/40">layers</span>
-                                                                {arch}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            )}
+                                        {(features.length > 0 || architecture.length > 0) && (
+                                            <div className="grid sm:grid-cols-2 gap-8">
+                                                {features.length > 0 && (
+                                                    <div className="space-y-4">
+                                                        <p className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: GOLD }}>
+                                                            {t.results}
+                                                        </p>
+                                                        <ul className="space-y-3">
+                                                            {features.map((feat: string, fi: number) => (
+                                                                <li key={fi} className="flex items-start gap-3 text-[12px] text-[#7A7872] font-medium leading-relaxed">
+                                                                    <div
+                                                                        className="w-1 h-1 rounded-full mt-2 shrink-0"
+                                                                        style={{ background: GOLD }}
+                                                                    />
+                                                                    {feat}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                                {architecture.length > 0 && (
+                                                    <div className="space-y-4 sm:border-l sm:border-white/5 sm:pl-8">
+                                                        <p className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: GOLD }}>
+                                                            {t.arch}
+                                                        </p>
+                                                        <ul className="space-y-2.5">
+                                                            {architecture.map((arch: string, ai: number) => (
+                                                                <li key={ai} className="flex items-start gap-3 text-[11px] text-[#5A5A54] font-medium leading-relaxed italic">
+                                                                    <span className="material-symbols-outlined text-[11px] mt-0.5" style={{ color: `${GOLD}50` }}>layers</span>
+                                                                    {arch}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Tech stack */}
+                                        <div className="flex flex-wrap gap-2 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                                            {ex.stack.split(' • ').map(tech => (
+                                                <span
+                                                    key={tech}
+                                                    className="px-3 py-1 text-[9px] font-black rounded-full uppercase tracking-widest transition-all duration-200 cursor-default"
+                                                    style={{
+                                                        background: "rgba(255,255,255,0.03)",
+                                                        color: "#5A5A54",
+                                                        border: "1px solid rgba(255,255,255,0.05)",
+                                                    }}
+                                                    onMouseEnter={e => {
+                                                        (e.currentTarget as HTMLElement).style.color = "#C9A84C";
+                                                        (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
+                                                    }}
+                                                    onMouseLeave={e => {
+                                                        (e.currentTarget as HTMLElement).style.color = "#5A5A54";
+                                                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)";
+                                                    }}
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
                                         </div>
                                     </div>
-
-                                    <div className="flex flex-wrap gap-2 pt-10 border-t border-white/5">
-                                        {ex.stack.split(' • ').map(tech => (
-                                            <span key={tech} className="px-4 py-2 bg-white/[0.03] text-gray-500 text-[9px] font-black rounded-full uppercase tracking-widest border border-white/5 hover:text-white hover:border-[#C5A059]/30 transition-all">
-                                                {tech}
-                                            </span>
-                                        ))}
-                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    );
-                })}
+                            </motion.div>
+                        );
+                    })}
+                </div>
             </div>
 
-            <motion.div 
+            {/* ── CTA Footer ──────────────────────────────────────── */}
+            <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="mt-24 md:mt-48 p-8 md:p-20 bg-gradient-to-br from-white/[0.03] to-transparent border border-white/10 rounded-3xl md:rounded-[3rem] text-center space-y-8 md:space-y-10 relative overflow-hidden group shadow-2xl"
+                transition={{ duration: 0.8 }}
+                className="mt-24 md:mt-40 relative rounded-3xl p-10 md:p-16 text-center overflow-hidden"
+                style={{
+                    background: `linear-gradient(135deg, ${GOLD_DIM}, transparent)`,
+                    border: `1px solid ${GOLD_BORDER}`,
+                }}
             >
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C5A059]/5 rounded-full blur-[150px]"></div>
-                <div className="space-y-4 md:space-y-6 relative z-10">
-                    <span className="text-[9px] md:text-[10px] font-black tracking-[0.5em] text-[#C5A059] uppercase block">Oportunidades Estratégicas</span>
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif italic text-white tracking-tighter leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {lang === 'es' ? "¿Listo para escalar su próximo sistema?" : "Ready to scale your next system?"}
+                <div
+                    className="absolute top-0 right-0 pointer-events-none"
+                    style={{
+                        width: 400, height: 400,
+                        background: `radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)`,
+                        filter: "blur(40px)",
+                    }}
+                />
+                <div className="relative z-10 space-y-6">
+                    <span className="text-[10px] font-black uppercase tracking-[0.45em]" style={{ color: GOLD }}>
+                        {t.cta_eyebrow}
+                    </span>
+                    <h2
+                        className="text-3xl md:text-5xl font-serif italic text-[#F8F5F0] tracking-tight leading-tight"
+                        style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                        {t.cta_title}
                     </h2>
-                </div>
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 relative z-10 pt-6 md:pt-10">
-                    <button className="w-full md:w-auto px-8 py-5 md:px-16 md:py-8 bg-[#C5A059] text-black rounded-full font-black tracking-widest uppercase text-[10px] md:text-xs shadow-2xl shadow-[#C5A059]/20 hover:scale-105 active:scale-95 transition-all">
-                        {t_rh.download}
-                    </button>
-                    <div className="flex flex-col items-center md:items-start justify-center text-center md:text-left border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 pb-2 md:pb-0 md:pl-10 w-full md:w-auto">
-                        <span className="text-[9px] md:text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Contacto Ejecutivo</span>
-                        <span className="text-white font-serif italic text-lg md:text-xl break-all px-4 md:px-0">anahi.lozano@consultancy.pro</span>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                        <a
+                            href="/Cv Anahi Betzabe Lozano de Lira.pdf"
+                            target="_blank"
+                            className="flex items-center gap-3 px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-widest text-black transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-[0_8px_30px_rgba(201,168,76,0.3)]"
+                            style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}
+                        >
+                            <span className="material-symbols-outlined text-sm">download</span>
+                            {t.download}
+                        </a>
+                        <a
+                            href="/contact"
+                            className="px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-widest text-[#C8C4BB] transition-all duration-300 hover:text-[#F8F5F0] active:scale-95"
+                            style={{
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                            }}
+                        >
+                            {t.contact}
+                        </a>
                     </div>
                 </div>
             </motion.div>

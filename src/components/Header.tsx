@@ -179,7 +179,7 @@ const Header = () => {
                                         </div>
                                         <div className="flex flex-col min-w-0 pr-2 notranslate" translate="no">
                                             <span className={`font-serif italic leading-none block whitespace-normal ${perspective === 'rh' ? 'text-base' : 'text-[10px] font-black uppercase tracking-[0.2em]'}`} style={perspective === 'rh' ? { fontFamily: "'Playfair Display', serif" } : {}}><span>{link.label}</span></span>
-                                            <span className="text-[7px] md:text-[8px] font-black opacity-40 uppercase tracking-[0.2em] mt-1.5 block">{perspective === 'rh' ? `NODE_0${idx+1}` : `0x${idx}${idx}`}</span>
+                                            <span className="text-[7px] md:text-[8px] font-black opacity-40 uppercase tracking-[0.2em] mt-1.5 block">{perspective === 'rh' ? `${String(idx+1).padStart(2,'0')} ·` : `0x${idx}${idx}`}</span>
                                         </div>
                                     </div>
                                     <span className="material-symbols-outlined text-sm opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all">keyboard_double_arrow_right</span>
