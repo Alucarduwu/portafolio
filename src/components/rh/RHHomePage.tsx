@@ -15,14 +15,14 @@ const RHHomePage = () => {
             eyebrow: "Ingeniería de Software · Soluciones Empresariales",
             role: "Desarrolladora Fullstack",
             tagline: "Arquitecto sistemas que escalan. Resuelvo problemas que importan.",
-            about: "Ingeniera en TIC con especialidad en Aplicaciones Avanzadas. Mi enfoque está en la intersección de la arquitectura robusta y el impacto institucional real — construyo software que los equipos de negocio pueden confiar.",
+            about: "Ingeniera en TIC con especialidad en Aplicaciones Avanzadas. Hoy construyo y opero en producción la plataforma de lealtad de Voraa, con tarjetas digitales en Apple y Google Wallet para restaurantes. Me enfoco en arquitectura sólida e impacto real: software en el que un negocio puede confiar.",
             experience_btn: "Ver Trayectoria",
             contact_btn: "Iniciar Conversación",
             availability: "Disponible para nuevas oportunidades",
             metrics: [
                 { label: "Años activa", value: "2+", sub: "en desarrollo profesional" },
                 { label: "Proyectos", value: "10+", sub: "soluciones implementadas" },
-                { label: "Nivel", value: "Senior Jr.", sub: "Fullstack · Cloud · SAP" }
+                { label: "En producción", value: "Voraa", sub: "Apple y Google Wallet" }
             ],
             expertise: [
                 { icon: "layers", area: "Arquitectura de Software", detail: "Diseño de sistemas distribuidos, APIs REST/GraphQL, patrones Clean Architecture." },
@@ -35,14 +35,14 @@ const RHHomePage = () => {
             eyebrow: "Software Engineering · Enterprise Solutions",
             role: "Fullstack Software Developer",
             tagline: "I architect systems that scale. I solve problems that matter.",
-            about: "ICT Engineer specialized in Advanced Applications. My focus is at the intersection of solid architecture and real institutional impact — I build software that business teams can trust.",
+            about: "ICT Engineer specialized in Advanced Applications. Today I build and run in production Voraa's loyalty platform, with digital cards in Apple and Google Wallet for restaurants. I focus on solid architecture and real impact: software a business can trust.",
             experience_btn: "View Trajectory",
             contact_btn: "Start a Conversation",
             availability: "Open to new opportunities",
             metrics: [
                 { label: "Years active", value: "2+", sub: "in professional development" },
                 { label: "Projects", value: "10+", sub: "implemented solutions" },
-                { label: "Level", value: "Sr. Junior", sub: "Fullstack · Cloud · SAP" }
+                { label: "In production", value: "Voraa", sub: "Apple & Google Wallet" }
             ],
             expertise: [
                 { icon: "layers", area: "Software Architecture", detail: "Distributed systems, REST/GraphQL APIs, Clean Architecture patterns." },

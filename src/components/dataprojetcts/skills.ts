@@ -26,7 +26,19 @@ import {
   SiFigma,
   SiGithub,
   SiCypress,
-  SiTestinglibrary
+  SiTestinglibrary,
+  SiAstro,
+  SiVite,
+  SiFlutter,
+  SiDart,
+  SiPostgresql,
+  SiSupabase,
+  SiVitest,
+  SiJest,
+  SiVercel,
+  SiCloudflare,
+  SiRailway,
+  SiDocker
 } from "react-icons/si";
 
 export const skillSections = [
@@ -38,6 +50,8 @@ export const skillSections = [
       { name: "React", icon: SiReact },
       { name: "Vue.js", icon: SiVuedotjs },
       { name: "Next.js", icon: SiNextdotjs },
+      { name: "Astro", icon: SiAstro },
+      { name: "Vite", icon: SiVite },
       { name: "Tailwind CSS", icon: SiTailwindcss },
       { name: "Bootstrap", icon: SiBootstrap },
       { name: "HTML5", icon: SiHtml5 },
@@ -64,6 +78,9 @@ export const skillSections = [
     titleEs: "Desarrollo móvil",
     titleEn: "Mobile Development",
     skills: [
+      { name: "Flutter", icon: SiFlutter },
+      { name: "Dart", icon: SiDart },
+      { name: "React Native", icon: SiReact },
       { name: "Android", icon: SiAndroid },
       { name: "Kotlin", icon: SiKotlin },
     ],
@@ -73,6 +90,8 @@ export const skillSections = [
     titleEs: "Bases de datos",
     titleEn: "Databases",
     skills: [
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Supabase", icon: SiSupabase },
       { name: "MySQL", icon: SiMysql },
       { name: "MongoDB", icon: SiMongodb },
       { name: "Firebase", icon: SiFirebase },
@@ -80,9 +99,22 @@ export const skillSections = [
   },
 
   {
+    titleEs: "Nube y despliegue",
+    titleEn: "Cloud & Deployment",
+    skills: [
+      { name: "Vercel", icon: SiVercel },
+      { name: "Cloudflare", icon: SiCloudflare },
+      { name: "Railway", icon: SiRailway },
+      { name: "Docker", icon: SiDocker },
+    ],
+  },
+
+  {
   titleEs: "Testing",
   titleEn: "Testing",
   skills: [
+    { name: "Vitest", icon: SiVitest },
+    { name: "Jest", icon: SiJest },
     { name: "Cypress", icon: SiCypress },
     { name: "Playwright", icon: SiTestinglibrary },
     { name: "PyTest", icon: SiPython }

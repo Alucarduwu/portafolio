@@ -31,7 +31,39 @@ import snack4 from "../../assets/projects/snackify/4.png";
 import snack5 from "../../assets/projects/snackify/5.png";
 import snack6 from "../../assets/projects/snackify/image.png";
 
+import voraa1 from "../../assets/projects/voraa/1.png";
+import voraa2 from "../../assets/projects/voraa/2.png";
+
 export const projects = [
+  {
+    titleEs: "Voraa · Plataforma de lealtad para restaurantes",
+    titleEn: "Voraa · Loyalty Platform for Restaurants",
+    stack: "TypeScript • React • Next.js • PostgreSQL • Apple Wallet • Google Wallet",
+    descriptionEs: "Producto en producción. Un restaurante crea su programa de lealtad en un minuto, y sus clientes reciben una tarjeta digital en Apple Wallet o Google Wallet que se actualiza sola con cada visita.",
+    descriptionEn: "Live in production. A restaurant sets up its loyalty program in a minute, and its customers get a digital card in Apple Wallet or Google Wallet that updates itself on every visit.",
+    problemEs: "Las tarjetas de sellos de papel se pierden y no dejan datos: el restaurante no sabe quién vuelve, ni cuándo, ni por qué deja de venir.",
+    problemEn: "Paper stamp cards get lost and leave no data: the restaurant can't tell who comes back, when, or why they stop coming.",
+    solutionEs: "Tarjetas en la cartera del teléfono, un portal donde el dueño arma su programa sin ayuda, una caja para que el personal selle con el escáner y un panel con el embudo de clientes y reportes automáticos.",
+    solutionEn: "Cards in the phone's wallet, a portal where owners build their program on their own, a till app so staff stamp with a scanner, and a dashboard with the customer funnel and automated reports.",
+    features_es: [
+      "Pases de Apple y Google Wallet que se actualizan en tiempo real",
+      "Portal de socios con acceso por WhatsApp, sin contraseñas",
+      "Caja (PWA) con escáner para sellar desde el mostrador",
+      "Panel de métricas: embudo, periodos de prueba y reportes semanales",
+      "Más de 1,200 pruebas automatizadas"
+    ],
+    features_en: [
+      "Apple and Google Wallet passes that update in real time",
+      "Partner portal with WhatsApp sign-in, no passwords",
+      "Till app (PWA) with a scanner to stamp at the counter",
+      "Metrics dashboard: funnel, trial periods and weekly reports",
+      "Over 1,200 automated tests"
+    ],
+    images: [voraa1, voraa2],
+    github: "",
+    demo: "https://voraa.io/restaurantes/",
+    category: "empresarial"
+  },
   {
     titleEs: "App móvil de gestión personal",
     titleEn: "Personal Management Mobile App",

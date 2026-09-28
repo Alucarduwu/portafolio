@@ -22,6 +22,47 @@ export interface ExperienceItem {
 
 export const experience: ExperienceItem[] = [
   {
+    id: "exp-00",
+    titleEs: "Software Engineer – Plataforma de Lealtad",
+    titleEn: "Software Engineer – Loyalty Platform",
+    companyEs: "Voraa",
+    companyEn: "Voraa",
+    periodEs: "2026 – Actualidad",
+    periodEn: "2026 – Present",
+    descriptionEs:
+      "Diseño, construyo y opero en producción la plataforma de lealtad de Voraa: tarjetas digitales en Apple y Google Wallet para restaurantes, el portal donde los dueños crean su programa y el panel de operación.",
+    descriptionEn:
+      "I design, build and run in production Voraa's loyalty platform: digital cards in Apple and Google Wallet for restaurants, the portal where owners create their program, and the operations dashboard.",
+    stack: "TypeScript • React • Next.js • PostgreSQL • Cloudflare • Railway",
+    icon: Briefcase,
+    details: {
+      featuresEs: [
+        "Emisión y actualización en tiempo real de pases de Apple Wallet y Google Wallet.",
+        "Portal de socios en React 19 donde el dueño crea su programa en minutos, con acceso por WhatsApp.",
+        "Caja (PWA) con escáner para que el personal selle tarjetas desde el mostrador.",
+        "Panel de operación con embudo de clientes, periodos de prueba y reportes semanales automáticos."
+      ],
+      featuresEn: [
+        "Real-time issuing and updating of Apple Wallet and Google Wallet passes.",
+        "React 19 partner portal where owners create their program in minutes, with WhatsApp sign-in.",
+        "Till app (PWA) with a scanner so staff can stamp cards at the counter.",
+        "Operations dashboard with the customer funnel, trial periods and automated weekly reports."
+      ],
+      architectureEs: [
+        "Frontend en React + Vite sobre Cloudflare Pages; backend en Next.js sobre Railway.",
+        "PostgreSQL (Supabase) con migraciones versionadas y permisos por rol.",
+        "Tareas programadas para vencimientos, etapas del embudo y avisos al dueño.",
+        "Más de 1,200 pruebas unitarias y end-to-end con Vitest y Playwright."
+      ],
+      architectureEn: [
+        "React + Vite frontend on Cloudflare Pages; Next.js backend on Railway.",
+        "PostgreSQL (Supabase) with versioned migrations and role-based permissions.",
+        "Scheduled jobs for expirations, funnel stages and owner notifications.",
+        "Over 1,200 unit and end-to-end tests with Vitest and Playwright."
+      ]
+    }
+  },
+  {
     id: "exp-01",
     titleEs: "Líder de Arquitectura & Full Stack – Sistema de Gobernanza Empresarial",
     titleEn: "Lead Architect & Full Stack Developer – Enterprise Governance System",

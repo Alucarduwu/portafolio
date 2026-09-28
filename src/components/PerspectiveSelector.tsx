@@ -58,10 +58,28 @@ const PerspectiveSelector = () => {
              <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-purple-500"></div>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter leading-none break-words max-w-full">
-            HOLA :) SOY <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400 block sm:inline mt-2 sm:mt-0">ANAHÍ LOZANO</span>
+            HOLA :) SOY{" "}
+            {/* El degradado sólo pinta dentro de la caja del texto; con la cursiva, la
+                última letra se inclina fuera de esa caja y su borde quedaba invisible
+                («LOZANO» salía «LOZANC»). El padding a la derecha agranda la caja lo
+                justo para cubrir la inclinación, y el margen negativo lo compensa. */}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400 block sm:inline-block pr-[0.18em] sm:-mr-[0.18em] mt-2 sm:mt-0">ANAHÍ LOZANO</span>
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-            Soy desarrolladora Fullstack. ¿Qué experiencia de usuario necesitas hoy?
+          <p className="text-gray-300 text-lg md:text-xl font-medium max-w-2xl mx-auto">
+            Desarrolladora Full Stack. Construyo apps web y móviles que llegan a producción.
+          </p>
+          <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">
+            Hoy: la plataforma de lealtad de{" "}
+            <a
+              href="https://voraa.io/restaurantes/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="text-emerald-400 font-semibold underline decoration-emerald-400/40 underline-offset-4 hover:decoration-emerald-400"
+            >
+              Voraa
+            </a>
+            , con tarjetas en Apple y Google Wallet.
           </p>
         </motion.div>
 
