@@ -614,12 +614,55 @@
 
 /* ── Página única ─────────────────────────────────────────────── */
 .one {
-  --one-ink: #0b0a10;
-  --one-paper: #f4f1ea;
-  --one-accent: #b69cff;
-  --one-accent-2: #ff9ecf;
+  /* Cuaderno retro: tinta morada casi negra sobre papel crema, pasteles de sticker. */
+  --ink: #1d1530;
+  --paper: #fff8ee;
+  --lila: #c9b6ff;
+  --rosa: #ffb3d6;
+  --menta: #a8ecd0;
+  --mante: #ffe48a;
+  --cielo: #aad8ff;
+  --one-ink: var(--ink);
+  --one-paper: #ffffff;
+  --one-accent: #7a5cf0;
+  --one-accent-2: #e2468f;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(29, 21, 48, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 21, 48, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  font-family: 'Nunito', 'Inter', sans-serif;
 }
-html:has(.one), html:has(.one) body { background: #0b0a10; }
+html:has(.one), html:has(.one) body { background: #fff8ee; }
+@layer components {
+.one .display { font-family: 'Fredoka', 'Nunito', sans-serif; }
+.one .stk { background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); }
+.one .stk-hover { transition: transform .18s ease, box-shadow .18s ease; }
+.one .stk-hover:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+.one .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border: 2.5px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink);
+  padding: .8rem 1.35rem; font-weight: 800; color: var(--ink);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.one .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.one .btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+.one .btn-sm { padding: .35rem .8rem; border-width: 2px; border-radius: 10px; font-size: 12px; box-shadow: 2px 2px 0 var(--ink); }
+.one .tag { display: inline-flex; align-items: center; gap: .35rem; border: 2px solid var(--ink); border-radius: 999px; padding: .2rem .75rem; font-size: 12.5px; font-weight: 800; background: #fff; }
+.one .win-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  border-bottom: 2.5px solid var(--ink); padding: .5rem .85rem; border-radius: 15px 15px 0 0;
+  font-family: 'Pixelify Sans', monospace; font-size: 14px;
+}
+.one .hl { background: linear-gradient(transparent 58%, var(--rosa) 58%, var(--rosa) 92%, transparent 92%); padding: 0 .08em; }
+.one .hl-lila { background: linear-gradient(transparent 58%, var(--lila) 58%, var(--lila) 92%, transparent 92%); padding: 0 .08em; }
+.one .washi {
+  position: absolute; width: 96px; height: 28px; z-index: 5; opacity: .92;
+  background: repeating-linear-gradient(45deg, rgba(255,179,214,.95) 0 9px, rgba(255,255,255,.75) 9px 18px);
+  border-left: 1px dashed rgba(29,21,48,.25); border-right: 1px dashed rgba(29,21,48,.25);
+}
+}
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
@@ -659,3 +702,5 @@ html.lenis, html.lenis body { height: auto; }
   .kawaii-petal { display: none; }
   .kawaii-blink, .kawaii-caret, .kawaii-press { animation: none; }
 }
+
+@keyframes wiggle { 0%, 60%, 100% { transform: rotate(0deg); } 10%, 30% { transform: rotate(14deg); } 20%, 40% { transform: rotate(-8deg); } }

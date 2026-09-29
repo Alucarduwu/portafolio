@@ -43,7 +43,7 @@ export const PixelCat = ({ onPet, lang }: { onPet: () => void; lang: string }) =
             <AnimatePresence>
                 {talk && (
                     <motion.span initial={{ opacity: 0, y: 4, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }}
-                        className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--one-paper)] px-2 py-0.5 text-[12px] text-black" style={PIXEL}>
+                        className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border-2 border-[var(--ink)] bg-white px-2 py-0.5 text-[12px] text-[var(--ink)]" style={PIXEL}>
                         nya~ ♡
                     </motion.span>
                 )}
@@ -70,15 +70,16 @@ export const Sakura = () => (
 );
 
 // ── Barra de nivel: sube conforme bajas por la página ──
+// Columna delgada en el margen izquierdo: en horizontal tapaba botones del contenido.
 export const LevelHud = ({ level, total, label }: { level: number; total: number; label: string }) => (
-    <div className="fixed bottom-4 left-4 z-[100] hidden items-center gap-2.5 rounded-lg border border-white/10 bg-[#0d0c14]/85 px-3 py-2 backdrop-blur md:flex" style={PIXEL}>
-        <span className="text-[13px] text-[var(--one-accent)]">LV.{level}</span>
-        <span className="flex gap-[3px]">
+    <div title={label} className="fixed left-3 top-1/2 z-[100] hidden -translate-y-1/2 flex-col items-center gap-1.5 rounded-xl border-[2.5px] border-[var(--ink)] bg-white px-1.5 py-2.5 shadow-[3px_3px_0_var(--ink)] xl:flex" style={PIXEL}>
+        <span className="text-[11px] leading-none text-[var(--one-accent)]">LV</span>
+        <span className="text-[15px] leading-none">{level}</span>
+        <span className="mt-1 flex flex-col-reverse gap-[3px]">
             {Array.from({ length: total }, (_, i) => (
-                <span key={i} className={`h-2.5 w-2.5 transition-colors duration-500 ${i < level ? "bg-[var(--one-accent)]" : "bg-white/10"}`} />
+                <span key={i} className={`h-3 w-3 border-2 border-[var(--ink)] transition-colors duration-500 ${i < level ? "bg-[var(--rosa)]" : "bg-white"}`} />
             ))}
         </span>
-        <span className="text-[12px] text-white/55">{label}</span>
     </div>
 );
 
@@ -91,12 +92,12 @@ export const AchievementToast = ({ items, lang }: { items: Achievement[]; lang: 
             {items.map(a => (
                 <motion.div key={a.id} initial={{ opacity: 0, x: 40, scale: 0.95 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={{ opacity: 0, x: 40 }}
                     transition={{ type: "spring", stiffness: 300, damping: 26 }}
-                    className="flex items-center gap-3 rounded-xl border border-[var(--one-accent)]/40 bg-[#15121f]/95 py-2.5 pl-2.5 pr-5 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--one-accent)] to-[var(--one-accent-2)] text-lg">🏆</span>
+                    className="flex items-center gap-3 rounded-2xl border-[2.5px] border-[var(--ink)] bg-white py-2.5 pl-2.5 pr-5 text-[var(--ink)] shadow-[4px_4px_0_var(--ink)]">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-[var(--ink)] bg-[var(--mante)] text-lg">🏆</span>
                     <span>
                         <span className="block text-[11px] uppercase tracking-wider text-[var(--one-accent)]" style={PIXEL}>{lang === "es" ? "Logro desbloqueado" : "Achievement unlocked"}</span>
                         <span className="block text-[14px] font-semibold">{a.title}</span>
-                        <span className="block text-[12px] text-white/50">{a.sub}</span>
+                        <span className="block text-[12px] text-[var(--ink)]/60">{a.sub}</span>
                     </span>
                 </motion.div>
             ))}

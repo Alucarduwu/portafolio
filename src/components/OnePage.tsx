@@ -1,11 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import Lenis from "lenis";
 import { GlobalContext } from "../context/GlobalContext";
 import { CONTACT_CONFIG } from "../config";
 import { useGithubProjects } from "../hooks/useGithubProjects";
 import { certificates } from "./dataprojetcts/certificates";
-import voraaSite from "../assets/projects/voraa/1.png";
 import voraaCards from "../assets/projects/voraa/3.png";
 import booskha from "../assets/projects/buskq/booskha.png";
 import { PIXEL, PixelCat, Sakura, LevelHud, AchievementToast, useAchievements, useKonami } from "./Kawaii";
@@ -23,7 +22,6 @@ export const LEGACY_ROUTES: Record<string, SectionId> = {
 };
 
 const CV = "/Anahi_Lozano_CV_2026.pdf";
-const SERIF = { fontFamily: "'Instrument Serif', 'Playfair Display', serif" };
 
 const copy = {
     es: {
@@ -277,10 +275,24 @@ const reveal = {
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
 };
 
-const Kicker = ({ children, n }: { children: React.ReactNode; n?: number }) => (
-    <p className="flex items-center gap-2.5 text-[15px] text-[var(--one-accent)]" style={PIXEL}>
-        <span className="text-[var(--one-accent-2)]">★</span>{n ? `STAGE 0${n} · ` : ""}{children}
-    </p>
+// Etiqueta de sección: sticker con letra pixel, como pantalla de nivel.
+const Kicker = ({ children, n, color = "var(--lila)" }: { children: React.ReactNode; n?: number; color?: string }) => (
+    <span className="tag -rotate-1 text-[14px]" style={{ ...PIXEL, background: color }}>
+        ★ {n ? `STAGE 0${n} · ` : ""}{children}
+    </span>
+);
+
+// Ventanita de sistema viejito: barra con título pixel y botones _ □ ×.
+const Win = ({ title, color, children, className = "" }: { title: React.ReactNode; color: string; children: React.ReactNode; className?: string }) => (
+    <div className={`stk overflow-hidden ${className}`}>
+        <div className="win-bar" style={{ background: color }}>
+            <span className="truncate">{title}</span>
+            <span className="flex shrink-0 gap-1.5" aria-hidden>
+                {["_", "□", "×"].map(b => <span key={b} className="flex h-5 w-5 items-center justify-center rounded-[5px] border-2 border-[var(--ink)] bg-white text-[11px] leading-none">{b}</span>)}
+            </span>
+        </div>
+        {children}
+    </div>
 );
 
 const Portrait = () => {
@@ -288,11 +300,15 @@ const Portrait = () => {
     return ok ? (
         <img src="/anahi.jpg" alt="Anahí Lozano" onError={() => setOk(false)} className="h-full w-full object-cover" />
     ) : (
-        <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_30%_20%,#3b2a6b,transparent_60%),radial-gradient(circle_at_80%_90%,#5b2346,transparent_55%)] bg-[#141220]">
-            <span className="select-none text-[140px] leading-none text-[var(--one-paper)] italic" style={SERIF}>AL</span>
+        <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[var(--lila)]"
+            style={{ backgroundImage: "radial-gradient(rgba(29,21,48,.14) 1.5px, transparent 1.5px)", backgroundSize: "16px 16px" }}>
+            <span className="display select-none text-[120px] font-bold leading-none text-[var(--ink)]">AL</span>
+            <span className="mt-2 text-[20px]" style={PIXEL}>(◕‿◕)♡</span>
         </div>
     );
 };
+
+const PASTELS = ["var(--lila)", "var(--menta)", "var(--mante)", "var(--rosa)", "var(--cielo)"];
 
 const OnePage = () => {
     const { lang, setLang } = useContext(GlobalContext);
@@ -316,15 +332,9 @@ const OnePage = () => {
         setParty(true);
         setTimeout(() => setParty(false), 7000);
     });
-    const [scrolled, setScrolled] = useState(false);
 
     const { scrollYProgress } = useScroll();
     const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
-
-    // Luz que sigue al cursor en el hero.
-    const mx = useMotionValue(0.5), my = useMotionValue(0.3);
-    const sx = useSpring(mx, { stiffness: 40, damping: 20 }), sy = useSpring(my, { stiffness: 40, damping: 20 });
-    const glowX = useTransform(sx, v => `${v * 100}%`), glowY = useTransform(sy, v => `${v * 100}%`);
 
     useEffect(() => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -343,10 +353,7 @@ const OnePage = () => {
             entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id as SectionId); });
         }, { rootMargin: "-45% 0px -50% 0px" });
         SECTIONS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
-        const onScroll = () => setScrolled(window.scrollY > 24);
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-        return () => { obs.disconnect(); window.removeEventListener("scroll", onScroll); };
+        return () => obs.disconnect();
     }, []);
 
     const go = (id: SectionId) => {
@@ -379,39 +386,38 @@ const OnePage = () => {
     };
 
     const ownProjects = projects.filter(p => !SKIP_IN_GRID.some(s => `${p.title} ${p.github}`.toLowerCase().includes(s)));
+    const H2 = "display mt-5 text-[40px] font-bold leading-[1.05] sm:text-[60px]";
 
     return (
-        <div className="one min-h-screen bg-[var(--one-ink)] text-[var(--one-paper)] antialiased selection:bg-[var(--one-accent)] selection:text-black" style={{ fontFamily: "'Inter', sans-serif" }}>
-            <motion.div className="fixed inset-x-0 top-0 z-[120] h-[2px] origin-left bg-gradient-to-r from-[var(--one-accent)] to-[var(--one-accent-2)]" style={{ scaleX: progress }} />
+        <div className="one min-h-screen overflow-x-clip antialiased selection:bg-[var(--rosa)]">
+            <motion.div className="fixed inset-x-0 top-0 z-[120] h-[5px] origin-left bg-[var(--rosa)]" style={{ scaleX: progress }} />
 
             {/* ── Barra ── */}
             <header className="fixed inset-x-0 top-0 z-[110] px-4 pt-4">
-                <nav className={`mx-auto flex max-w-[1200px] items-center justify-between rounded-full border px-3 py-2 transition-all duration-500 ${scrolled ? "border-white/10 bg-[#0d0c14]/75 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl" : "border-transparent bg-transparent"}`}>
-                    <button onClick={() => go("inicio")} className="flex items-center gap-2.5 pl-2 pr-3">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[var(--one-accent)] to-[var(--one-accent-2)] text-[13px] font-bold text-black">A</span>
-                        <span className="text-[15px] font-semibold tracking-tight">Anahí Lozano</span>
+                <nav className="stk mx-auto flex max-w-[1200px] items-center justify-between !rounded-2xl px-2.5 py-2">
+                    <button onClick={() => go("inicio")} className="flex items-center gap-2.5 pl-1 pr-3">
+                        <span className="display flex h-9 w-9 items-center justify-center rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--rosa)] text-[15px] font-bold">A</span>
+                        <span className="display text-[17px] font-semibold">Anahí Lozano</span>
                     </button>
 
                     <ul className="hidden items-center gap-1 lg:flex">
                         {SECTIONS.slice(1).map(id => (
                             <li key={id} className="relative">
-                                <button onClick={() => go(id)} className={`relative z-10 rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${active === id ? "text-black" : "text-white/65 hover:text-white"}`}>
+                                <button onClick={() => go(id)} className="relative z-10 rounded-xl px-3.5 py-1.5 text-[14px] font-bold">
                                     {t.nav[id]}
                                 </button>
                                 {active === id && (
-                                    <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-[var(--one-paper)]" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+                                    <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-xl border-2 border-[var(--ink)] bg-[var(--mante)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />
                                 )}
                             </li>
                         ))}
                     </ul>
 
                     <div className="flex items-center gap-2">
-                        <button onClick={() => setLang(lang === "es" ? "en" : "es")} className="rounded-full border border-white/10 px-3 py-2 text-[12px] font-semibold text-white/75 hover:text-white">
-                            {lang === "es" ? "EN" : "ES"}
-                        </button>
-                        <a href={CV} target="_blank" rel="noopener noreferrer" className="hidden rounded-full bg-[var(--one-paper)] px-4 py-2 text-[13px] font-semibold text-black transition-transform hover:scale-[1.04] sm:inline-flex">{t.cv} ↓</a>
-                        <button onClick={() => setMenuOpen(o => !o)} aria-label="Menú" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 lg:hidden">
-                            <span className="material-symbols-outlined text-[20px]">{menuOpen ? "close" : "menu"}</span>
+                        <button onClick={() => setLang(lang === "es" ? "en" : "es")} className="btn btn-sm bg-white">{lang === "es" ? "EN" : "ES"}</button>
+                        <a href={CV} target="_blank" rel="noopener noreferrer" className="btn btn-sm hidden bg-[var(--menta)] sm:inline-flex">{t.cv} ↓</a>
+                        <button onClick={() => setMenuOpen(o => !o)} aria-label="Menú" className="btn btn-sm bg-white lg:hidden">
+                            <span className="material-symbols-outlined text-[18px]">{menuOpen ? "close" : "menu"}</span>
                         </button>
                     </div>
                 </nav>
@@ -419,136 +425,137 @@ const OnePage = () => {
                 <AnimatePresence>
                     {menuOpen && (
                         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                            className="mx-auto mt-2 max-w-[1200px] rounded-3xl border border-white/10 bg-[#0d0c14]/95 p-3 backdrop-blur-xl lg:hidden">
+                            className="stk mx-auto mt-3 max-w-[1200px] p-3 lg:hidden">
                             {SECTIONS.slice(1).map((id, i) => (
                                 <motion.button key={id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.035 }}
-                                    onClick={() => go(id)} className={`flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-left text-lg ${active === id ? "bg-white/10" : ""}`}>
-                                    <span style={SERIF} className="text-2xl italic">{t.nav[id]}</span>
-                                    <span className="text-[11px] text-white/40">0{i + 1}</span>
+                                    onClick={() => go(id)} className={`flex w-full items-center justify-between rounded-xl border-2 px-4 py-3 text-left ${active === id ? "border-[var(--ink)] bg-[var(--mante)]" : "border-transparent"}`}>
+                                    <span className="display text-2xl font-semibold">{t.nav[id]}</span>
+                                    <span className="text-[13px]" style={PIXEL}>0{i + 1}</span>
                                 </motion.button>
                             ))}
-                            <a href={CV} target="_blank" rel="noopener noreferrer" className="mt-2 flex w-full justify-center rounded-2xl bg-[var(--one-paper)] py-3.5 text-sm font-semibold text-black">{t.ctaCv}</a>
+                            <a href={CV} target="_blank" rel="noopener noreferrer" className="btn mt-2 w-full bg-[var(--menta)]">{t.ctaCv}</a>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </header>
 
             {/* ── Inicio ── */}
-            <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-20 pt-28 sm:px-8"
-                onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); mx.set((e.clientX - r.left) / r.width); my.set((e.clientY - r.top) / r.height); }}>
-                <motion.div className="pointer-events-none absolute h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[120px]"
-                    style={{ left: glowX, top: glowY, background: "radial-gradient(circle, rgba(182,156,255,0.35), rgba(255,158,207,0.12) 45%, transparent 70%)" }} />
-                <div className="pointer-events-none absolute inset-0 opacity-[0.035]" style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
+            <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-24 pt-32 sm:px-8">
                 <Sakura />
-
-                <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 lg:grid-cols-[1.25fr_0.75fr]">
+                <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
                     <div>
-                        <motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-                            className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/[0.07] px-3.5 py-1.5 text-[12px] font-medium text-emerald-300">
-                            <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" /></span>
+                        <motion.span initial={{ opacity: 0, y: 10, rotate: -4 }} animate={{ opacity: 1, y: 0, rotate: -2 }} transition={{ duration: 0.5 }}
+                            className="tag bg-[var(--menta)] text-[13px]">
+                            <span className="relative flex h-2.5 w-2.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" /><span className="relative inline-flex h-2.5 w-2.5 rounded-full border border-[var(--ink)] bg-emerald-400" /></span>
                             {t.available}
                         </motion.span>
 
-                        <h1 className="mt-5 leading-[0.92] tracking-[-0.02em]">
-                            <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.05 }}
-                                className="block text-[22px] font-medium text-white/55 sm:text-[26px]">{t.hello}</motion.span>
+                        <h1 className="display mt-6 font-bold leading-[0.95]">
+                            <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
+                                className="block text-[24px] font-semibold sm:text-[28px]">{t.hello} <span className="inline-block origin-[70%_70%] animate-[wiggle_2.4s_ease-in-out_infinite]">👋</span></motion.span>
                             {["Anahí", "Lozano"].map((w, i) => (
-                                <span key={w} className="block overflow-hidden pb-2">
-                                    <motion.span initial={{ y: "105%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                                        className={`block text-[76px] sm:text-[112px] lg:text-[128px] ${i ? "italic bg-gradient-to-r from-[var(--one-accent)] via-[#d9c8ff] to-[var(--one-accent-2)] bg-clip-text text-transparent" : ""}`} style={SERIF}>
-                                        {w}
-                                    </motion.span>
-                                </span>
+                                <motion.span key={w} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 140, damping: 14, delay: 0.15 + i * 0.12 }}
+                                    className="block text-[78px] sm:text-[112px] lg:text-[128px]">
+                                    <span className={i ? "hl" : ""}>{w}</span>{i === 1 && <span className="ml-2 inline-block -translate-y-10 rotate-12 text-[40px] text-[var(--one-accent)]">✦</span>}
+                                </motion.span>
                             ))}
                         </h1>
 
-                        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.45 }}>
-                            <p className="mt-4 text-xl font-semibold sm:text-2xl">{t.role}<span className="kawaii-caret ml-1.5 inline-block h-[0.85em] w-[3px] translate-y-[3px] bg-[var(--one-accent)]" /></p>
-                            <p className="mt-3 max-w-[560px] text-[17px] leading-relaxed text-white/65 sm:text-lg">{t.heroLine}</p>
+                        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.4 }}>
+                            <p className="display mt-5 text-2xl font-semibold sm:text-[28px]">{t.role}<span className="kawaii-caret ml-1.5 inline-block h-[0.85em] w-[4px] translate-y-[3px] bg-[var(--one-accent)]" /></p>
+                            <p className="mt-3 max-w-[560px] text-[18px] font-semibold leading-relaxed text-[var(--ink)]/70">{t.heroLine}</p>
                             <div className="mt-6 flex flex-wrap gap-2">
-                                {t.chips.map(c => <span key={c} className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] text-white/70">{c}</span>)}
+                                {t.chips.map((c, i) => <span key={c} className="tag" style={{ background: PASTELS[i + 2] }}>{c}</span>)}
                             </div>
-                            <div className="mt-9 flex flex-wrap items-center gap-3">
-                                <button onClick={() => go("contacto")} className="group inline-flex items-center gap-2 rounded-full bg-[var(--one-paper)] px-7 py-4 text-[15px] font-semibold text-black transition-transform hover:scale-[1.03]">
-                                    {t.ctaWork}<span className="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+                            <div className="mt-9 flex flex-wrap items-center gap-3.5">
+                                <button onClick={() => go("contacto")} className="btn bg-[var(--rosa)] text-[16px]">
+                                    {t.ctaWork}<span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                                 </button>
-                                <a href={CV} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-4 text-[15px] font-semibold transition-colors hover:border-white/40">
+                                <a href={CV} target="_blank" rel="noopener noreferrer" className="btn bg-white text-[16px]">
                                     <span className="material-symbols-outlined text-[18px]">download</span>{t.ctaCv}
                                 </a>
                             </div>
                         </motion.div>
                     </div>
 
-                    <motion.div initial={{ opacity: 0, scale: 0.94, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative mx-auto w-full max-w-[380px]">
-                        <div className="absolute -top-[48px] right-10 z-10"><PixelCat onPet={petCat} lang={L} /></div>
-                        <div className="aspect-[4/5] overflow-hidden rounded-[32px] border border-white/10 shadow-[0_40px_120px_rgba(0,0,0,0.6)]">
-                            <Portrait />
+                    {/* Polaroid con cinta washi y el gatito encima */}
+                    <motion.div initial={{ opacity: 0, rotate: -8, y: 30 }} animate={{ opacity: 1, rotate: 3, y: 0 }} transition={{ type: "spring", stiffness: 90, damping: 14, delay: 0.25 }}
+                        className="relative mx-auto w-full max-w-[270px] sm:max-w-[360px]">
+                        <span className="washi -left-6 top-3 -rotate-[28deg]" />
+                        <span className="washi -right-6 top-3 rotate-[30deg]" style={{ background: "repeating-linear-gradient(45deg, rgba(168,236,208,.95) 0 9px, rgba(255,255,255,.75) 9px 18px)" }} />
+                        <div className="absolute -top-[46px] left-8 z-10"><PixelCat onPet={petCat} lang={L} /></div>
+                        <div className="stk bg-white p-3.5 pb-14">
+                            <div className="aspect-[4/5] overflow-hidden rounded-[10px] border-[2.5px] border-[var(--ink)]">
+                                <Portrait />
+                            </div>
+                            <p className="absolute bottom-4 left-0 right-0 text-center text-[17px]" style={PIXEL}>yo_2026.png ✌</p>
                         </div>
-                        <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -left-6 top-10 rounded-2xl border border-white/10 bg-[#15131f]/90 px-4 py-3 text-[13px] font-medium shadow-xl backdrop-blur sm:-left-12">
-                            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400" />{t.badgeA}
-                        </motion.div>
-                        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -right-4 bottom-12 rounded-2xl border border-white/10 bg-[#15131f]/90 px-4 py-3 text-[13px] font-medium shadow-xl backdrop-blur sm:-right-10">
-                            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-[var(--one-accent)]" />{t.badgeB}
-                        </motion.div>
+                        <motion.div animate={{ y: [0, -7, 0], rotate: [-6, -4, -6] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="tag absolute -left-6 bottom-[13%] bg-[var(--mante)] sm:-left-12 sm:bottom-[26%] px-3 py-1.5 text-[13px] shadow-[3px_3px_0_var(--ink)]">✦ {t.badgeA}</motion.div>
+                        <motion.div animate={{ y: [0, 7, 0], rotate: [5, 7, 5] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="tag absolute -right-4 top-[14%] bg-[var(--cielo)] sm:-right-8 px-3 py-1.5 text-[13px] shadow-[3px_3px_0_var(--ink)]">⌨ {t.badgeB}</motion.div>
                     </motion.div>
                 </div>
 
                 <motion.button onClick={() => go("sobre-mi")} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-                    className="kawaii-press absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[15px] text-white/70 sm:flex" style={PIXEL}>
+                    className="kawaii-press absolute bottom-7 left-1/2 hidden -translate-x-1/2 text-[17px] sm:block" style={PIXEL}>
                     {t.scroll}
-                    <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.6, repeat: Infinity }} className="material-symbols-outlined text-[18px]">south</motion.span>
                 </motion.button>
             </section>
 
-            {/* ── Cifras en movimiento ── */}
-            <div className="relative overflow-hidden border-y border-white/[0.07] py-7">
-                <div className="one-marquee flex w-max gap-14">
+            {/* ── Cinta de cifras ── */}
+            <div className="relative -mx-4 -rotate-[1.2deg] overflow-hidden border-y-[2.5px] border-[var(--ink)] bg-[var(--mante)] py-4">
+                <div className="one-marquee flex w-max gap-10">
                     {[...t.numbers, ...t.numbers].map(([n, l], i) => (
-                        <div key={i} className="flex items-baseline gap-3 whitespace-nowrap">
-                            <span className="text-5xl italic text-[var(--one-accent)]" style={SERIF}>{n}</span>
-                            <span className="text-[14px] text-white/55">{l}</span>
-                            <span className="ml-10 text-white/15">✦</span>
+                        <div key={i} className="flex items-baseline gap-2.5 whitespace-nowrap">
+                            <span className="display text-4xl font-bold">{n}</span>
+                            <span className="text-[15px] font-bold">{l}</span>
+                            <span className="ml-8 text-[18px]" style={PIXEL}>♥</span>
                         </div>
                     ))}
                 </div>
             </div>
 
-            <main className="mx-auto max-w-[1200px] space-y-36 px-5 py-32 sm:px-8 md:space-y-44">
+            <main className="mx-auto max-w-[1200px] space-y-32 px-5 py-28 sm:px-8 md:space-y-40">
 
                 {/* ── Sobre mí ── */}
                 <section id="sobre-mi" className="scroll-mt-24">
                     <motion.div {...reveal}><Kicker n={1}>{t.aboutKicker}</Kicker></motion.div>
-                    <motion.h2 {...reveal} className="mt-6 max-w-[980px] text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>
-                        {t.aboutTitle[0]} <span className="italic text-white/45">{t.aboutTitle[1]}</span>
+                    <motion.h2 {...reveal} className={`${H2} max-w-[980px]`}>
+                        {t.aboutTitle[0]} <span className="hl-lila">{t.aboutTitle[1]}</span>
                     </motion.h2>
 
-                    <div className="mt-16 grid gap-14 lg:grid-cols-[1.4fr_0.6fr]">
-                        <div className="space-y-6">
-                            {t.about.map((p, i) => (
-                                <motion.p key={i} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }}
-                                    className={`leading-relaxed ${i === 0 ? "text-xl text-white/90 sm:text-[22px]" : "text-[17px] text-white/65"}`}>{p}</motion.p>
-                            ))}
-                        </div>
-                        <motion.dl {...reveal} className="h-fit divide-y divide-white/[0.07] rounded-3xl border border-white/[0.08] bg-white/[0.02] px-6">
-                            {t.facts.map(([k, v]) => (
-                                <div key={k} className="py-5">
-                                    <dt className="text-[11px] uppercase tracking-[0.22em] text-white/40">{k}</dt>
-                                    <dd className="mt-1.5 text-[15px] font-medium">{v}</dd>
+                    <div className="mt-12 grid gap-8 lg:grid-cols-[1.45fr_0.55fr]">
+                        <motion.div {...reveal}>
+                            <Win title="sobre_mi.txt" color="var(--lila)">
+                                <div className="space-y-5 p-6 sm:p-8">
+                                    {t.about.map((p, i) => (
+                                        <p key={i} className={`leading-relaxed ${i === 0 ? "text-[19px] font-bold sm:text-[21px]" : "text-[17px] font-semibold text-[var(--ink)]/75"}`}>{p}</p>
+                                    ))}
                                 </div>
-                            ))}
-                        </motion.dl>
+                            </Win>
+                        </motion.div>
+                        <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.08 }}>
+                            <Win title="stats.json" color="var(--mante)">
+                                <dl className="divide-y-2 divide-dashed divide-[var(--ink)]/15 px-5">
+                                    {t.facts.map(([k, v]) => (
+                                        <div key={k} className="py-4">
+                                            <dt className="text-[12px] text-[var(--ink)]/55" style={PIXEL}>{k}</dt>
+                                            <dd className="mt-0.5 text-[15px] font-extrabold">{v}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </Win>
+                        </motion.div>
                     </div>
 
-                    <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                         {t.traits.map((tr, i) => (
                             <motion.div key={tr.t} {...reveal} transition={{ ...reveal.transition, delay: i * 0.07 }}
-                                className="group rounded-3xl border border-white/[0.08] bg-white/[0.02] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-[var(--one-accent)]/40 hover:bg-white/[0.04]">
-                                <span className="text-[26px] text-[var(--one-accent)]" style={PIXEL}>{["♥", "⚔", "✦", "⚡"][i]}</span>
-                                <h3 className="mt-6 text-[17px] font-semibold">{tr.t}</h3>
-                                <p className="mt-2 text-[14px] leading-relaxed text-white/55">{tr.d}</p>
+                                className="stk stk-hover p-6" style={{ background: PASTELS[[3, 1, 0, 2][i]], rotate: `${[-1.5, 1, -0.8, 1.4][i]}deg` }}>
+                                <span className="flex h-11 w-11 items-center justify-center rounded-xl border-[2.5px] border-[var(--ink)] bg-white text-[22px]" style={PIXEL}>{["♥", "⚔", "✦", "⚡"][i]}</span>
+                                <h3 className="display mt-5 text-[19px] font-semibold">{tr.t}</h3>
+                                <p className="mt-1.5 text-[14.5px] font-semibold leading-relaxed text-[var(--ink)]/75">{tr.d}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -556,109 +563,103 @@ const OnePage = () => {
 
                 {/* ── Experiencia ── */}
                 <section id="experiencia" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker n={2}>{t.expKicker}</Kicker></motion.div>
-                    <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.expTitle}</motion.h2>
+                    <motion.div {...reveal}><Kicker n={2} color="var(--menta)">{t.expKicker}</Kicker></motion.div>
+                    <motion.h2 {...reveal} className={H2}>{t.expTitle}</motion.h2>
 
-                    <div className="mt-16 space-y-5">
+                    <div className="mt-12 space-y-8">
                         {JOBS.map((job, i) => (
-                            <motion.article key={job.company} {...reveal} transition={{ ...reveal.transition, delay: i * 0.05 }}
-                                className="grid gap-8 rounded-[28px] border border-white/[0.08] bg-white/[0.02] p-7 transition-colors duration-500 hover:border-white/15 md:grid-cols-[0.8fr_1.2fr] md:p-10">
-                                <div>
-                                    <div className="flex flex-wrap items-center gap-2 text-[13px] text-white/45">
-                                        <span>{job.period[L]}</span>
-                                        {job.current && <span className="rounded-full bg-[var(--one-accent)]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--one-accent)]">{t.now}</span>}
+                            <motion.div key={job.company} {...reveal} transition={{ ...reveal.transition, delay: i * 0.05 }}>
+                                <Win color={PASTELS[i % PASTELS.length]} title={<>{`logro_0${i + 1}.exe`} <span className="opacity-60">· {job.period[L]}</span></>}>
+                                    <div className="grid gap-8 p-6 sm:p-8 md:grid-cols-[0.85fr_1.15fr]">
+                                        <div>
+                                            {job.current && <span className="tag mb-3 bg-[var(--menta)]" style={PIXEL}>▶ {t.now}</span>}
+                                            <h3 className="display text-[28px] font-bold leading-[1.1] sm:text-[32px]">{job.headline[L]}</h3>
+                                            <p className="mt-4 text-[16px] font-extrabold">{job.role[L]}</p>
+                                            <p className="mt-0.5 text-[14px] font-semibold text-[var(--ink)]/60">{job.company} · {job.place[L]}</p>
+                                            {job.links.length > 0 && (
+                                                <div className="mt-5 flex flex-wrap gap-2">
+                                                    {job.links.map(l => (
+                                                        <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-white">
+                                                            {l.label}<span className="material-symbols-outlined text-[15px]">north_east</span>
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <ul className="space-y-3">
+                                                {job.bullets[L].map(b => (
+                                                    <li key={b} className="flex gap-3 text-[15.5px] font-semibold leading-relaxed text-[var(--ink)]/80">
+                                                        <span className="mt-[2px] shrink-0 text-[15px] text-[var(--one-accent-2)]" style={PIXEL}>♥</span>{b}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            {job.stack.length > 0 && (
+                                                <div className="mt-5 flex flex-wrap gap-1.5">
+                                                    {job.stack.map(s => <span key={s} className="tag text-[12px]">{s}</span>)}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                    <h3 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={SERIF}>{job.headline[L]}</h3>
-                                    <p className="mt-4 font-semibold text-white/90">{job.role[L]}</p>
-                                    <p className="mt-1 text-[13px] text-white/45">{job.company} · {job.place[L]}</p>
-                                    {job.links.length > 0 && (
-                                        <div className="mt-6 flex flex-wrap gap-2">
-                                            {job.links.map(l => (
-                                                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
-                                                    className="group inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-[13px] font-semibold transition-colors hover:border-[var(--one-accent)] hover:text-[var(--one-accent)]">
-                                                    {l.label}<span className="material-symbols-outlined text-[15px] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">north_east</span>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <ul className="space-y-3.5">
-                                        {job.bullets[L].map(b => (
-                                            <li key={b} className="flex gap-3 text-[15px] leading-relaxed text-white/75">
-                                                <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--one-accent)]" />{b}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    {job.stack.length > 0 && (
-                                        <div className="mt-6 flex flex-wrap gap-1.5">
-                                            {job.stack.map(s => <span key={s} className="rounded-full bg-white/[0.05] px-3 py-1 text-[12px] text-white/60">{s}</span>)}
-                                        </div>
-                                    )}
-                                </div>
-                            </motion.article>
+                                </Win>
+                            </motion.div>
                         ))}
                     </div>
                 </section>
 
                 {/* ── Proyectos ── */}
                 <section id="proyectos" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker n={3}>{t.projKicker}</Kicker></motion.div>
-                    <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.projTitle}</motion.h2>
+                    <motion.div {...reveal}><Kicker n={3} color="var(--mante)">{t.projKicker}</Kicker></motion.div>
+                    <motion.h2 {...reveal} className={H2}>{t.projTitle}</motion.h2>
 
-                    <div className="mt-16 grid gap-5 lg:grid-cols-2">
+                    <div className="mt-12 grid gap-8 lg:grid-cols-2">
                         {[
-                            { name: "Voraa Lealtad", where: L === "es" ? "Única ingeniera · de punta a punta" : "Sole engineer · end to end", href: "https://voraa.io/restaurantes/", img: voraaCards, alt: voraaSite,
+                            { name: "Voraa Lealtad", url: "voraa.io", where: L === "es" ? "Única ingeniera · de punta a punta" : "Sole engineer · end to end", href: "https://voraa.io/restaurantes/", img: voraaCards, color: "var(--rosa)",
                               d: L === "es" ? "Programas de lealtad para restaurantes con tarjetas en Apple y Google Wallet. Lo construí completo como única ingeniera." : "Loyalty programs for restaurants with Apple and Google Wallet cards. I built it end to end as the sole engineer.",
                               tags: ["Next.js", "PostgreSQL", "PassKit", "Google Wallet"] },
-                            { name: "Booskha", where: L === "es" ? "Del requerimiento a producción" : "From requirements to production", href: "https://booskha.com/home", img: booskha, alt: booskha,
+                            { name: "Booskha", url: "booskha.com", where: L === "es" ? "Del requerimiento a producción" : "From requirements to production", href: "https://booskha.com/home", img: booskha, color: "var(--cielo)",
                               d: L === "es" ? "Directorio que conecta a personas con negocios locales: búsqueda por ciudad, colonia o código postal y panel con roles." : "Directory connecting people with local businesses: search by city, neighborhood or ZIP code and a role-based panel.",
                               tags: ["Angular", "Node.js", "Express", "MySQL"] },
                         ].map((p, i) => (
-                            <motion.a key={p.name} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }} href={p.href} target="_blank" rel="noopener noreferrer"
-                                className="group block overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.02] transition-colors duration-500 hover:border-white/20">
-                                <div className="relative aspect-[16/10] overflow-hidden bg-[#f3f0ea]">
-                                    <img src={p.img} alt={p.name} className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.05]" />
-                                    <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1 text-[12px] font-semibold text-emerald-300 backdrop-blur">
-                                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />{t.live}
-                                    </span>
-                                </div>
-                                <div className="p-7">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p className="text-[12px] uppercase tracking-[0.2em] text-white/40">{p.where}</p>
-                                            <h3 className="mt-1 text-[34px] leading-tight" style={SERIF}>{p.name}</h3>
-                                        </div>
-                                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 transition-all duration-500 group-hover:rotate-45 group-hover:border-[var(--one-accent)] group-hover:bg-[var(--one-accent)] group-hover:text-black">
-                                            <span className="material-symbols-outlined text-[20px]">north_east</span>
-                                        </span>
+                            <motion.a key={p.name} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }} href={p.href} target="_blank" rel="noopener noreferrer" className="group block">
+                                <Win color={p.color} className="stk-hover" title={<>{p.url} <span className="ml-1 inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full border border-[var(--ink)] bg-emerald-400" />{t.live}</span></>}>
+                                    <div className="aspect-[16/10] overflow-hidden border-b-[2.5px] border-[var(--ink)] bg-[#f3f0ea]">
+                                        <img src={p.img} alt={p.name} className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]" />
                                     </div>
-                                    <p className="mt-3 text-[15px] leading-relaxed text-white/60">{p.d}</p>
-                                    <div className="mt-5 flex flex-wrap gap-1.5">{p.tags.map(s => <span key={s} className="rounded-full bg-white/[0.05] px-3 py-1 text-[12px] text-white/60">{s}</span>)}</div>
-                                </div>
+                                    <div className="p-6">
+                                        <p className="text-[13px] text-[var(--ink)]/60" style={PIXEL}>{p.where}</p>
+                                        <div className="mt-1 flex items-center justify-between gap-3">
+                                            <h3 className="display text-[30px] font-bold">{p.name}</h3>
+                                            <span className="btn btn-sm bg-[var(--mante)]">{t.visit} ↗</span>
+                                        </div>
+                                        <p className="mt-2 text-[15.5px] font-semibold leading-relaxed text-[var(--ink)]/75">{p.d}</p>
+                                        <div className="mt-4 flex flex-wrap gap-1.5">{p.tags.map(s => <span key={s} className="tag">{s}</span>)}</div>
+                                    </div>
+                                </Win>
                             </motion.a>
                         ))}
                     </div>
 
-                    <motion.h3 {...reveal} className="mt-20 text-[28px]" style={SERIF}>{t.more}</motion.h3>
-                    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <motion.h3 {...reveal} className="display mt-20 text-[28px] font-bold">{t.more} <span style={PIXEL} className="text-[18px]">(｡•̀ᴗ-)✧</span></motion.h3>
+                    <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {ownProjects.slice(0, 9).map((p, i) => (
-                            <motion.div key={String(p.id)} {...reveal} transition={{ ...reveal.transition, delay: (i % 3) * 0.06 }}
-                                className="group flex flex-col overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] transition-all duration-500 hover:-translate-y-1 hover:border-white/20">
-                                <div className="aspect-[16/9] overflow-hidden bg-gradient-to-br from-[#221d36] to-[#1a1320]">
-                                    {p.images?.[0]
-                                        ? <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]" />
-                                        : <div className="flex h-full items-center justify-center text-6xl italic text-white/20" style={SERIF}>{p.title.slice(0, 1)}</div>}
-                                </div>
-                                <div className="flex flex-1 flex-col p-6">
-                                    <h4 className="text-[17px] font-semibold leading-snug">{p.title}</h4>
-                                    <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-white/55">{p.description}</p>
-                                    <div className="mt-4 flex flex-wrap gap-1.5">{(p.stack || []).slice(0, 4).map(s => <span key={s} className="rounded-full bg-white/[0.05] px-2.5 py-0.5 text-[11px] text-white/55">{s}</span>)}</div>
-                                    <div className="mt-auto flex gap-4 pt-5 text-[13px] font-semibold">
-                                        {p.github && <a href={p.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-white/80 hover:text-[var(--one-accent)]">{t.code}<span className="material-symbols-outlined text-[15px]">north_east</span></a>}
-                                        {p.demo && <a href={p.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-white/80 hover:text-[var(--one-accent)]">{t.visit}<span className="material-symbols-outlined text-[15px]">north_east</span></a>}
+                            <motion.div key={String(p.id)} {...reveal} transition={{ ...reveal.transition, delay: (i % 3) * 0.06 }} className="h-full">
+                                <Win color={PASTELS[i % PASTELS.length]} className="stk-hover flex h-full flex-col" title={(p.github?.split("/").pop() || p.title).toLowerCase()}>
+                                    <div className="aspect-[16/9] overflow-hidden border-b-[2.5px] border-[var(--ink)] bg-[var(--paper)]">
+                                        {p.images?.[0]
+                                            ? <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover object-top" />
+                                            : <div className="flex h-full items-center justify-center text-[42px]" style={PIXEL}>{p.title.slice(0, 1)}</div>}
                                     </div>
-                                </div>
+                                    <div className="flex flex-1 flex-col p-5">
+                                        <h4 className="display text-[18px] font-semibold leading-snug">{p.title}</h4>
+                                        <p className="mt-1.5 line-clamp-3 text-[14px] font-semibold leading-relaxed text-[var(--ink)]/70">{p.description}</p>
+                                        <div className="mt-3 flex flex-wrap gap-1.5">{(p.stack || []).slice(0, 4).map(s => <span key={s} className="tag text-[11px]">{s}</span>)}</div>
+                                        <div className="mt-auto flex gap-2 pt-5">
+                                            {p.github && <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-white">{t.code} ↗</a>}
+                                            {p.demo && <a href={p.demo} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-[var(--menta)]">{t.visit} ↗</a>}
+                                        </div>
+                                    </div>
+                                </Win>
                             </motion.div>
                         ))}
                     </div>
@@ -666,43 +667,42 @@ const OnePage = () => {
 
                 {/* ── Servicios ── */}
                 <section id="servicios" className="scroll-mt-24">
-                    <motion.div {...reveal} className="overflow-hidden rounded-[36px] border border-white/[0.08] bg-[radial-gradient(ellipse_at_top_left,rgba(182,156,255,0.14),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(255,158,207,0.08),transparent_50%)] p-7 sm:p-12 md:p-16">
-                        <Kicker n={4}>{t.servKicker}</Kicker>
-                        <h2 className="mt-6 max-w-[820px] text-[40px] leading-[1.04] tracking-[-0.02em] sm:text-[60px]" style={SERIF}>{t.servTitle}</h2>
-                        <div className="mt-14 grid gap-x-10 gap-y-2 md:grid-cols-2">
-                            {t.services.map(s => (
-                                <div key={s.n} className="group flex gap-5 border-t border-white/10 py-7">
-                                    <span className="text-[13px] font-semibold text-[var(--one-accent)]">{s.n}</span>
+                    <motion.div {...reveal} className="stk relative p-7 sm:p-12" style={{ background: "#efe8ff" }}>
+                        <span className="washi -top-3 left-10 -rotate-3" />
+                        <Kicker n={4} color="var(--rosa)">{t.servKicker}</Kicker>
+                        <h2 className={`${H2} max-w-[820px]`}>{t.servTitle}</h2>
+                        <div className="mt-10 grid gap-5 md:grid-cols-2">
+                            {t.services.map((s, i) => (
+                                <div key={s.n} className="stk stk-hover flex gap-4 bg-white p-5">
+                                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-[2.5px] border-[var(--ink)] text-[16px]" style={{ ...PIXEL, background: PASTELS[i] }}>{s.n}</span>
                                     <div>
-                                        <h3 className="text-xl font-semibold transition-colors group-hover:text-[var(--one-accent)]">{s.t}</h3>
-                                        <p className="mt-2 text-[15px] leading-relaxed text-white/60">{s.d}</p>
+                                        <h3 className="display text-[20px] font-semibold">{s.t}</h3>
+                                        <p className="mt-1 text-[15px] font-semibold leading-relaxed text-[var(--ink)]/70">{s.d}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                             {t.process.map((p, i) => (
-                                <li key={p} className="rounded-2xl bg-black/30 p-5">
-                                    <span className="text-2xl italic text-[var(--one-accent)]" style={SERIF}>{i + 1}.</span>
-                                    <p className="mt-2 text-[14px] font-medium text-white/80">{p}</p>
+                                <li key={p} className="rounded-xl border-2 border-dashed border-[var(--ink)]/40 bg-white/70 p-4">
+                                    <span className="text-[14px] text-[var(--one-accent)]" style={PIXEL}>{`PASO ${i + 1}`}</span>
+                                    <p className="mt-1 text-[15px] font-bold">{p}</p>
                                 </li>
                             ))}
                         </ol>
-                        <div className="mt-10 flex flex-wrap gap-3">
-                            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[var(--one-paper)] px-7 py-4 text-[15px] font-semibold text-black transition-transform hover:scale-[1.03]">
-                                {t.quote}<span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </a>
-                            <a href={mail} className="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-4 text-[15px] font-semibold hover:border-white/40">{CONTACT_CONFIG.email}</a>
+                        <div className="mt-9 flex flex-wrap gap-3">
+                            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="btn bg-[var(--rosa)]">{t.quote}<span className="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                            <a href={mail} className="btn bg-white">{CONTACT_CONFIG.email}</a>
                         </div>
                     </motion.div>
                 </section>
 
                 {/* ── Tecnologías (dos filas en sentidos opuestos) ── */}
-                <div className="-mx-5 space-y-4 overflow-hidden sm:-mx-8">
+                <div className="-mx-5 space-y-3 overflow-hidden py-2 sm:-mx-8">
                     {[TECH, [...TECH].reverse()].map((row, r) => (
                         <div key={r} className={`one-marquee flex w-max gap-3 ${r ? "one-marquee-reverse" : ""}`}>
                             {[...row, ...row].map((s, i) => (
-                                <span key={i} className="whitespace-nowrap rounded-full border border-white/10 px-5 py-2.5 text-[15px] text-white/70">{s}</span>
+                                <span key={i} className="tag whitespace-nowrap px-4 py-1.5 text-[15px]" style={{ background: i % 3 === 0 ? PASTELS[(i + r) % PASTELS.length] : "#fff" }}>{s}</span>
                             ))}
                         </div>
                     ))}
@@ -710,52 +710,57 @@ const OnePage = () => {
 
                 {/* ── Certificados ── */}
                 <section id="certificados" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker n={5}>{t.certKicker}</Kicker></motion.div>
-                    <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.certTitle}</motion.h2>
-                    <div className="mt-14 divide-y divide-white/[0.08] border-y border-white/[0.08]">
-                        {certificates.map((c, i) => (
-                            <motion.div key={c.title} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.03 }}
-                                className="group grid items-center gap-3 py-5 transition-colors hover:bg-white/[0.02] sm:grid-cols-[1fr_auto] sm:px-3">
-                                <div className="flex items-baseline gap-4">
-                                    <span className="w-8 shrink-0 text-[12px] text-white/30">{String(i + 1).padStart(2, "0")}</span>
-                                    <div>
-                                        <p className="text-[16px] font-medium transition-colors group-hover:text-[var(--one-accent)]">{c.title}</p>
-                                        <p className="text-[13px] text-white/45">{c.issuer} · {c.date}</p>
+                    <motion.div {...reveal}><Kicker n={5} color="var(--cielo)">{t.certKicker}</Kicker></motion.div>
+                    <motion.h2 {...reveal} className={H2}>{t.certTitle}</motion.h2>
+                    <motion.div {...reveal} className="mt-12">
+                        <Win title="certificados.zip" color="var(--cielo)">
+                            <div className="divide-y-2 divide-dashed divide-[var(--ink)]/15">
+                                {certificates.map((c, i) => (
+                                    <div key={c.title} className="grid items-center gap-3 px-5 py-4 transition-colors hover:bg-[var(--paper)] sm:grid-cols-[1fr_auto] sm:px-7">
+                                        <div className="flex items-baseline gap-4">
+                                            <span className="w-7 shrink-0 text-[14px] text-[var(--one-accent)]" style={PIXEL}>{String(i + 1).padStart(2, "0")}</span>
+                                            <div>
+                                                <p className="text-[16px] font-extrabold">{c.title}</p>
+                                                <p className="text-[13.5px] font-semibold text-[var(--ink)]/60">{c.issuer} · {c.date}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2 pl-11 sm:pl-0">
+                                            {c.file && <a href={c.file} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-white">{t.pdf}</a>}
+                                            {c.verify && <a href={c.verify} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-[var(--menta)]">{t.verify} ✓</a>}
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex gap-2 pl-12 sm:pl-0">
-                                    {c.file && <a href={c.file} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/12 px-4 py-1.5 text-[12px] font-semibold text-white/75 hover:border-white/40 hover:text-white">{t.pdf}</a>}
-                                    {c.verify && <a href={c.verify} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/12 px-4 py-1.5 text-[12px] font-semibold text-white/75 hover:border-white/40 hover:text-white">{t.verify}</a>}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                                ))}
+                            </div>
+                        </Win>
+                    </motion.div>
                 </section>
 
                 {/* ── Contacto ── */}
                 <section id="contacto" className="scroll-mt-24 pb-10">
-                    <motion.div {...reveal}><Kicker n={6}>{t.contactKicker}</Kicker></motion.div>
-                    <motion.h2 {...reveal} className="mt-6 text-[88px] leading-[0.9] tracking-[-0.03em] sm:text-[150px]" style={SERIF}>
-                        <span className="italic bg-gradient-to-r from-[var(--one-accent)] to-[var(--one-accent-2)] bg-clip-text text-transparent">{t.contactTitle}</span>
+                    <motion.div {...reveal}><Kicker n={6} color="var(--rosa)">{t.contactKicker}</Kicker></motion.div>
+                    <motion.h2 {...reveal} className="display mt-5 text-[76px] font-bold leading-[0.95] sm:text-[130px]">
+                        <span className="hl">{t.contactTitle}</span> <span className="inline-block text-[44px] sm:text-[64px]" style={PIXEL}>♡</span>
                     </motion.h2>
-                    <motion.p {...reveal} className="mt-6 max-w-[520px] text-lg text-white/60">{t.contactLine}</motion.p>
+                    <motion.p {...reveal} className="mt-5 max-w-[540px] text-[19px] font-semibold text-[var(--ink)]/70">{t.contactLine}</motion.p>
 
-                    <motion.div {...reveal} className="mt-12 flex flex-wrap items-center gap-3">
-                        <a href={mail} className="break-all text-2xl font-semibold underline decoration-white/20 decoration-2 underline-offset-8 transition-colors hover:decoration-[var(--one-accent)] sm:text-4xl">{CONTACT_CONFIG.email}</a>
-                        <button onClick={copyMail} className="rounded-full border border-white/15 px-4 py-2 text-[13px] font-semibold text-white/70 hover:text-white">{copied ? t.copied : t.copy}</button>
+                    <motion.div {...reveal} className="mt-10 flex flex-wrap items-center gap-4">
+                        <a href={mail} className="stk stk-hover relative break-all bg-white px-6 py-4 text-[22px] font-extrabold sm:text-[32px]">
+                            {CONTACT_CONFIG.email}
+                            <span className="absolute -bottom-[13px] left-10 h-5 w-5 rotate-45 border-b-[2.5px] border-r-[2.5px] border-[var(--ink)] bg-white" aria-hidden />
+                        </a>
+                        <button onClick={copyMail} className="btn btn-sm bg-[var(--mante)] text-[13px]">{copied ? t.copied : t.copy}</button>
                     </motion.div>
 
-                    <motion.div {...reveal} className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <motion.div {...reveal} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         {[
-                            { l: "LinkedIn", h: CONTACT_CONFIG.linkedin, i: "work" },
-                            { l: "GitHub", h: "https://github.com/Alucarduwu", i: "code" },
-                            { l: "WhatsApp", h: whatsapp, i: "chat" },
-                            { l: t.ctaCv, h: CV, i: "description" },
+                            { l: "LinkedIn", h: CONTACT_CONFIG.linkedin, i: "work", c: "var(--cielo)" },
+                            { l: "GitHub", h: "https://github.com/Alucarduwu", i: "code", c: "var(--menta)" },
+                            { l: "WhatsApp", h: whatsapp, i: "chat", c: "var(--rosa)" },
+                            { l: t.ctaCv, h: CV, i: "description", c: "var(--mante)" },
                         ].map(x => (
-                            <a key={x.l} href={x.h} target="_blank" rel="noopener noreferrer"
-                                className="group flex items-center justify-between rounded-2xl border border-white/[0.08] bg-white/[0.02] px-5 py-5 transition-all duration-500 hover:border-[var(--one-accent)]/50 hover:bg-white/[0.04]">
-                                <span className="flex items-center gap-3 font-semibold"><span className="material-symbols-outlined text-[20px] text-white/50">{x.i}</span>{x.l}</span>
-                                <span className="material-symbols-outlined text-[18px] text-white/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--one-accent)]">north_east</span>
+                            <a key={x.l} href={x.h} target="_blank" rel="noopener noreferrer" className="btn justify-between py-4 text-[17px]" style={{ background: x.c }}>
+                                <span className="flex items-center gap-2.5"><span className="material-symbols-outlined text-[20px]">{x.i}</span>{x.l}</span>
+                                <span className="material-symbols-outlined text-[18px]">north_east</span>
                             </a>
                         ))}
                     </motion.div>
@@ -766,11 +771,11 @@ const OnePage = () => {
             <AchievementToast items={trophies} lang={L} />
             {party && <div className="pointer-events-none fixed inset-0 z-[125]"><Sakura /><Sakura /></div>}
 
-            <footer className="border-t border-white/[0.07] px-5 pb-24 pt-10 sm:px-8">
-                <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-4 text-[13px] text-white/40 sm:flex-row">
+            <footer className="border-t-[2.5px] border-dashed border-[var(--ink)]/30 px-5 pb-24 pt-10 sm:px-8">
+                <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-4 text-[14px] font-bold text-[var(--ink)]/65 sm:flex-row">
                     <span>© 2026 Anahí Lozano</span>
                     <span>{t.footer}</span>
-                    <button onClick={() => go("inicio")} className="inline-flex items-center gap-1 hover:text-white">↑ {t.nav.inicio}</button>
+                    <button onClick={() => go("inicio")} className="btn btn-sm bg-white">↑ {t.nav.inicio}</button>
                 </div>
             </footer>
         </div>
