@@ -46,6 +46,9 @@ const toStaticProjects = (language: "es" | "en"): Project[] => {
 // Repos que no se muestran: Portafolio2styles es una versión vieja de este mismo sitio.
 const HIDDEN_REPOS = new Set(["https://github.com/alucarduwu/portafolio2styles"]);
 
+// Y por título, cuando el nombre sale del README: el reto técnico de Casa Mecate no se muestra.
+const HIDDEN_TITLES = [/mecate/i];
+
 const keyOf = (project: Project) => project.github?.toLowerCase() || String(project.id);
 
 const mergeProjects = (baseProjects: Project[], remoteProjects: Project[]) => {
@@ -54,7 +57,7 @@ const mergeProjects = (baseProjects: Project[], remoteProjects: Project[]) => {
   // reciente a otro repo no debe ganarle al trabajo que se quiere enseñar.
   const curatedOrder = new Map(baseProjects.map((p, i) => [keyOf(p), i]));
 
-  [...baseProjects, ...remoteProjects].filter(p => !HIDDEN_REPOS.has(keyOf(p))).forEach((project) => {
+  [...baseProjects, ...remoteProjects].filter(p => !HIDDEN_REPOS.has(keyOf(p)) && !HIDDEN_TITLES.some(r => r.test(`${p.title} ${p.github}`))).forEach((project) => {
     const key = keyOf(project);
     const existing = byGithub.get(key);
     byGithub.set(key, {

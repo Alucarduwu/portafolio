@@ -35,8 +35,8 @@ const copy = {
         available: "Disponible para empleo y freelance",
         ctaWork: "Trabajemos juntos",
         ctaCv: "Descargar CV",
-        badgeA: "Voraa · en producción",
-        badgeB: "i3 Solutions · Canadá",
+        badgeA: "1,284 pruebas escritas por mí",
+        badgeB: "Web · móvil · escritorio",
         scroll: "Desliza",
         aboutKicker: "Sobre mí",
         aboutTitle: ["No soy un puesto.", "Soy la persona que se queda hasta que funciona."],
@@ -47,14 +47,14 @@ const copy = {
         ],
         traits: [
             { t: "Me hago dueña del problema", d: "No entrego tickets, entrego cosas que funcionan de punta a punta." },
-            { t: "Pruebo lo que construyo", d: "1,284 pruebas automatizadas en Voraa. Lo que no se prueba, se rompe." },
+            { t: "Pruebo lo que construyo", d: "Llevo 1,284 pruebas automatizadas escritas. Lo que no se prueba, se rompe." },
             { t: "Hablo claro", d: "Con el equipo, con el cliente y con quien no es técnico." },
             { t: "Aprendo rápido", d: "PassKit, APNs, .NET, Flutter: si el producto lo pide, lo domino." },
         ],
         facts: [
             ["Formación", "Ingeniería en TIC · ITA"],
             ["Antes", "Técnica en Programación · CECyTEA"],
-            ["Idiomas", "Español nativo · Inglés B1"],
+            ["Idiomas", "Español nativo · Inglés B2"],
             ["Base", "Aguascalientes · remoto"],
         ],
         numbers: [
@@ -65,7 +65,7 @@ const copy = {
             ["11", "certificaciones"],
         ],
         expKicker: "Experiencia",
-        expTitle: "Dónde he dejado huella",
+        expTitle: "Lo que he logrado",
         now: "Actual",
         projKicker: "Proyectos",
         projTitle: "Cosas que hice y siguen vivas",
@@ -105,8 +105,8 @@ const copy = {
         available: "Open to full-time roles and freelance",
         ctaWork: "Let's work together",
         ctaCv: "Download CV",
-        badgeA: "Voraa · in production",
-        badgeB: "i3 Solutions · Canada",
+        badgeA: "1,284 tests written by me",
+        badgeB: "Web · mobile · desktop",
         scroll: "Scroll",
         aboutKicker: "About me",
         aboutTitle: ["I'm not a job title.", "I'm the one who stays until it works."],
@@ -117,14 +117,14 @@ const copy = {
         ],
         traits: [
             { t: "I own the problem", d: "I don't close tickets, I ship things that work end to end." },
-            { t: "I test what I build", d: "1,284 automated tests at Voraa. What isn't tested breaks." },
+            { t: "I test what I build", d: "1,284 automated tests written so far. What isn't tested breaks." },
             { t: "I speak plainly", d: "With the team, with clients and with non-technical people." },
             { t: "I learn fast", d: "PassKit, APNs, .NET, Flutter: if the product needs it, I master it." },
         ],
         facts: [
             ["Education", "B.Eng. in ICT · ITA"],
             ["Before that", "Programming technician · CECyTEA"],
-            ["Languages", "Spanish (native) · English B1"],
+            ["Languages", "Spanish (native) · English B2"],
             ["Based in", "Aguascalientes · remote"],
         ],
         numbers: [
@@ -135,7 +135,7 @@ const copy = {
             ["11", "certifications"],
         ],
         expKicker: "Experience",
-        expTitle: "Where I've left my mark",
+        expTitle: "What I've achieved",
         now: "Current",
         projKicker: "Projects",
         projTitle: "Things I built that are still alive",
@@ -169,7 +169,7 @@ const copy = {
 
 type Job = {
     company: string; role: { es: string; en: string }; period: { es: string; en: string }; place: { es: string; en: string };
-    about: { es: string; en: string }; links: { label: string; href: string }[];
+    headline: { es: string; en: string }; links: { label: string; href: string }[];
     bullets: { es: string[]; en: string[] }; stack: string[]; current?: boolean;
 };
 
@@ -179,7 +179,7 @@ const JOBS: Job[] = [
         role: { es: "Desarrolladora Full Stack · única ingeniera", en: "Full Stack Developer · sole engineer" },
         period: { es: "May 2026 – hoy", en: "May 2026 – now" },
         place: { es: "Aguascalientes, México", en: "Aguascalientes, Mexico" },
-        about: { es: "Plataforma que lleva más clientes a restaurantes, bares y cafés, con programas de lealtad en el celular.", en: "Platform that brings more customers to restaurants, bars and cafés, with loyalty programs on the phone." },
+        headline: { es: "Construí sola una plataforma de lealtad que hoy está en producción.", en: "I single-handedly built a loyalty platform that is live in production." },
         links: [{ label: "voraa.io", href: "https://voraa.io/restaurantes/" }],
         bullets: {
             es: [
@@ -204,7 +204,7 @@ const JOBS: Job[] = [
         role: { es: "Desarrolladora de Software", en: "Software Developer" },
         period: { es: "May 2026 – hoy", en: "May 2026 – now" },
         place: { es: "Toronto, Canadá · remoto", en: "Toronto, Canada · remote" },
-        about: { es: "Empresa canadiense creadora de Panacea™, la plataforma de pantallas junto a la cama del paciente que usan hospitales en Canadá, incluido el primer hospital totalmente digital del país.", en: "Canadian company behind Panacea™, the patient-bedside platform used by hospitals across Canada, including the country's first fully digital hospital." },
+        headline: { es: "Mantengo software que usan hospitales en Canadá.", en: "I maintain software used by hospitals in Canada." },
         links: [{ label: "i3inc.ca", href: "https://i3inc.ca/" }, { label: "Panacea™", href: "https://i3inc.ca/panacea/" }],
         bullets: {
             es: [
@@ -227,7 +227,7 @@ const JOBS: Job[] = [
         role: { es: "Desarrolladora Full Stack", en: "Full Stack Developer" },
         period: { es: "Ago 2025 – Jul 2026", en: "Aug 2025 – Jul 2026" },
         place: { es: "Aguascalientes, México", en: "Aguascalientes, Mexico" },
-        about: { es: "Consultora en procesos de negocio. Ahí construí Booskha, el directorio que conecta a personas con negocios locales.", en: "Business-process consultancy. There I built Booskha, the directory that connects people with local businesses." },
+        headline: { es: "Llevé un directorio web de los requerimientos a producción.", en: "I took a web directory from requirements to production." },
         links: [{ label: "lemaboox.com", href: "https://lemaboox.com/" }, { label: "Booskha", href: "https://booskha.com/home" }],
         bullets: {
             es: [
@@ -248,7 +248,7 @@ const JOBS: Job[] = [
         role: { es: "Servicio al Cliente", en: "Customer Service" },
         period: { es: "2022 – 2024", en: "2022 – 2024" },
         place: { es: "Aguascalientes, México", en: "Aguascalientes, Mexico" },
-        about: { es: "Donde aprendí a tratar con personas e información delicada.", en: "Where I learned to work with people and sensitive information." },
+        headline: { es: "Aprendí a trabajar con personas e información delicada.", en: "I learned to work with people and sensitive information." },
         links: [],
         bullets: {
             es: ["Gestioné operaciones financieras y validaciones digitales con información sensible, con exactitud y apego a los procesos."],
@@ -546,10 +546,9 @@ const OnePage = () => {
                                         <span>{job.period[L]}</span>
                                         {job.current && <span className="rounded-full bg-[var(--one-accent)]/15 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--one-accent)]">{t.now}</span>}
                                     </div>
-                                    <h3 className="mt-3 text-[38px] leading-none sm:text-[46px]" style={SERIF}>{job.company}</h3>
-                                    <p className="mt-3 font-semibold text-white/90">{job.role[L]}</p>
-                                    <p className="mt-1 text-[13px] text-white/45">{job.place[L]}</p>
-                                    <p className="mt-5 text-[14px] leading-relaxed text-white/55">{job.about[L]}</p>
+                                    <h3 className="mt-3 text-[32px] leading-[1.08] sm:text-[38px]" style={SERIF}>{job.headline[L]}</h3>
+                                    <p className="mt-4 font-semibold text-white/90">{job.role[L]}</p>
+                                    <p className="mt-1 text-[13px] text-white/45">{job.company} · {job.place[L]}</p>
                                     {job.links.length > 0 && (
                                         <div className="mt-6 flex flex-wrap gap-2">
                                             {job.links.map(l => (
@@ -587,10 +586,10 @@ const OnePage = () => {
 
                     <div className="mt-16 grid gap-5 lg:grid-cols-2">
                         {[
-                            { name: "Voraa Lealtad", where: "Voraa", href: "https://voraa.io/restaurantes/", img: voraaCards, alt: voraaSite,
+                            { name: "Voraa Lealtad", where: L === "es" ? "Única ingeniera · de punta a punta" : "Sole engineer · end to end", href: "https://voraa.io/restaurantes/", img: voraaCards, alt: voraaSite,
                               d: L === "es" ? "Programas de lealtad para restaurantes con tarjetas en Apple y Google Wallet. Lo construí completo como única ingeniera." : "Loyalty programs for restaurants with Apple and Google Wallet cards. I built it end to end as the sole engineer.",
                               tags: ["Next.js", "PostgreSQL", "PassKit", "Google Wallet"] },
-                            { name: "Booskha", where: "Lemaboox", href: "https://booskha.com/home", img: booskha, alt: booskha,
+                            { name: "Booskha", where: L === "es" ? "Del requerimiento a producción" : "From requirements to production", href: "https://booskha.com/home", img: booskha, alt: booskha,
                               d: L === "es" ? "Directorio que conecta a personas con negocios locales: búsqueda por ciudad, colonia o código postal y panel con roles." : "Directory connecting people with local businesses: search by city, neighborhood or ZIP code and a role-based panel.",
                               tags: ["Angular", "Node.js", "Express", "MySQL"] },
                         ].map((p, i) => (
