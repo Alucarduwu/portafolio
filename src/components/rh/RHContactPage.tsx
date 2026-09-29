@@ -158,10 +158,13 @@ const RHContactPage = () => {
                         <h3 className="text-[9px] font-black uppercase tracking-[0.4em]" style={{ color: GOLD }}>
                             {t.cv_title}
                         </h3>
-                        <div className="grid sm:grid-cols-2 gap-4">
+                        {/* Un solo CV, el de 2026. Había dos (estándar y «ejecutivo»), los dos de mayo de
+                            2026 y sin Voraa ni i3: un reclutador que los descargaba veía otra persona. */}
+                        <div className="grid gap-4">
                             <a
-                                href="/Cv Anahi Betzabe Lozano de Lira.pdf"
+                                href="/Anahi_Lozano_CV_2026.pdf"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 group"
                                 style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
                                 onMouseEnter={e => {
@@ -177,24 +180,6 @@ const RHContactPage = () => {
                                 <div>
                                     <p className="text-sm font-serif italic text-[#F8F5F0]" style={{ fontFamily: "'Playfair Display', serif" }}>{t.cv_standard}</p>
                                     <p className="text-[9px] font-black uppercase tracking-widest mt-1 opacity-50" style={{ color: GOLD }}>{t.cv_standard_sub}</p>
-                                </div>
-                            </a>
-                            <a
-                                href="/Anahi_Lozano_Harvard_CV.pdf"
-                                target="_blank"
-                                className="flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 group"
-                                style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}
-                                onMouseEnter={e => {
-                                    (e.currentTarget as HTMLElement).style.background = "rgba(201,168,76,0.18)";
-                                }}
-                                onMouseLeave={e => {
-                                    (e.currentTarget as HTMLElement).style.background = GOLD_DIM;
-                                }}
-                            >
-                                <span className="material-symbols-outlined text-4xl" style={{ color: GOLD }}>workspace_premium</span>
-                                <div>
-                                    <p className="text-sm font-serif italic text-[#F8F5F0]" style={{ fontFamily: "'Playfair Display', serif" }}>{t.cv_exec}</p>
-                                    <p className="text-[9px] font-black uppercase tracking-widest mt-1" style={{ color: GOLD }}>{t.cv_exec_sub}</p>
                                 </div>
                             </a>
                         </div>

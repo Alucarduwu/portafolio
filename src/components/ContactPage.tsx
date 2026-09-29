@@ -73,11 +73,9 @@ const ContactPage = () => {
                            <span className="system-label text-[8px] font-black tracking-widest uppercase italic text-[var(--primary)]">{lang === 'es' ? 'DESCARGAS_Y_CV' : 'DOWNLOADS_&_CV'}</span>
                         </div>
                         <div className="p-5 md:p-8 space-y-3.5 flex flex-col justify-center flex-grow bg-gradient-to-br from-transparent to-[var(--bg-ui)]/10 text-center">
-                            <a href="/Cv Anahi Betzabe Lozano de Lira.pdf" target="_blank" rel="noreferrer" className="tech-btn btn-primary px-5 py-4 shadow-sm flex items-center justify-center gap-2.5 w-full text-[10px] md:text-[11px]">
-                               <span className="material-symbols-outlined text-[18px]">download</span> {t('cv_standard') || 'CV ESTÁNDAR'}
-                            </a>
-                            <a href="/Anahi_Lozano_Harvard_CV.pdf" target="_blank" rel="noreferrer" className="tech-btn btn-outline px-5 py-4 bg-[var(--bg-card)] flex items-center justify-center gap-2.5 w-full border-[var(--border)] text-[10px] md:text-[11px]">
-                               <span className="material-symbols-outlined text-[18px]">workspace_premium</span> {t('cv_ai') || 'CV OPTIMIZADO'}
+                            {/* Un solo CV, el de 2026: los dos anteriores eran de mayo y no traían Voraa ni i3. */}
+                            <a href="/Anahi_Lozano_CV_2026.pdf" target="_blank" rel="noopener noreferrer" className="tech-btn btn-primary px-5 py-4 shadow-sm flex items-center justify-center gap-2.5 w-full text-[10px] md:text-[11px]">
+                               <span className="material-symbols-outlined text-[18px]">download</span> {lang === 'es' ? 'DESCARGAR CV 2026' : 'DOWNLOAD CV 2026'}
                             </a>
                         </div>
                     </div>

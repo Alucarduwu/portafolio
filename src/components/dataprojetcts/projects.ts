@@ -38,26 +38,28 @@ export const projects = [
   {
     titleEs: "Voraa · Plataforma de lealtad para restaurantes",
     titleEn: "Voraa · Loyalty Platform for Restaurants",
-    stack: "TypeScript • React • Next.js • PostgreSQL • Apple Wallet • Google Wallet",
-    descriptionEs: "Producto en producción. Un restaurante crea su programa de lealtad en un minuto, y sus clientes reciben una tarjeta digital en Apple Wallet o Google Wallet que se actualiza sola con cada visita.",
-    descriptionEn: "Live in production. A restaurant sets up its loyalty program in a minute, and its customers get a digital card in Apple Wallet or Google Wallet that updates itself on every visit.",
+    stack: "TypeScript • Next.js • PostgreSQL • Supabase • Apple Wallet • Google Wallet",
+    descriptionEs: "Producto en producción que construí como única ingeniera del equipo. Un restaurante crea su programa de lealtad solo, y sus clientes reciben una tarjeta en Apple Wallet o Google Wallet que se actualiza con cada visita. Monorepo de tres servicios: 53 rutas de API, 18 migraciones y 1,284 pruebas automatizadas.",
+    descriptionEn: "A product in production that I built as the team's sole engineer. A restaurant sets up its loyalty program on its own, and its customers get a card in Apple Wallet or Google Wallet that updates on every visit. Three-service monorepo: 53 API routes, 18 migrations and 1,284 automated tests.",
     problemEs: "Las tarjetas de sellos de papel se pierden y no dejan datos: el restaurante no sabe quién vuelve, ni cuándo, ni por qué deja de venir.",
     problemEn: "Paper stamp cards get lost and leave no data: the restaurant can't tell who comes back, when, or why they stop coming.",
     solutionEs: "Tarjetas en la cartera del teléfono, un portal donde el dueño arma su programa sin ayuda, una caja para que el personal selle con el escáner y un panel con el embudo de clientes y reportes automáticos.",
     solutionEn: "Cards in the phone's wallet, a portal where owners build their program on their own, a till app so staff stamp with a scanner, and a dashboard with the customer funnel and automated reports.",
     features_es: [
-      "Pases de Apple y Google Wallet que se actualizan en tiempo real",
-      "Portal de socios con acceso por WhatsApp, sin contraseñas",
-      "Caja (PWA) con escáner para sellar desde el mostrador",
-      "Panel de métricas: embudo, periodos de prueba y reportes semanales",
-      "Más de 1,200 pruebas automatizadas"
+      "Apple Wallet y Google Wallet: PassKit, firma PKCS#7 y avisos APNs",
+      "Alta autoservicio de restaurantes y registro de clientes por QR y teléfono",
+      "Control de visitas y canje de recompensas por marca y sucursal",
+      "Seguridad: RLS, autorización en servidor, rate limiting y reCAPTCHA Enterprise",
+      "Motor de enriquecimiento con Google Places, Geocoding y OpenStreetMap",
+      "1,284 pruebas automatizadas · despliegue en Railway y Cloudflare"
     ],
     features_en: [
-      "Apple and Google Wallet passes that update in real time",
-      "Partner portal with WhatsApp sign-in, no passwords",
-      "Till app (PWA) with a scanner to stamp at the counter",
-      "Metrics dashboard: funnel, trial periods and weekly reports",
-      "Over 1,200 automated tests"
+      "Apple Wallet and Google Wallet: PassKit, PKCS#7 signing and APNs notifications",
+      "Self-service restaurant onboarding and customer sign-up by QR and phone",
+      "Visit tracking and reward redemption per brand and location",
+      "Security: RLS, server-side authorization, rate limiting and reCAPTCHA Enterprise",
+      "Enrichment engine with Google Places, Geocoding and OpenStreetMap",
+      "1,284 automated tests · deployed on Railway and Cloudflare"
     ],
     images: [voraa1, voraa2],
     github: "",

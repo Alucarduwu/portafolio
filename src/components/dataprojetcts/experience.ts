@@ -1,4 +1,4 @@
-import { Briefcase, Cpu } from "lucide-react";
+import { Briefcase, Globe, Headset } from "lucide-react";
 
 export interface ExperienceItem {
   id: string;
@@ -20,163 +20,135 @@ export interface ExperienceItem {
   };
 }
 
+/**
+ * La trayectoria sigue el CV de 2026 al pie de la letra: un reclutador los cruza, y
+ * cualquier diferencia de puesto, fecha o cifra entre los dos se lee como invento.
+ */
 export const experience: ExperienceItem[] = [
   {
-    id: "exp-00",
-    titleEs: "Software Engineer – Plataforma de Lealtad",
-    titleEn: "Software Engineer – Loyalty Platform",
+    id: "exp-voraa",
+    titleEs: "Desarrolladora Full Stack",
+    titleEn: "Full Stack Developer",
     companyEs: "Voraa",
     companyEn: "Voraa",
-    periodEs: "2026 – Actualidad",
-    periodEn: "2026 – Present",
+    periodEs: "Mayo 2026 – Actualidad · Aguascalientes, México",
+    periodEn: "May 2026 – Present · Aguascalientes, Mexico",
     descriptionEs:
-      "Diseño, construyo y opero en producción la plataforma de lealtad de Voraa: tarjetas digitales en Apple y Google Wallet para restaurantes, el portal donde los dueños crean su programa y el panel de operación.",
+      "Única ingeniera del equipo, con la responsabilidad técnica de punta a punta: arquitectura, datos, despliegue y pruebas con usuarios. Desarrollé Voraa Lealtad, que está en producción con restaurantes.",
     descriptionEn:
-      "I design, build and run in production Voraa's loyalty platform: digital cards in Apple and Google Wallet for restaurants, the portal where owners create their program, and the operations dashboard.",
-    stack: "TypeScript • React • Next.js • PostgreSQL • Cloudflare • Railway",
+      "Sole engineer on the team, owning the technical work end to end: architecture, data, deployment and user testing. I built Voraa Lealtad, live in production with restaurants.",
+    stack: "TypeScript • Next.js • PostgreSQL • Supabase • Flutter • Apple Wallet • Google Wallet",
     icon: Briefcase,
     details: {
       featuresEs: [
-        "Emisión y actualización en tiempo real de pases de Apple Wallet y Google Wallet.",
-        "Portal de socios en React 19 donde el dueño crea su programa en minutos, con acceso por WhatsApp.",
-        "Caja (PWA) con escáner para que el personal selle tarjetas desde el mostrador.",
-        "Panel de operación con embudo de clientes, periodos de prueba y reportes semanales automáticos."
+        "Desarrollé Voraa Lealtad de extremo a extremo: alta autoservicio de restaurantes, registro de clientes por QR y teléfono, control de visitas y canje de recompensas, con operación por marca y sucursal.",
+        "Integré Apple Wallet y Google Wallet con actualización de visitas; implementé PassKit, firma PKCS#7 y notificaciones APNs para los pases de Apple.",
+        "Construí un motor de enriquecimiento de negocios con Google Places, Geocoding, OpenStreetMap y Serper, y ajusté la resolución de identidad para no fusionar establecimientos distintos.",
+        "Mantuve la app Flutter, resolví fallos de compilación en iOS y Android y configuré CI móvil en Codemagic. Desarrollé el panel de restaurantes y convertí pruebas de usabilidad en mejoras responsive."
       ],
       featuresEn: [
-        "Real-time issuing and updating of Apple Wallet and Google Wallet passes.",
-        "React 19 partner portal where owners create their program in minutes, with WhatsApp sign-in.",
-        "Till app (PWA) with a scanner so staff can stamp cards at the counter.",
-        "Operations dashboard with the customer funnel, trial periods and automated weekly reports."
+        "Built Voraa Lealtad end to end: self-service restaurant onboarding, customer sign-up by QR and phone, visit tracking and reward redemption, operated per brand and location.",
+        "Integrated Apple Wallet and Google Wallet with live visit updates; implemented PassKit, PKCS#7 signing and APNs notifications for Apple passes.",
+        "Built a business enrichment engine with Google Places, Geocoding, OpenStreetMap and Serper, and tuned identity resolution so distinct places never get merged.",
+        "Maintained the Flutter app, fixed iOS and Android build failures and set up mobile CI on Codemagic. Built the restaurant dashboard and turned usability tests into responsive improvements."
       ],
       architectureEs: [
-        "Frontend en React + Vite sobre Cloudflare Pages; backend en Next.js sobre Railway.",
-        "PostgreSQL (Supabase) con migraciones versionadas y permisos por rol.",
-        "Tareas programadas para vencimientos, etapas del embudo y avisos al dueño.",
-        "Más de 1,200 pruebas unitarias y end-to-end con Vitest y Playwright."
+        "Monorepo de tres servicios con Next.js, TypeScript y PostgreSQL/Supabase: 53 rutas de API, 18 migraciones y 1,284 pruebas automatizadas.",
+        "Despliegues en Railway y Cloudflare.",
+        "Autorización en servidor, políticas de acceso a nivel de fila (RLS), rate limiting y reCAPTCHA Enterprise.",
+        "Corregí hallazgos de seguridad en Firebase y desarrollé la migración de datos a PostgreSQL."
       ],
       architectureEn: [
-        "React + Vite frontend on Cloudflare Pages; Next.js backend on Railway.",
-        "PostgreSQL (Supabase) with versioned migrations and role-based permissions.",
-        "Scheduled jobs for expirations, funnel stages and owner notifications.",
-        "Over 1,200 unit and end-to-end tests with Vitest and Playwright."
+        "Three-service monorepo with Next.js, TypeScript and PostgreSQL/Supabase: 53 API routes, 18 migrations and 1,284 automated tests.",
+        "Deployments on Railway and Cloudflare.",
+        "Server-side authorization, row-level security (RLS) policies, rate limiting and reCAPTCHA Enterprise.",
+        "Fixed security findings in Firebase and built the data migration to PostgreSQL."
       ]
     }
   },
   {
-    id: "exp-01",
-    titleEs: "Líder de Arquitectura & Full Stack – Sistema de Gobernanza Empresarial",
-    titleEn: "Lead Architect & Full Stack Developer – Enterprise Governance System",
-    companyEs: "Lemaboox / Instituto Tecnológico de Aguascalientes",
-    companyEn: "Lemaboox / Instituto Tecnológico de Aguascalientes",
-    periodEs: "Agosto 2025 – Actualidad",
-    periodEn: "August 2025 – Present",
+    id: "exp-i3",
+    titleEs: "Desarrolladora de Software",
+    titleEn: "Software Developer",
+    companyEs: "i3 Solutions Inc.",
+    companyEn: "i3 Solutions Inc.",
+    periodEs: "Mayo 2026 – Actualidad · Canadá, remoto desde México",
+    periodEn: "May 2026 – Present · Canada, remote from Mexico",
     descriptionEs:
-      "Dirección técnica en el diseño y despliegue de una plataforma web de alta disponibilidad para la gestión estratégica de activos institucionales y procesos administrativos complejos.",
+      "Desarrollo y mantenimiento de Panacea, plataforma cliente-servidor con terminales en C# / WPF y .NET Framework y backend en Node.js con MongoDB, en colaboración con un equipo internacional.",
     descriptionEn:
-      "Technical direction in the design and deployment of a high-availability web platform for strategic institutional asset management and complex administrative processes.",
-    stack: "Angular • Node.js • MySQL • Cloud Integration • RBAC Security",
-    icon: Briefcase,
+      "Development and maintenance of Panacea, a client-server platform with C# / WPF and .NET Framework terminals and a Node.js backend on MongoDB, working with an international team.",
+    stack: "C# • WPF • .NET Framework • Node.js • MongoDB • Docker",
+    icon: Globe,
     details: {
       featuresEs: [
-        "Ingeniería de APIs robustas bajo estándares industriales de seguridad y escalabilidad.",
-        "Implementación de esquemas RBAC avanzados para la protección de datos sensibles.",
-        "Optimización de lógica de negocio en servidor reduciendo tiempos de respuesta en un 30%.",
-        "Diseño de interfaces de usuario de alta densidad para analítica en tiempo real."
+        "Resolví incidencias de cliente y servidor de reconexión, comunicación con Management Server, reinicio remoto y estados de carga de las terminales.",
+        "Implementé y validé reintentos de conexión: cinco intentos cada cinco segundos, con pruebas de recuperación cuando el servidor vuelve a estar disponible.",
+        "Trabajé en el módulo de facturación y el monitoreo de compras con PayPal, modificando controladores y el modelo de registro contable del backend."
       ],
       featuresEn: [
-        "Engineering of robust APIs under industrial security and scalability standards.",
-        "Implementation of advanced RBAC schemes for sensitive data protection.",
-        "Server-side business logic optimization reducing response times by 30%.",
-        "Design of high-density user interfaces for real-time analytics."
+        "Resolved client and server issues around reconnection, Management Server communication, remote restart and terminal loading states.",
+        "Implemented and validated connection retries: five attempts every five seconds, with recovery tests for when the server comes back.",
+        "Worked on the billing module and PayPal purchase monitoring, changing controllers and the backend accounting record model."
       ],
       architectureEs: [
-        "Arquitectura escalable basada en microservicios y patrones de diseño limpios.",
-        "Middleware de seguridad personalizado para validación y saneamiento de datos.",
-        "Modelado de bases de datos altamente normalizado para integridad referencial."
+        "Solución de 77 proyectos .NET sobre entornos Windows y WSL, con MongoDB en Docker.",
+        "Diagnósticos y evidencia de pruebas documentados en Jira; cambios mediante Git y pull requests."
       ],
       architectureEn: [
-        "Scalable architecture based on microservices and clean design patterns.",
-        "Custom security middleware for data validation and sanitization.",
-        "Highly normalized database modeling for referential integrity."
+        "A 77-project .NET solution on Windows and WSL environments, with MongoDB in Docker.",
+        "Diagnostics and test evidence documented in Jira; changes through Git and pull requests."
       ]
     }
   },
   {
-    id: "exp-02",
-    titleEs: "Especialista en Ingeniería de Sistemas AI – Unidad de Control Lógica Difusa",
-    titleEn: "AI Systems Engineering Specialist – Fuzzy Logic Control Unit",
-    companyEs: "Instituto Tecnológico de Aguascalientes",
-    companyEn: "Instituto Tecnológico de Aguascalientes",
-    periodEs: "Enero 2025 – Agosto 2025",
-    periodEn: "January 2025 – August 2025",
+    id: "exp-lemaboox",
+    titleEs: "Desarrolladora Full Stack",
+    titleEn: "Full Stack Developer",
+    companyEs: "Lemaboox",
+    companyEn: "Lemaboox",
+    periodEs: "Agosto 2025 – Julio 2026 · Aguascalientes, México",
+    periodEn: "August 2025 – July 2026 · Aguascalientes, Mexico",
     descriptionEs:
-      "Investigación y desarrollo de un núcleo de inteligencia computacional basado en lógica difusa para la automatización predictiva de procesos industriales y ambientales.",
+      "Residencia profesional (ago – dic 2025) y después desarrollo de software (dic 2025 – jul 2026). Diseñé y desarrollé una plataforma web desde el levantamiento de requerimientos hasta la entrega funcional.",
     descriptionEn:
-      "Research and development of a computational intelligence core based on fuzzy logic for predictive automation of industrial and environmental processes.",
-    stack: "JavaScript • MATLAB • Artificial Intelligence • Fuzzy Logic • R&D",
-    icon: Cpu,
+      "Professional residency (Aug – Dec 2025), then software development (Dec 2025 – Jul 2026). I designed and built a web platform from requirements gathering to working delivery.",
+    stack: "Angular • Node.js • Express • MySQL • RBAC",
+    icon: Briefcase,
     details: {
       featuresEs: [
-        "Modelado de algoritmos de inferencia difusa para la toma de decisiones autónomas.",
-        "Creación de prototipos funcionales de alta fidelidad integrando lógica matemática compleja.",
-        "Validación de fiabilidad del sistema mediante simulaciones de estrés en entornos MATLAB.",
-        "Definición estratégica de variables lingüísticas y funciones de membresía."
+        "Diseñé y desarrollé una plataforma web con Angular, Node.js, Express y MySQL, desde el levantamiento de requerimientos hasta la entrega funcional.",
+        "Implementé APIs REST, autenticación y autorización basada en roles (RBAC), además de dashboards administrativos responsivos.",
+        "Coordiné requerimientos con las áreas involucradas para traducir procesos del negocio en funcionalidades."
       ],
       featuresEn: [
-        "Modeling of fuzzy inference algorithms for autonomous decision making.",
-        "Creation of high-fidelity functional prototypes integrating complex mathematical logic.",
-        "System reliability validation through stress simulations in MATLAB environments.",
-        "Strategic definition of linguistic variables and membership functions."
+        "Designed and built a web platform with Angular, Node.js, Express and MySQL, from requirements gathering to working delivery.",
+        "Implemented REST APIs, authentication and role-based access control (RBAC), plus responsive admin dashboards.",
+        "Worked with the business areas involved to turn their processes into features."
       ],
       architectureEs: [
-        "Integración de sistemas expertos para el control dinámico en tiempo real.",
-        "Motor de reglas personalizado diseñado para la escalabilidad de funciones AI.",
-        "Optimización de procesamiento de señales mediante lógica computacional avanzada."
+        "Esquemas relacionales diseñados a la medida y consultas optimizadas.",
+        "Control de acceso por roles en el servidor."
       ],
       architectureEn: [
-        "Integration of expert systems for dynamic real-time control.",
-        "Custom rule engine designed for AI function scalability.",
-        "Signal processing optimization through advanced computational logic."
+        "Custom relational schemas and optimized queries.",
+        "Server-side role-based access control."
       ]
     }
   },
   {
-    id: "exp-03",
-    titleEs: "Consultoría Técnica Estratégica & Desarrollo Independiente",
-    titleEn: "Strategic Technical Consultant & Independent Development",
-    companyEs: "Independent / Freelance Portfolio",
-    companyEn: "Independent / Freelance Portfolio",
-    periodEs: "2024 – Presente",
-    periodEn: "2024 – Present",
+    id: "exp-nrfm",
+    titleEs: "Agente de Servicio al Cliente",
+    titleEn: "Customer Service Agent",
+    companyEs: "NRFM Finance Services",
+    companyEn: "NRFM Finance Services",
+    periodEs: "2022 – 2024",
+    periodEn: "2022 – 2024",
     descriptionEs:
-      "Gestión y ejecución de soluciones tecnológicas personalizadas para clientes independientes, enfocándome en la arquitectura de software y el valor de negocio.",
+      "Gestioné operaciones financieras y validaciones digitales con información sensible, manteniendo exactitud en los registros y cumplimiento de los procesos de validación.",
     descriptionEn:
-      "Management and execution of custom technological solutions for independent clients, focusing on software architecture and business value.",
-    stack: "React • TypeScript • Next.js • TailwindCSS • System Design",
-    icon: Briefcase,
-    details: {
-      featuresEs: [
-        "Despliegue de arquitecturas web modernas con enfoque en SEO y performance.",
-        "Consultoría en digitalización de procesos para pequeñas y medianas empresas.",
-        "Desarrollo de landing pages de alta conversión y sistemas de control ligero.",
-        "Liderazgo en la selección del stack tecnológico para proyectos de rápido crecimiento."
-      ],
-      featuresEn: [
-        "Deployment of modern web architectures with a focus on SEO and performance.",
-        "Consultancy on process digitalization for small and medium-sized enterprises.",
-        "Development of high-conversion landing pages and lightweight control systems.",
-        "Leadership in tech stack selection for rapid-growth projects."
-      ],
-      architectureEs: [
-        "Patrones de diseño orientados a componentes y mantenibilidad a largo plazo.",
-        "Implementación de CI/CD para despliegues automatizados y seguros.",
-        "Arquitectura de frontend modular para escalabilidad de funciones futuras."
-      ],
-      architectureEn: [
-        "Component-oriented design patterns and long-term maintainability.",
-        "CI/CD implementation for automated and secure deployments.",
-        "Modular frontend architecture for future feature scalability."
-      ]
-    }
+      "Handled financial operations and digital validations involving sensitive data, keeping records accurate and validation processes compliant.",
+    stack: "Operaciones financieras • Validación de datos • Información sensible",
+    icon: Headset
   }
-];
+];

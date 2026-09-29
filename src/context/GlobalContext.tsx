@@ -6,7 +6,13 @@ export const GlobalContext = createContext<any>(null);
 export const GlobalStateProvider = ({ children }: { children: React.ReactNode }) => {
     const [lang, setLang] = useState(() => localStorage.getItem('sh_lang') || 'es');
     const [theme, setTheme] = useState(() => localStorage.getItem('sh_theme') || 'dark');
-    const [perspective, setPerspective] = useState<string | null>(() => localStorage.getItem('sh_perspective'));
+    const [perspective, setPerspective] = useState<string | null>(() => {
+        // Sin barrera de entrada: quien llega por primera vez ve la vista profesional.
+        // ?view=dev abre directo la técnica (para compartirla con otro dev).
+        const fromUrl = new URLSearchParams(window.location.search).get('view');
+        if (fromUrl === 'dev' || fromUrl === 'rh') return fromUrl;
+        return localStorage.getItem('sh_perspective') || 'rh';
+    });
 
     useEffect(() => {
         const html = document.documentElement;

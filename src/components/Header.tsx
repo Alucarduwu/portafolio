@@ -38,9 +38,9 @@ const Header = () => {
         { path: '/', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Presentación' : 'Overview') : (t('nav_home') || 'KERNEL')}</span>, icon: 'home' },
         { path: '/about', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Perfil' : 'Profile') : (t('nav_about') || 'BIO')}</span>, icon: 'person' },
         { path: '/experience', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Trayectoria' : 'Trajectory') : (t('nav_exp') || 'LOGS')}</span>, icon: 'history' },
-        { path: '/projects', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Soluciones' : 'Solutions') : (t('nav_projects') || 'CORE')}</span>, icon: 'terminal' },
+        { path: '/projects', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Proyectos' : 'Projects') : (t('nav_projects') || 'CORE')}</span>, icon: 'terminal' },
         { path: '/certificates', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Certificados' : 'Credentials') : (t('nav_certs') || 'HASH')}</span>, icon: 'workspace_premium' },
-        { path: '/contact', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Consultoría' : 'Consultancy') : (t('nav_contact') || 'IO')}</span>, icon: 'alternate_email' }
+        { path: '/contact', label: <span translate="no" className="notranslate">{perspective === 'rh' ? (lang === 'es' ? 'Contacto' : 'Contact') : (t('nav_contact') || 'IO')}</span>, icon: 'alternate_email' }
     ];
 
     return (
@@ -65,7 +65,7 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="hidden sm:flex flex-col leading-none shrink-0 notranslate" translate="no">
-                            <span className={`font-serif text-[11px] tracking-widest transition-colors uppercase italic ${perspective === 'rh' ? 'text-white group-hover:text-[#C5A059]' : 'text-[var(--text-main)] group-hover:text-[var(--primary)]'}`} style={perspective === 'rh' ? { fontFamily: "'Playfair Display', serif" } : {}}><span>ANAHÍ BETZABE</span></span>
+                            <span className={`font-serif text-[11px] tracking-widest transition-colors uppercase italic ${perspective === 'rh' ? 'text-white group-hover:text-[#C5A059]' : 'text-[var(--text-main)] group-hover:text-[var(--primary)]'}`} style={perspective === 'rh' ? { fontFamily: "'Playfair Display', serif" } : {}}><span>ANAHÍ LOZANO</span></span>
                             {perspective === 'dev' ? (
                                 <div className="flex items-center gap-2 mt-0.5">
                                     <span className="text-[6px] font-mono text-[var(--text-muted)] tracking-widest opacity-60 uppercase"><span>SYSTEM_OS_v6.4</span></span>
@@ -73,7 +73,7 @@ const Header = () => {
                                     <span className="text-[6px] font-mono text-green-500/60 uppercase tracking-tighter">CPU: {(Math.random() * 5 + 10).toFixed(1)}%</span>
                                 </div>
                             ) : (
-                                <span className="text-[7px] font-black text-[#C5A059] tracking-[0.4em] uppercase mt-1.5 opacity-60 italic">Engineering Excellence</span>
+                                <span className="text-[7px] font-black text-[#C5A059] tracking-[0.4em] uppercase mt-1.5 opacity-60 italic">{lang === 'es' ? 'Desarrolladora Full Stack' : 'Full Stack Developer'}</span>
                             )}
                         </div>
                     </Link>
@@ -98,10 +98,10 @@ const Header = () => {
                     ))}
                     {perspective === 'dev' && (
                         <button 
-                            onClick={() => setPerspective(null)}
+                            onClick={() => setPerspective('rh')}
                             className="ml-2 px-4 py-2.5 rounded-none text-[8px] font-black uppercase tracking-widest border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--primary)] hover:bg-[var(--bg-ui)] transition-all"
                         >
-                            Reset
+                            {lang === 'es' ? 'VISTA RH' : 'HR VIEW'}
                         </button>
                     )}
                 </div>
@@ -116,11 +116,11 @@ const Header = () => {
                     
                     {perspective === 'rh' && (
                         <button 
-                            onClick={() => setPerspective(null)}
-                            className={`w-9 h-9 rounded-xl border transition-all flex items-center justify-center backdrop-blur transform active:scale-95 group/perspective ${perspective === 'rh' ? 'border-white/10 text-gray-500 hover:border-[#C5A059]/40 hover:text-[#C5A059] bg-white/[0.02]' : 'border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--primary)] bg-[var(--bg-ui)]/30'}`}
-                            title={lang === 'es' ? 'Cambiar Perfil' : 'Change Profile'}
+                            onClick={() => setPerspective('dev')}
+                            className={`h-9 px-3 gap-1.5 text-[11px] font-semibold rounded-xl border transition-all flex items-center justify-center backdrop-blur transform active:scale-95 group/perspective ${perspective === 'rh' ? 'border-white/10 text-gray-500 hover:border-[#C5A059]/40 hover:text-[#C5A059] bg-white/[0.02]' : 'border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--primary)] bg-[var(--bg-ui)]/30'}`}
+                            title={lang === 'es' ? 'Ver la versión técnica del portafolio' : 'See the technical version'}
                         >
-                            <span className="material-symbols-outlined text-[18px]">swap_horiz</span>
+                            <span className="material-symbols-outlined text-[18px]">terminal</span><span className="hidden md:inline">{lang === 'es' ? 'Vista técnica' : 'Tech view'}</span>
                         </button>
                     )}
 
@@ -150,7 +150,7 @@ const Header = () => {
                         <div className="p-6 md:p-8 flex items-center justify-between border-b border-white/5">
                             <div className="flex flex-col gap-1 min-w-0 overflow-hidden">
                                 <span className={`font-serif italic text-white tracking-widest uppercase truncate block ${perspective === 'rh' ? 'text-base md:text-lg' : 'text-[10px] font-mono'}`} style={perspective === 'rh' ? { fontFamily: "'Playfair Display', serif" } : {}}><span>{perspective === 'rh' ? 'Anahí Lozano' : 'ROOT@ANAHI_HQ: ~#'}</span></span>
-                                <span className={`text-[7px] md:text-[8px] font-black tracking-[0.2em] uppercase opacity-60 truncate block ${perspective === 'rh' ? 'text-[#C5A059]' : 'text-[var(--primary)]'}`}><span>{perspective === 'rh' ? 'Engineering Executive' : 'SYS_STATUS: READY'}</span></span>
+                                <span className={`text-[7px] md:text-[8px] font-black tracking-[0.2em] uppercase opacity-60 truncate block ${perspective === 'rh' ? 'text-[#C5A059]' : 'text-[var(--primary)]'}`}><span>{perspective === 'rh' ? (lang === 'es' ? 'Desarrolladora Full Stack' : 'Full Stack Developer') : 'SYS_STATUS: READY'}</span></span>
                             </div>
                             <button 
                                 onClick={() => setMobileMenuOpen(false)}
@@ -192,12 +192,12 @@ const Header = () => {
                                 <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className={`flex-1 flex items-center justify-center gap-3 text-[10px] font-black tracking-[0.3em] p-4 border active:scale-95 transition-all ${perspective === 'rh' ? 'bg-white/5 border-white/5 text-[#C5A059] rounded-2xl' : 'bg-[var(--primary)]/5 border-[var(--primary)]/20 text-[var(--primary)] rounded-none'}`}>
                                     <span className="material-symbols-outlined text-xs">language</span> {lang.toUpperCase()}
                                 </button>
-                                <button onClick={() => setPerspective(null)} className={`flex-1 flex items-center justify-center gap-3 text-[10px] font-black tracking-[0.3em] p-4 border active:scale-95 transition-all ${perspective === 'rh' ? 'bg-[#C5A059] border-[#C5A059] text-black shadow-lg shadow-[#C5A059]/10 rounded-2xl' : 'bg-[var(--primary)] text-white shadow-lg rounded-none'}`}>
-                                    RESET
+                                <button onClick={() => setPerspective(perspective === 'rh' ? 'dev' : 'rh')} className={`flex-1 flex items-center justify-center gap-3 text-[10px] font-black tracking-[0.3em] p-4 border active:scale-95 transition-all ${perspective === 'rh' ? 'bg-[#C5A059] border-[#C5A059] text-black shadow-lg shadow-[#C5A059]/10 rounded-2xl' : 'bg-[var(--primary)] text-white shadow-lg rounded-none'}`}>
+                                    {perspective === 'rh' ? (lang === 'es' ? 'VISTA TÉCNICA' : 'TECH VIEW') : (lang === 'es' ? 'VISTA RH' : 'HR VIEW')}
                                 </button>
                             </div>
                             <div className="flex justify-center flex-col items-center gap-2 notranslate italic" translate="no">
-                                <span className={`text-[7px] tracking-[0.4em] uppercase opacity-40 font-serif ${perspective === 'rh' ? 'text-[#C5A059]' : 'text-[var(--text-muted)]'}`}><span>{perspective === 'rh' ? 'Institutional Excellence' : t('sys_encryption')}</span></span>
+                                <span className={`text-[7px] tracking-[0.4em] uppercase opacity-40 font-serif ${perspective === 'rh' ? 'text-[#C5A059]' : 'text-[var(--text-muted)]'}`}><span>{perspective === 'rh' ? 'anahydlira@gmail.com' : t('sys_encryption')}</span></span>
                                 <span className="text-[8px] text-gray-600 tracking-widest uppercase font-black"><span>ANAHI_LOZANO_v6.4</span></span>
                             </div>
                         </div>

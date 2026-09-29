@@ -43,11 +43,19 @@ const toStaticProjects = (language: "es" | "en"): Project[] => {
   }));
 };
 
+// Repos que no se muestran: Portafolio2styles es una versión vieja de este mismo sitio.
+const HIDDEN_REPOS = new Set(["https://github.com/alucarduwu/portafolio2styles"]);
+
+const keyOf = (project: Project) => project.github?.toLowerCase() || String(project.id);
+
 const mergeProjects = (baseProjects: Project[], remoteProjects: Project[]) => {
   const byGithub = new Map<string, Project>();
+  // Los curados en projects.ts van primero y en su orden (Voraa arriba); un push
+  // reciente a otro repo no debe ganarle al trabajo que se quiere enseñar.
+  const curatedOrder = new Map(baseProjects.map((p, i) => [keyOf(p), i]));
 
-  [...baseProjects, ...remoteProjects].forEach((project) => {
-    const key = project.github?.toLowerCase() || String(project.id);
+  [...baseProjects, ...remoteProjects].filter(p => !HIDDEN_REPOS.has(keyOf(p))).forEach((project) => {
+    const key = keyOf(project);
     const existing = byGithub.get(key);
     byGithub.set(key, {
       ...existing,
@@ -60,6 +68,9 @@ const mergeProjects = (baseProjects: Project[], remoteProjects: Project[]) => {
   });
 
   return Array.from(byGithub.values()).sort((a, b) => {
+    const aRank = curatedOrder.get(keyOf(a)) ?? Infinity;
+    const bRank = curatedOrder.get(keyOf(b)) ?? Infinity;
+    if (aRank !== bRank) return aRank - bRank;
     const aTime = a.date ? new Date(a.date).getTime() : 0;
     const bTime = b.date ? new Date(b.date).getTime() : 0;
     return bTime - aTime;

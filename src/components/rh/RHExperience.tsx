@@ -272,8 +272,9 @@ const RHExperience = () => {
                     </h2>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                         <a
-                            href="/Cv Anahi Betzabe Lozano de Lira.pdf"
+                            href="/Anahi_Lozano_CV_2026.pdf"
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-3 px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-widest text-black transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-[0_8px_30px_rgba(201,168,76,0.3)]"
                             style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}
                         >

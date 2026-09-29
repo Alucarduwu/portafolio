@@ -1,352 +1,400 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
-import { motion, type Transition } from "framer-motion";
+import { motion } from "framer-motion";
+import { CONTACT_CONFIG } from "../../config";
+import { experience } from "../dataprojetcts/experience";
+import voraaSite from "../../assets/projects/voraa/1.png";
+import voraaCards from "../../assets/projects/voraa/3.png";
 
 const GOLD = "#C9A84C";
-const GOLD_DIM = "rgba(201,168,76,0.12)";
-const GOLD_BORDER = "rgba(201,168,76,0.20)";
+const GOLD_DIM = "rgba(201,168,76,0.10)";
+const GOLD_BORDER = "rgba(201,168,76,0.22)";
+const SERIF = { fontFamily: "'Playfair Display', serif" };
+
+// Todo lo que se afirma aquí sale del CV 2026: un reclutador cruza cada cifra con él.
+const content = {
+    es: {
+        status: "Disponible para empleo y proyectos freelance",
+        role: "Desarrolladora Full Stack",
+        stack: "TypeScript · React · Next.js · Node.js · PostgreSQL · C# / .NET",
+        pitch: "Llevo productos de la idea a producción. Hoy soy la única ingeniera de Voraa, una plataforma de lealtad con tarjetas en Apple y Google Wallet, y mantengo software empresarial para un equipo en Canadá.",
+        where: "Aguascalientes, México · Remoto o híbrido · Español nativo, inglés B1",
+        ctaTalk: "Hablemos",
+        ctaCv: "Descargar CV",
+        ctaWork: "Ver proyectos",
+        live: "En producción",
+        numbers: [
+            { value: "1,284", label: "pruebas automatizadas", sub: "Voraa" },
+            { value: "53", label: "rutas de API", sub: "Voraa" },
+            { value: "18", label: "migraciones PostgreSQL", sub: "Voraa" },
+            { value: "77", label: "proyectos .NET mantenidos", sub: "i3 Solutions" },
+        ],
+        caseEyebrow: "Caso destacado",
+        caseTitle: "Voraa Lealtad",
+        caseSub: "Tarjetas de lealtad digitales para restaurantes, directo en el celular del cliente.",
+        caseRole: "Mi papel: única ingeniera. Arquitectura, datos, despliegue y pruebas con usuarios.",
+        caseBullets: [
+            "Pases de Apple Wallet (PassKit, firma PKCS#7, avisos por APNs) y de Google Wallet, sin app que instalar.",
+            "Alta de negocios en autoservicio, registro de clientes por QR o teléfono, visitas y canje por marca y sucursal.",
+            "Seguridad a nivel de fila en PostgreSQL, límites de uso y reCAPTCHA Enterprise.",
+            "Monorepo de tres servicios desplegado en Railway y Cloudflare, con 1,284 pruebas automatizadas.",
+        ],
+        caseSite: "Ver sitio",
+        caseMore: "Todos los proyectos",
+        expEyebrow: "Experiencia",
+        expTitle: "Dónde he trabajado",
+        expMore: "Ver trayectoria completa",
+        now: "Actual",
+        offerEyebrow: "Cómo puedo ayudarte",
+        hireTitle: "Para tu equipo",
+        hireItems: [
+            "Me hago cargo de una función de principio a fin: diseño de datos, API, interfaz, pruebas y despliegue.",
+            "Experiencia en equipos remotos e internacionales, con Jira, revisiones de código y CI.",
+            "Código con pruebas y documentado, pensado para que otro lo mantenga.",
+        ],
+        hireCta: "Tengo una vacante",
+        freeTitle: "Para tu negocio (freelance)",
+        freeItems: [
+            { icon: "language", t: "Sitios y apps web a la medida", d: "React, Next.js y Node.js, con panel de administración." },
+            { icon: "wallet", t: "Tarjetas de lealtad y pases Wallet", d: "Apple y Google Wallet para tu marca." },
+            { icon: "smartphone", t: "Apps móviles", d: "Flutter para Android y iOS." },
+            { icon: "build", t: "Mantenimiento y modernización", d: "APIs, bases de datos y sistemas .NET existentes." },
+        ],
+        steps: ["Llamada de 30 min", "Propuesta con alcance y tiempos", "Avances cada semana", "Entrega y soporte"],
+        freeCta: "Cotizar un proyecto",
+        stackEyebrow: "Tecnologías",
+        stackGroups: [
+            { name: "Frontend", items: ["TypeScript", "React", "Next.js", "Angular", "Tailwind CSS"] },
+            { name: "Backend y datos", items: ["Node.js", "Express", "PostgreSQL", "Supabase", "MySQL", "MongoDB"] },
+            { name: "Móvil y escritorio", items: ["Flutter", "Apple Wallet", "Google Wallet", "C# / WPF", ".NET Framework"] },
+            { name: "Entrega", items: ["Railway", "Cloudflare", "Docker", "GitHub Actions", "GitLab CI", "Vitest", "Playwright"] },
+        ],
+        eduTitle: "Formación",
+        edu: "Ingeniería en TIC · Instituto Tecnológico de Aguascalientes (titulación en trámite)",
+        certs: "11 certificaciones: Cisco CCNAv7, Meta (React, Django), SAP HANA, ciberseguridad y ciencia de datos.",
+        certsCta: "Ver certificados",
+        finalTitle: "¿Tienes una vacante o un proyecto?",
+        finalSub: "Escríbeme por correo o LinkedIn y lo platicamos.",
+        mailSubject: "Contacto desde tu portafolio",
+    },
+    en: {
+        status: "Open to full-time roles and freelance projects",
+        role: "Full Stack Developer",
+        stack: "TypeScript · React · Next.js · Node.js · PostgreSQL · C# / .NET",
+        pitch: "I take products from idea to production. Today I'm the sole engineer at Voraa, a loyalty platform with Apple and Google Wallet cards, and I maintain enterprise software for a team in Canada.",
+        where: "Aguascalientes, Mexico · Remote or hybrid · Spanish (native), English B1",
+        ctaTalk: "Let's talk",
+        ctaCv: "Download CV",
+        ctaWork: "See projects",
+        live: "In production",
+        numbers: [
+            { value: "1,284", label: "automated tests", sub: "Voraa" },
+            { value: "53", label: "API routes", sub: "Voraa" },
+            { value: "18", label: "PostgreSQL migrations", sub: "Voraa" },
+            { value: "77", label: ".NET projects maintained", sub: "i3 Solutions" },
+        ],
+        caseEyebrow: "Featured case",
+        caseTitle: "Voraa Loyalty",
+        caseSub: "Digital loyalty cards for restaurants, right on the customer's phone.",
+        caseRole: "My role: sole engineer. Architecture, data, deployment and user testing.",
+        caseBullets: [
+            "Apple Wallet passes (PassKit, PKCS#7 signing, APNs updates) and Google Wallet passes, no app to install.",
+            "Self-service business onboarding, customer sign-up by QR or phone, visits and redemptions per brand and location.",
+            "Row-level security in PostgreSQL, rate limiting and reCAPTCHA Enterprise.",
+            "Three-service monorepo deployed on Railway and Cloudflare, with 1,284 automated tests.",
+        ],
+        caseSite: "Visit site",
+        caseMore: "All projects",
+        expEyebrow: "Experience",
+        expTitle: "Where I've worked",
+        expMore: "Full trajectory",
+        now: "Current",
+        offerEyebrow: "How I can help",
+        hireTitle: "For your team",
+        hireItems: [
+            "I own a feature end to end: data design, API, UI, tests and deployment.",
+            "Experience on remote, international teams with Jira, code review and CI.",
+            "Tested, documented code built for someone else to maintain.",
+        ],
+        hireCta: "I have an opening",
+        freeTitle: "For your business (freelance)",
+        freeItems: [
+            { icon: "language", t: "Custom websites and web apps", d: "React, Next.js and Node.js, with an admin panel." },
+            { icon: "wallet", t: "Loyalty cards and Wallet passes", d: "Apple and Google Wallet for your brand." },
+            { icon: "smartphone", t: "Mobile apps", d: "Flutter for Android and iOS." },
+            { icon: "build", t: "Maintenance and modernization", d: "Existing APIs, databases and .NET systems." },
+        ],
+        steps: ["30-min call", "Proposal with scope and timeline", "Weekly progress", "Delivery and support"],
+        freeCta: "Get a quote",
+        stackEyebrow: "Technologies",
+        stackGroups: [
+            { name: "Frontend", items: ["TypeScript", "React", "Next.js", "Angular", "Tailwind CSS"] },
+            { name: "Backend & data", items: ["Node.js", "Express", "PostgreSQL", "Supabase", "MySQL", "MongoDB"] },
+            { name: "Mobile & desktop", items: ["Flutter", "Apple Wallet", "Google Wallet", "C# / WPF", ".NET Framework"] },
+            { name: "Delivery", items: ["Railway", "Cloudflare", "Docker", "GitHub Actions", "GitLab CI", "Vitest", "Playwright"] },
+        ],
+        eduTitle: "Education",
+        edu: "B.Eng. in ICT · Instituto Tecnológico de Aguascalientes (degree in process)",
+        certs: "11 certifications: Cisco CCNAv7, Meta (React, Django), SAP HANA, cybersecurity and data science.",
+        certsCta: "See certificates",
+        finalTitle: "Have an opening or a project?",
+        finalSub: "Email me or reach out on LinkedIn and let's talk.",
+        mailSubject: "Contact from your portfolio",
+    },
+};
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+    <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-3" style={{ color: GOLD }}>{children}</p>
+);
+
+const fade = (delay = 0) => ({
+    initial: { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-60px" },
+    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+});
 
 const RHHomePage = () => {
     const { lang } = useContext(GlobalContext);
-
-    const content = {
-        es: {
-            eyebrow: "Ingeniería de Software · Soluciones Empresariales",
-            role: "Desarrolladora Fullstack",
-            tagline: "Arquitecto sistemas que escalan. Resuelvo problemas que importan.",
-            about: "Ingeniera en TIC con especialidad en Aplicaciones Avanzadas. Hoy construyo y opero en producción la plataforma de lealtad de Voraa, con tarjetas digitales en Apple y Google Wallet para restaurantes. Me enfoco en arquitectura sólida e impacto real: software en el que un negocio puede confiar.",
-            experience_btn: "Ver Trayectoria",
-            contact_btn: "Iniciar Conversación",
-            availability: "Disponible para nuevas oportunidades",
-            metrics: [
-                { label: "Años activa", value: "2+", sub: "en desarrollo profesional" },
-                { label: "Proyectos", value: "10+", sub: "soluciones implementadas" },
-                { label: "En producción", value: "Voraa", sub: "Apple y Google Wallet" }
-            ],
-            expertise: [
-                { icon: "layers", area: "Arquitectura de Software", detail: "Diseño de sistemas distribuidos, APIs REST/GraphQL, patrones Clean Architecture." },
-                { icon: "code", area: "Fullstack Engineering", detail: "React, Node.js, Angular, Next.js — desde el dato hasta la UI." },
-                { icon: "cloud", area: "Cloud & Enterprise", detail: "SAP BTP, ABAP Cloud, Firebase, Docker. Infraestructura que escala." },
-                { icon: "psychology", area: "Resolución Estratégica", detail: "Toma de decisiones técnicas orientada a resultados de negocio medibles." }
-            ]
-        },
-        en: {
-            eyebrow: "Software Engineering · Enterprise Solutions",
-            role: "Fullstack Software Developer",
-            tagline: "I architect systems that scale. I solve problems that matter.",
-            about: "ICT Engineer specialized in Advanced Applications. Today I build and run in production Voraa's loyalty platform, with digital cards in Apple and Google Wallet for restaurants. I focus on solid architecture and real impact: software a business can trust.",
-            experience_btn: "View Trajectory",
-            contact_btn: "Start a Conversation",
-            availability: "Open to new opportunities",
-            metrics: [
-                { label: "Years active", value: "2+", sub: "in professional development" },
-                { label: "Projects", value: "10+", sub: "implemented solutions" },
-                { label: "In production", value: "Voraa", sub: "Apple & Google Wallet" }
-            ],
-            expertise: [
-                { icon: "layers", area: "Software Architecture", detail: "Distributed systems, REST/GraphQL APIs, Clean Architecture patterns." },
-                { icon: "code", area: "Fullstack Engineering", detail: "React, Node.js, Angular, Next.js — from data to UI." },
-                { icon: "cloud", area: "Cloud & Enterprise", detail: "SAP BTP, ABAP Cloud, Firebase, Docker. Infrastructure that scales." },
-                { icon: "psychology", area: "Strategic Problem Solving", detail: "Technical decision-making oriented toward measurable business outcomes." }
-            ]
-        }
-    };
-
-    const t = content[lang as 'es' | 'en'] || content.es;
-
-    const fadeUpTransition = (delay = 0): Transition => ({
-        duration: 0.8,
-        delay,
-        ease: [0.22, 1, 0.36, 1],
-    });
-
-    const fadeUp = (delay = 0) => ({
-        initial: { opacity: 0, y: 24 },
-        animate: { opacity: 1, y: 0 },
-        transition: fadeUpTransition(delay)
-    });
+    const t = content[lang as "es" | "en"] || content.es;
+    const mail = `mailto:${CONTACT_CONFIG.email}?subject=${encodeURIComponent(t.mailSubject)}`;
+    const jobs = experience.filter(e => e.id !== "exp-nrfm");
 
     return (
-        <main className="max-w-[1280px] mx-auto px-5 sm:px-8 py-24 lg:py-36">
+        <main className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-28 md:pt-36 pb-24 space-y-24 md:space-y-32">
 
-            {/* ── Top eyebrow ──────────────────────────────────────── */}
-            <motion.div {...fadeUp(0)} className="flex items-center gap-3 mb-16">
-                <div className="w-8 h-px" style={{ background: GOLD }} />
-                <span
-                    className="text-[10px] font-black uppercase tracking-[0.35em]"
-                    style={{ color: GOLD }}
-                >
-                    {t.eyebrow}
-                </span>
-            </motion.div>
+            {/* ── Hero: quién, qué, prueba y cómo contactar, sin hacer scroll ── */}
+            <section className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-14 items-center">
+                <motion.div {...fade()} className="space-y-7">
+                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-semibold text-emerald-300"
+                        style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {t.status}
+                    </span>
 
-            {/* ── Hero grid ────────────────────────────────────────── */}
-            <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
-
-                {/* ── LEFT: Identity ───────────────────────────────── */}
-                <div className="space-y-10">
-
-                    <motion.div {...fadeUp(0.05)} className="space-y-5">
-                        {/* Name */}
-                        <h1
-                            className="text-5xl sm:text-6xl lg:text-7xl font-serif italic text-[#F8F5F0] leading-[1.05] tracking-tight"
-                            style={{ fontFamily: "'Playfair Display', serif" }}
-                        >
-                            Anahí{" "}
-                            <span style={{ color: GOLD }}>Lozano</span>
+                    <div className="space-y-3">
+                        <h1 className="normal-case text-5xl sm:text-6xl md:text-7xl italic text-[#F8F5F0] leading-[1.02] tracking-tight" style={SERIF}>
+                            Anahí <span style={{ color: GOLD }}>Lozano</span>
                         </h1>
+                        <p className="text-lg md:text-xl font-semibold text-[#F8F5F0]">{t.role}</p>
+                        <p className="text-[13px] font-medium text-[#9E9A90] tracking-wide">{t.stack}</p>
+                    </div>
 
-                        {/* Role */}
-                        <div className="flex items-center gap-4">
-                            <div className="w-0.5 h-8 rounded-full" style={{ background: `linear-gradient(to bottom, ${GOLD}, transparent)` }} />
-                            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#9E9E93]">
-                                {t.role}
-                            </p>
-                        </div>
-                    </motion.div>
+                    <p className="text-base md:text-lg text-[#C8C4BB] leading-relaxed max-w-xl">{t.pitch}</p>
 
-                    {/* Tagline */}
-                    <motion.p
-                        {...fadeUp(0.12)}
-                        className="text-2xl sm:text-3xl text-[#D8D4CC] font-serif italic leading-[1.4]"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
-                    >
-                        {t.tagline}
-                    </motion.p>
+                    <div className="flex flex-wrap gap-3">
+                        <a href={mail}
+                            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-black transition-transform hover:-translate-y-0.5"
+                            style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}>
+                            <span className="material-symbols-outlined text-[18px]">mail</span>{t.ctaTalk}
+                        </a>
+                        <a href="/Anahi_Lozano_CV_2026.pdf" target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-[#F8F5F0] transition-colors hover:border-[#C9A84C]"
+                            style={{ border: `1px solid ${GOLD_BORDER}`, background: "rgba(255,255,255,0.02)" }}>
+                            <span className="material-symbols-outlined text-[18px]">download</span>{t.ctaCv}
+                        </a>
+                        <Link to="/projects" className="inline-flex items-center gap-1.5 px-4 py-3.5 text-sm font-bold text-[#C8C4BB] hover:text-[#F8F5F0]">
+                            {t.ctaWork}<span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </Link>
+                    </div>
 
-                    {/* Bio */}
-                    <motion.div
-                        {...fadeUp(0.18)}
-                        className="relative p-7 rounded-2xl"
-                        style={{
-                            background: GOLD_DIM,
-                            border: `1px solid ${GOLD_BORDER}`,
-                        }}
-                    >
-                        <div
-                            className="absolute left-0 top-4 bottom-4 w-0.5 rounded-full"
-                            style={{ background: `linear-gradient(to bottom, ${GOLD}, transparent)` }}
-                        />
-                        <p className="text-base text-[#B0ACA4] leading-[1.85] font-normal pl-4">
-                            {t.about}
-                        </p>
-                    </motion.div>
+                    <p className="flex items-center gap-2 text-[12px] text-[#7A7872]">
+                        <span className="material-symbols-outlined text-[16px]">location_on</span>{t.where}
+                    </p>
+                </motion.div>
 
-                    {/* Expertise chips */}
-                    <motion.div {...fadeUp(0.24)} className="grid sm:grid-cols-2 gap-4">
-                        {t.expertise.map((exp, i) => (
-                            <div
-                                key={i}
-                                className="flex items-start gap-4 p-5 rounded-xl transition-all duration-400 group cursor-default"
-                                style={{
-                                    background: "rgba(255,255,255,0.02)",
-                                    border: "1px solid rgba(255,255,255,0.05)",
-                                }}
-                                onMouseEnter={e => {
-                                    (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
-                                    (e.currentTarget as HTMLElement).style.background = GOLD_DIM;
-                                }}
-                                onMouseLeave={e => {
-                                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)";
-                                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
-                                }}
-                            >
-                                <div
-                                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                                    style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}
-                                >
-                                    <span
-                                        className="material-symbols-outlined text-[16px]"
-                                        style={{ color: GOLD }}
-                                    >
-                                        {exp.icon}
-                                    </span>
+                <motion.a {...fade(0.1)} href="https://voraa.io/restaurantes/" target="_blank" rel="noopener noreferrer"
+                    className="block group rounded-2xl overflow-hidden transition-transform hover:-translate-y-1"
+                    style={{ border: `1px solid ${GOLD_BORDER}`, boxShadow: "0 30px 80px rgba(0,0,0,0.55)" }}>
+                    <div className="flex items-center gap-2 px-4 py-2.5 bg-[#16171a] border-b border-white/5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#3a3b3e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#3a3b3e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#3a3b3e]" />
+                        <span className="ml-3 flex-1 text-[11px] text-[#7A7872] truncate">voraa.io/restaurantes</span>
+                        <span className="text-[10px] font-bold text-emerald-300 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />{t.live}
+                        </span>
+                    </div>
+                    <img src={voraaSite} alt="Voraa Lealtad" className="w-full aspect-[16/10] object-cover object-top" />
+                </motion.a>
+            </section>
+
+            {/* ── Cifras verificables ── */}
+            <motion.section {...fade()} className="grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden" style={{ border: `1px solid ${GOLD_BORDER}` }}>
+                {t.numbers.map((n, i) => (
+                    <div key={n.label} className={`p-6 md:p-8 ${i % 2 ? "border-l" : ""} ${i > 1 ? "border-t md:border-t-0" : ""} ${i === 2 ? "md:border-l" : ""} border-white/5`}
+                        style={{ background: "rgba(255,255,255,0.015)" }}>
+                        <p className="text-4xl md:text-5xl italic" style={{ ...SERIF, color: GOLD }}>{n.value}</p>
+                        <p className="mt-2 text-sm font-semibold text-[#F8F5F0]">{n.label}</p>
+                        <p className="text-[11px] text-[#7A7872]">{n.sub}</p>
+                    </div>
+                ))}
+            </motion.section>
+
+            {/* ── Caso destacado ── */}
+            <section className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                <motion.div {...fade()} className="space-y-6">
+                    <div>
+                        <Eyebrow>{t.caseEyebrow}</Eyebrow>
+                        <h2 className="normal-case tracking-normal text-4xl md:text-5xl italic text-[#F8F5F0]" style={SERIF}>{t.caseTitle}</h2>
+                        <p className="mt-3 text-base text-[#C8C4BB]">{t.caseSub}</p>
+                    </div>
+                    <p className="text-sm font-semibold px-4 py-3 rounded-xl" style={{ background: GOLD_DIM, color: "#E8C97A", border: `1px solid ${GOLD_BORDER}` }}>{t.caseRole}</p>
+                    <ul className="space-y-3.5">
+                        {t.caseBullets.map(b => (
+                            <li key={b} className="flex gap-3 text-[15px] text-[#C8C4BB] leading-relaxed">
+                                <span className="material-symbols-outlined text-[18px] mt-0.5 shrink-0" style={{ color: GOLD }}>check_circle</span>{b}
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="flex flex-wrap gap-2 pt-1">
+                        {["TypeScript", "Next.js", "PostgreSQL", "Supabase", "PassKit", "Google Wallet", "Railway", "Cloudflare"].map(s => (
+                            <span key={s} className="px-3 py-1 rounded-full text-[11px] font-semibold text-[#9E9A90]" style={{ border: "1px solid rgba(255,255,255,0.08)" }}>{s}</span>
+                        ))}
+                    </div>
+                    <div className="flex flex-wrap gap-5 pt-2 text-sm font-bold">
+                        <a href="https://voraa.io/restaurantes/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5" style={{ color: GOLD }}>
+                            {t.caseSite}<span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                        </a>
+                        <Link to="/projects" className="inline-flex items-center gap-1.5 text-[#C8C4BB] hover:text-[#F8F5F0]">
+                            {t.caseMore}<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </Link>
+                    </div>
+                </motion.div>
+                <motion.div {...fade(0.1)} className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${GOLD_BORDER}` }}>
+                    <img src={voraaCards} alt={lang === "es" ? "Tarjetas de lealtad de Voraa en Wallet" : "Voraa loyalty cards in Wallet"} className="w-full" />
+                </motion.div>
+            </section>
+
+            {/* ── Experiencia ── */}
+            <section>
+                <motion.div {...fade()} className="flex flex-wrap items-end justify-between gap-4 mb-8">
+                    <div>
+                        <Eyebrow>{t.expEyebrow}</Eyebrow>
+                        <h2 className="normal-case tracking-normal text-3xl md:text-4xl italic text-[#F8F5F0]" style={SERIF}>{t.expTitle}</h2>
+                    </div>
+                    <Link to="/experience" className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: GOLD }}>
+                        {t.expMore}<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </Link>
+                </motion.div>
+                <div className="grid md:grid-cols-3 gap-4">
+                    {jobs.map((job, i) => {
+                        const period = (lang === "es" ? job.periodEs : job.periodEn).split(" · ")[0];
+                        const current = /Actualidad|Present/i.test(period);
+                        return (
+                            <motion.div key={job.id} {...fade(i * 0.06)} className="p-6 rounded-2xl space-y-3"
+                                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="text-[11px] font-semibold text-[#7A7872]">{period}</p>
+                                    {current && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: GOLD_DIM, color: GOLD }}>{t.now}</span>}
                                 </div>
-                                <div>
-                                    <p
-                                        className="text-[10px] font-black uppercase tracking-widest mb-1.5"
-                                        style={{ color: GOLD }}
-                                    >
-                                        {exp.area}
-                                    </p>
-                                    <p className="text-[12px] text-[#7A7872] leading-[1.65] font-normal">
-                                        {exp.detail}
-                                    </p>
+                                <h3 className="normal-case tracking-normal text-2xl italic text-[#F8F5F0]" style={SERIF}>{lang === "es" ? job.companyEs : job.companyEn}</h3>
+                                <p className="text-sm font-semibold" style={{ color: "#E8C97A" }}>{lang === "es" ? job.titleEs : job.titleEn}</p>
+                                <p className="text-[13px] text-[#9E9A90] leading-relaxed line-clamp-4">{lang === "es" ? job.descriptionEs : job.descriptionEn}</p>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+            </section>
+
+            {/* ── Qué ofrezco: empleo y freelance ── */}
+            <section>
+                <motion.div {...fade()} className="mb-8"><Eyebrow>{t.offerEyebrow}</Eyebrow></motion.div>
+                <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-5">
+                    <motion.div {...fade()} className="p-7 md:p-9 rounded-2xl flex flex-col"
+                        style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                        <span className="material-symbols-outlined text-[28px] mb-4" style={{ color: GOLD }}>groups</span>
+                        <h3 className="normal-case tracking-normal text-2xl md:text-3xl italic text-[#F8F5F0] mb-5" style={SERIF}>{t.hireTitle}</h3>
+                        <ul className="space-y-4 mb-8">
+                            {t.hireItems.map(h => (
+                                <li key={h} className="flex gap-3 text-[15px] text-[#C8C4BB] leading-relaxed">
+                                    <span className="w-1.5 h-1.5 rounded-full mt-2.5 shrink-0" style={{ background: GOLD }} />{h}
+                                </li>
+                            ))}
+                        </ul>
+                        <a href={mail} className="mt-auto self-start inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-[#F8F5F0]"
+                            style={{ border: `1px solid ${GOLD_BORDER}` }}>
+                            {t.hireCta}<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </motion.div>
+
+                    <motion.div {...fade(0.08)} className="p-7 md:p-9 rounded-2xl flex flex-col"
+                        style={{ background: `linear-gradient(145deg, ${GOLD_DIM}, rgba(255,255,255,0.01))`, border: `1px solid ${GOLD_BORDER}` }}>
+                        <span className="material-symbols-outlined text-[28px] mb-4" style={{ color: GOLD }}>rocket_launch</span>
+                        <h3 className="normal-case tracking-normal text-2xl md:text-3xl italic text-[#F8F5F0] mb-6" style={SERIF}>{t.freeTitle}</h3>
+                        <div className="grid sm:grid-cols-2 gap-4 mb-7">
+                            {t.freeItems.map(f => (
+                                <div key={f.t} className="flex gap-3">
+                                    <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5" style={{ color: GOLD }}>{f.icon}</span>
+                                    <div>
+                                        <p className="text-[15px] font-semibold text-[#F8F5F0]">{f.t}</p>
+                                        <p className="text-[13px] text-[#9E9A90] leading-relaxed">{f.d}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <ol className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+                            {t.steps.map((s, i) => (
+                                <li key={s} className="p-3 rounded-xl text-[12px] font-semibold text-[#C8C4BB]" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                    <span className="block text-[11px] font-black mb-1" style={{ color: GOLD }}>0{i + 1}</span>{s}
+                                </li>
+                            ))}
+                        </ol>
+                        <a href={mail} className="mt-auto self-start inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-black"
+                            style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}>
+                            {t.freeCta}<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ── Tecnologías y formación ── */}
+            <section className="grid lg:grid-cols-[1.4fr_1fr] gap-5">
+                <motion.div {...fade()} className="p-7 md:p-9 rounded-2xl" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <Eyebrow>{t.stackEyebrow}</Eyebrow>
+                    <div className="space-y-5 mt-5">
+                        {t.stackGroups.map(g => (
+                            <div key={g.name}>
+                                <p className="text-[12px] font-bold text-[#7A7872] mb-2">{g.name}</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {g.items.map(s => (
+                                        <span key={s} className="px-3 py-1.5 rounded-lg text-[12px] font-semibold text-[#E6E2D8]" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>{s}</span>
+                                    ))}
                                 </div>
                             </div>
                         ))}
-                    </motion.div>
-
-                    {/* CTA Buttons */}
-                    <motion.div {...fadeUp(0.30)} className="flex flex-wrap gap-4 pt-2">
-                        <Link
-                            to="/experience"
-                            className="relative px-8 py-4 rounded-full font-black uppercase tracking-[0.2em] text-[11px] text-black overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-[0_8px_30px_rgba(201,168,76,0.35)]"
-                            style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}
-                        >
-                            {/* shimmer */}
-                            <span
-                                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
-                                style={{
-                                    background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)",
-                                    backgroundSize: "200% 100%",
-                                    animation: "shimmer 1.5s infinite",
-                                }}
-                            />
-                            <span className="relative">{t.experience_btn}</span>
-                        </Link>
-                        <Link
-                            to="/contact"
-                            className="px-8 py-4 rounded-full font-black uppercase tracking-[0.2em] text-[11px] text-[#C8C4BB] transition-all duration-300 hover:text-[#F8F5F0] active:scale-95"
-                            style={{
-                                background: "rgba(255,255,255,0.03)",
-                                border: `1px solid rgba(255,255,255,0.10)`,
-                            }}
-                            onMouseEnter={e => {
-                                (e.currentTarget as HTMLElement).style.borderColor = GOLD_BORDER;
-                            }}
-                            onMouseLeave={e => {
-                                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.10)";
-                            }}
-                        >
-                            {t.contact_btn}
-                        </Link>
-                    </motion.div>
-                </div>
-
-                {/* ── RIGHT: Visual panel ──────────────────────────── */}
-                <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative flex flex-col items-center gap-6"
-                >
-                    {/* Monogram / Avatar */}
-                    <div className="relative">
-                        {/* Outer rotating ring */}
-                        <div
-                            className="absolute inset-[-16px] rounded-full"
-                            style={{
-                                border: `1px solid ${GOLD_BORDER}`,
-                                animation: "spin 24s linear infinite",
-                            }}
-                        />
-                        {/* Middle ring */}
-                        <div
-                            className="absolute inset-[-8px] rounded-full"
-                            style={{
-                                border: `1px dashed rgba(201,168,76,0.10)`,
-                            }}
-                        />
-                        {/* Avatar circle */}
-                        <div
-                            className="w-44 h-44 sm:w-52 sm:h-52 rounded-full flex items-center justify-center relative"
-                            style={{
-                                background: `radial-gradient(135deg at 30% 30%, rgba(201,168,76,0.18), rgba(8,9,10,0.9))`,
-                                border: `2px solid ${GOLD_BORDER}`,
-                                boxShadow: `0 0 60px rgba(201,168,76,0.12), inset 0 0 40px rgba(201,168,76,0.06)`,
-                            }}
-                        >
-                            <span
-                                className="text-7xl font-serif italic select-none"
-                                style={{ color: GOLD, fontFamily: "'Playfair Display', serif", textShadow: `0 0 30px rgba(201,168,76,0.4)` }}
-                            >
-                                AL
-                            </span>
-                        </div>
-                        {/* Availability badge */}
-                        <div
-                            className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap"
-                            style={{
-                                background: "#111214",
-                                border: `1px solid rgba(34,197,94,0.3)`,
-                                boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-                            }}
-                        >
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-green-400">
-                                {t.availability}
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Metrics */}
-                    <div className="w-full grid grid-cols-3 gap-4 mt-10">
-                        {t.metrics.map((m, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.25 + i * 0.1, duration: 0.6 }}
-                                className="flex flex-col items-center text-center p-5 rounded-2xl transition-all duration-400"
-                                style={{
-                                    background: "rgba(255,255,255,0.02)",
-                                    border: `1px solid ${GOLD_BORDER}`,
-                                }}
-                                onMouseEnter={e => {
-                                    (e.currentTarget as HTMLElement).style.background = GOLD_DIM;
-                                }}
-                                onMouseLeave={e => {
-                                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
-                                }}
-                            >
-                                <span
-                                    className="text-3xl sm:text-4xl font-serif italic leading-none"
-                                    style={{ color: GOLD, fontFamily: "'Playfair Display', serif" }}
-                                >
-                                    {m.value}
-                                </span>
-                                <span className="text-[9px] font-black uppercase tracking-widest text-[#7A7872] mt-2">
-                                    {m.label}
-                                </span>
-                                <span className="text-[9px] text-[#4A4A44] mt-1 leading-tight hidden sm:block">
-                                    {m.sub}
-                                </span>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Bottom decorative card */}
-                    <div
-                        className="w-full p-6 rounded-2xl flex items-center justify-between"
-                        style={{
-                            background: `linear-gradient(135deg, ${GOLD_DIM}, transparent)`,
-                            border: `1px solid ${GOLD_BORDER}`,
-                        }}
-                    >
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: GOLD }}>
-                                Status
-                            </p>
-                            <p
-                                className="text-lg font-serif italic text-[#F8F5F0]"
-                                style={{ fontFamily: "'Playfair Display', serif" }}
-                            >
-                                {lang === 'es' ? "Consultas Técnicas Abiertas" : "Open for Technical Consulting"}
-                            </p>
-                        </div>
-                        <div
-                            className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                            style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}
-                        >
-                            <span className="material-symbols-outlined text-2xl" style={{ color: GOLD }}>verified</span>
-                        </div>
                     </div>
                 </motion.div>
-            </div>
+                <motion.div {...fade(0.08)} className="p-7 md:p-9 rounded-2xl flex flex-col" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <Eyebrow>{t.eduTitle}</Eyebrow>
+                    <span className="material-symbols-outlined text-[28px] mt-3 mb-3" style={{ color: GOLD }}>school</span>
+                    <p className="text-[15px] font-semibold text-[#F8F5F0] leading-relaxed">{t.edu}</p>
+                    <p className="mt-4 text-[14px] text-[#9E9A90] leading-relaxed">{t.certs}</p>
+                    <Link to="/certificates" className="mt-auto pt-6 inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: GOLD }}>
+                        {t.certsCta}<span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </Link>
+                </motion.div>
+            </section>
 
-            {/* Shimmer keyframe */}
-            <style>{`
-                @keyframes shimmer {
-                    0% { background-position: -200% 0; }
-                    100% { background-position: 200% 0; }
-                }
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-            `}</style>
+            {/* ── Cierre ── */}
+            <motion.section {...fade()} className="rounded-3xl px-6 py-14 md:p-16 text-center space-y-6"
+                style={{ background: `radial-gradient(ellipse at top, ${GOLD_DIM}, transparent 70%)`, border: `1px solid ${GOLD_BORDER}` }}>
+                <h2 className="normal-case tracking-normal text-3xl md:text-5xl italic text-[#F8F5F0]" style={SERIF}>{t.finalTitle}</h2>
+                <p className="text-[#9E9A90]">{t.finalSub}</p>
+                <div className="flex flex-wrap justify-center gap-3 pt-2">
+                    <a href={mail} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-black"
+                        style={{ background: `linear-gradient(135deg, #E8C97A, ${GOLD} 60%, #A87C30)` }}>
+                        <span className="material-symbols-outlined text-[18px]">mail</span>{CONTACT_CONFIG.email}
+                    </a>
+                    <a href={CONTACT_CONFIG.linkedin} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-[#F8F5F0]" style={{ border: `1px solid ${GOLD_BORDER}` }}>
+                        LinkedIn
+                    </a>
+                    <a href="/Anahi_Lozano_CV_2026.pdf" target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-bold text-[#F8F5F0]" style={{ border: `1px solid ${GOLD_BORDER}` }}>
+                        {t.ctaCv}
+                    </a>
+                </div>
+            </motion.section>
         </main>
     );
 };

@@ -23,16 +23,16 @@ const RHAboutPage = () => {
     const labels = {
         es: {
             eyebrow: "Perfil Profesional",
-            title: "Arquitecta de Soluciones",
+            title: "Desarrolladora Full Stack",
             headline: "Construyo lo que los equipos necesitan, con la solidez que las empresas exigen.",
-            about: "Ingeniería en TIC centrada en el desarrollo de aplicaciones de alta complejidad. Mi práctica está regida por arquitectura limpia, escalabilidad técnica y visión estratégica para la resolución de problemas institucionales. Trabajo en la intersección de la excelencia técnica y el impacto de negocio real.",
+            about: "Ingeniera en TIC egresada del Instituto Tecnológico de Aguascalientes (titulación en trámite). Hoy soy la única ingeniera de Voraa, donde llevé a producción su plataforma de lealtad con Apple y Google Wallet, y desarrollo software cliente-servidor en C# / .NET para i3 Solutions, un equipo en Canadá.",
             skills_title: "Matriz de Competencias Técnicas",
             sidebar_availability: "Disponibilidad",
-            sidebar_avail_value: "Inmediata",
+            sidebar_avail_value: "A convenir",
             sidebar_mode: "Modalidad",
             sidebar_mode_value: "Remoto / Híbrido",
             sidebar_lang: "Idiomas",
-            sidebar_lang_value: "Español · Inglés",
+            sidebar_lang_value: "Español nativo · Inglés B1",
             sidebar_type: "Tipo",
             sidebar_type_value: "Full-time · Freelance",
             soft_title: "Liderazgo & Soft Skills",
@@ -40,16 +40,16 @@ const RHAboutPage = () => {
         },
         en: {
             eyebrow: "Professional Profile",
-            title: "Solutions Architect",
+            title: "Full Stack Developer",
             headline: "I build what teams need, with the robustness enterprises demand.",
-            about: "ICT Engineer focused on high-complexity application development. My practice is governed by clean architecture, technical scalability, and a strategic vision for institutional problem-solving. I work at the intersection of technical excellence and real business impact.",
+            about: "ICT Engineering graduate from Instituto Tecnológico de Aguascalientes (degree in process). Today I'm the sole engineer at Voraa, where I took its loyalty platform with Apple and Google Wallet to production, and I build C# / .NET client-server software for i3 Solutions, a team in Canada.",
             skills_title: "Technical Competency Matrix",
             sidebar_availability: "Availability",
-            sidebar_avail_value: "Immediate",
+            sidebar_avail_value: "To be agreed",
             sidebar_mode: "Modality",
             sidebar_mode_value: "Remote / Hybrid",
             sidebar_lang: "Languages",
-            sidebar_lang_value: "Spanish · English",
+            sidebar_lang_value: "Spanish (native) · English B1",
             sidebar_type: "Type",
             sidebar_type_value: "Full-time · Freelance",
             soft_title: "Leadership & Soft Skills",
@@ -59,12 +59,14 @@ const RHAboutPage = () => {
 
     const t = labels[lang as 'es' | 'en'] || labels.es;
 
+    // Las mismas categorías del CV de 2026. Lo que no está en el CV no se lista aquí:
+    // un reclutador pregunta por cada tecnología, y la lista tiene que poder defenderse.
     const skillCategories = [
-        { label: 'Frontend',     items: ['Angular', 'React', 'Vue.js', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'HTML5', 'CSS3'] },
-        { label: 'Backend',      items: ['Node.js', 'Express', 'NestJS', 'Django', 'Laravel', '.NET', 'REST APIs', 'GraphQL'] },
-        { label: 'Mobile / AI',  items: ['Kotlin', 'Android Native', 'Dart / Flutter', 'Fuzzy Logic', 'MATLAB Automation'] },
-        { label: 'Cloud / DB',   items: ['SAP BTP', 'ABAP Cloud', 'MySQL', 'PostgreSQL', 'MongoDB', 'Firebase', 'Redis'] },
-        { label: 'Ops / Test',   items: ['Docker', 'Vercel', 'Git / GitHub', 'CI/CD Actions', 'Cypress', 'Playwright', 'Postman'] },
+        { label: 'Languages',     items: ['TypeScript', 'JavaScript', 'C#', 'SQL', 'Dart', 'Python', 'Java', 'Kotlin'] },
+        { label: 'Frontend',      items: ['React', 'Next.js', 'Angular', 'Tailwind CSS', 'Radix UI', 'Zustand', 'Zod', 'PWA'] },
+        { label: 'Backend / DB',  items: ['Node.js', 'Express', 'PostgreSQL', 'Supabase', 'Drizzle ORM', 'MySQL', 'MongoDB', 'Firebase', 'RBAC · RLS'] },
+        { label: 'Mobile / Desk', items: ['Flutter', 'Kotlin · Compose', 'C# / WPF', '.NET Framework', 'Apple Wallet', 'Google Wallet'] },
+        { label: 'Infra / Test',  items: ['Railway', 'Cloudflare', 'Docker', 'GitHub Actions', 'Codemagic', 'Vitest', 'Playwright', 'Cypress'] },
     ];
 
     const sidebarData = [

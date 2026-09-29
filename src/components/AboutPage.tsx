@@ -40,15 +40,15 @@ const AboutPage = () => {
                             <div className="text-[13px] md:text-[14px] text-[var(--text-soft)] leading-relaxed font-bold max-w-4xl whitespace-pre-line italic opacity-95">
                                 <p>
                                     {lang === 'es'
-                                        ? 'Soy Ingeniera en Tecnologías de la Información y Comunicación con especialidad en Desarrollo de Aplicaciones Avanzadas del Software, enfocada en crear soluciones tecnológicas integrales, con experiencia en el ciclo de vida completo de desarrollo. Mi perspectiva técnica abarca desde la creación de aplicaciones móviles nativas de alto rendimiento hasta la implementación de complejos sistemas empresariales SAP, priorizando siempre la eficiencia, la escalabilidad y una arquitectura de software impecable.'
-                                        : 'I am an Information and Communication Technologies Engineer specialized in Advanced Software Application Development, focused on creating comprehensive technological solutions with experience across the entire development lifecycle. My technical perspective ranges from building high-performance native mobile apps to implementing complex SAP enterprise systems, always prioritizing efficiency, scalability, and impeccable software architecture.'}
+                                        ? 'Desarrolladora Full Stack con experiencia en productos web y móviles en producción y en mantenimiento de software empresarial para un equipo canadiense. En Voraa asumí la responsabilidad técnica como única ingeniera del equipo, desde la arquitectura y los datos hasta el despliegue y las pruebas con usuarios. Trabajo con TypeScript, PostgreSQL, Flutter y sistemas cliente-servidor en C# / WPF y Node.js.'
+                                        : 'Full Stack Developer with experience shipping web and mobile products to production and maintaining enterprise software for a Canadian team. At Voraa I own the technical work as the team\'s sole engineer, from architecture and data to deployment and user testing. I work with TypeScript, PostgreSQL, Flutter and client-server systems in C# / WPF and Node.js.'}
                                 </p>
                             </div>
                         </div>
                         
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 pt-6 md:pt-8 relative z-20">
                             {[
-                                { label: lang === 'es' ? 'EXP' : 'EXP', val: lang === 'es' ? '3+ AÑOS' : '3+ YEARS' },
+                                { label: 'TESTS', val: '1,284' },
                                 { label: 'NODES', val: isLoading ? '...' : `${projects.length}+` },
                                 { label: 'MX', val: 'MEX // MX' },
                                 { label: 'AUTH', val: 'SECURE' }
@@ -146,58 +146,71 @@ const AboutPage = () => {
                     <div className="p-4 md:p-6 space-y-3 font-mono relative z-20">
                         {(() => {
                             const getIcon = (name: string) => {
+                                // Sólo logos que el CDN sirve de verdad (comprobados el 29-sep-2026).
+                                // `csharp` y `playwright` dan 404 allí: C# usa el de .NET, su plataforma, y
+                                // Playwright queda sin logo (cae al punto) en vez de una imagen rota.
                                 const map: Record<string, { s: string; c: string }> = {
-                                    'React': { s: 'react', c: '61DAFB' },
-                                    'Angular': { s: 'angular', c: 'DD0031' },
-                                    'Vue.js': { s: 'vuedotjs', c: '4FC08D' },
-                                    'Next.js': { s: 'nextdotjs', c: 'ffffff' },
-                                    'Astro': { s: 'astro', c: 'FF5D01' },
                                     'TypeScript': { s: 'typescript', c: '3178C6' },
                                     'JavaScript': { s: 'javascript', c: 'F7DF1E' },
-                                    'Tailwind CSS': { s: 'tailwindcss', c: '06B6D4' },
-                                    'Node.js': { s: 'nodedotjs', c: '339933' },
+                                    'C#': { s: 'dotnet', c: '512BD4' },
+                                    'Dart': { s: 'dart', c: '0175C2' },
                                     'Python': { s: 'python', c: '3776AB' },
-                                    'Django': { s: 'django', c: '092E20' },
-                                    'Laravel': { s: 'laravel', c: 'FF2D20' },
+                                    'Java': { s: 'openjdk', c: 'ffffff' },
                                     'Kotlin': { s: 'kotlin', c: '7F52FF' },
-                                    'Android': { s: 'android', c: '3DDC84' },
-                                    'Flutter': { s: 'flutter', c: '02569B' },
-                                    'Firebase': { s: 'firebase', c: 'FFCA28' },
+                                    'React': { s: 'react', c: '61DAFB' },
+                                    'Next.js': { s: 'nextdotjs', c: 'ffffff' },
+                                    'Angular': { s: 'angular', c: 'DD0031' },
+                                    'Tailwind CSS': { s: 'tailwindcss', c: '06B6D4' },
+                                    'Radix UI': { s: 'radixui', c: 'ffffff' },
+                                    'Zod': { s: 'zod', c: '3E67B1' },
+                                    'HTML5': { s: 'html5', c: 'E34F26' },
+                                    'CSS3': { s: 'css', c: '663399' },
+                                    'Node.js': { s: 'nodedotjs', c: '339933' },
+                                    'Express': { s: 'express', c: 'ffffff' },
+                                    'PostgreSQL': { s: 'postgresql', c: '4169E1' },
+                                    'Supabase': { s: 'supabase', c: '3FCF8E' },
+                                    'Drizzle ORM': { s: 'drizzle', c: 'C5F74F' },
                                     'MySQL': { s: 'mysql', c: '4479A1' },
                                     'MongoDB': { s: 'mongodb', c: '47A248' },
-                                    'PostgreSQL': { s: 'postgresql', c: '4169E1' },
+                                    'Firebase': { s: 'firebase', c: 'FFCA28' },
+                                    'Flutter': { s: 'flutter', c: '02569B' },
+                                    'Android': { s: 'android', c: '3DDC84' },
+                                    'Jetpack Compose': { s: 'jetpackcompose', c: '4285F4' },
+                                    'C# / WPF': { s: 'dotnet', c: '512BD4' },
+                                    '.NET Framework': { s: 'dotnet', c: '512BD4' },
+                                    'Apple Wallet': { s: 'apple', c: 'ffffff' },
+                                    'Google Wallet': { s: 'googlepay', c: '4285F4' },
+                                    'Railway': { s: 'railway', c: 'ffffff' },
+                                    'Cloudflare': { s: 'cloudflare', c: 'F38020' },
                                     'Docker': { s: 'docker', c: '2496ED' },
-                                    'AWS': { s: 'amazonaws', c: 'FF9900' },
-                                    'Figma': { s: 'figma', c: 'F24E1E' },
-                                    'SAP BTP': { s: 'sap', c: '008FD3' },
-                                    'HANA': { s: 'sap', c: '008FD3' },
+                                    'Codemagic': { s: 'codemagic', c: 'F45E3F' },
                                     'Git': { s: 'git', c: 'F05032' },
-                                    'Vercel': { s: 'vercel', c: 'ffffff' },
-                                    'C#': { s: 'csharp', c: '239120' },
-                                    '.NET Core': { s: 'dotnet', c: '512BD4' },
-                                    'PHP': { s: 'php', c: '777BB4' },
-                                    'Java': { s: 'openjdk', c: 'ffffff' },
-                                    'Swift': { s: 'swift', c: 'F05138' },
-                                    'Three.js': { s: 'threedotjs', c: 'ffffff' },
-                                    'GraphQL': { s: 'graphql', c: 'E10098' },
-                                    'Redis': { s: 'redis', c: 'DC382D' },
-                                    'Playwright': { s: 'playwright', c: '2EAD33' },
-                                    'Cypress': { s: 'cypress', c: '17202C' },
-                                    'JIRA': { s: 'jira', c: '0052CC' },
-                                    'Framer Motion': { s: 'framer', c: '0055FF' }
+                                    'GitHub Actions': { s: 'githubactions', c: '2088FF' },
+                                    'GitLab CI': { s: 'gitlab', c: 'FC6D26' },
+                                    'Vitest': { s: 'vitest', c: '6E9F18' },
+                                    'Testing Library': { s: 'testinglibrary', c: 'E33332' },
+                                    'Cypress': { s: 'cypress', c: 'ffffff' },
+                                    'PyTest': { s: 'pytest', c: '0A9EDC' },
+                                    'Postman': { s: 'postman', c: 'FF6C37' },
+                                    'ESLint': { s: 'eslint', c: '4B32C3' },
+                                    'Jira': { s: 'jira', c: '0052CC' },
+                                    'Figma': { s: 'figma', c: 'F24E1E' },
+                                    'Notion': { s: 'notion', c: 'ffffff' }
                                 };
                                 const found = map[name];
                                 if (!found) return null;
                                 return `https://cdn.simpleicons.org/${found.s}/${found.c}`;
                             };
 
+                            // Las mismas categorías y tecnologías que el CV de 2026: lo que se lista
+                            // aquí es lo que se puede defender en una entrevista técnica.
                             return [
-                                { label: 'front', color: 'text-blue-400', border: 'border-blue-500/20', items: ['React', 'Angular', 'Vue.js', 'Next.js', 'Astro', 'Three.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'Material UI'] },
-                                { label: 'back', color: 'text-violet-400', border: 'border-violet-500/20', items: ['Node.js', 'Express', 'NestJS', 'Laravel', 'C#', '.NET Core', 'Python', 'Django', 'FastAPI', 'Flask', 'Java', 'PHP', 'REST APIs', 'GraphQL'] },
-                                { label: 'mob / ai', color: 'text-green-400', border: 'border-green-500/20', items: ['Kotlin', 'Android', 'Jetpack Compose', 'Computer Vision', 'Flutter', 'Dart', 'React Native', 'Expo', 'Swift', 'MVVM'] },
-                                { label: 'sap / db', color: 'text-amber-400', border: 'border-amber-500/20', items: ['SAP BTP', 'ABAP Cloud', 'HANA', 'RAP', 'CDS Views', 'MySQL', 'PostgreSQL', 'MongoDB', 'SQL Server', 'Firebase', 'Redis'] },
-                                { label: 'ops / tst', color: 'text-cyan-400', border: 'border-cyan-500/20', items: ['Docker', 'AWS', 'GitHub Actions', 'Vercel', 'Git', 'Bitbucket', 'Playwright', 'Cypress', 'Jest', 'Mocha', 'Postman'] },
-                                { label: 'ux / design', color: 'text-pink-400', border: 'border-pink-500/20', items: ['Figma', 'Stitch', 'Framer Motion', 'Animations', 'Clean Architecture', 'SOLID', 'Agile', 'SCRUM', 'JIRA'] },
+                                { label: 'lang', color: 'text-blue-400', border: 'border-blue-500/20', items: ['TypeScript', 'JavaScript', 'C#', 'SQL', 'Dart', 'Python', 'Java', 'Kotlin'] },
+                                { label: 'front', color: 'text-sky-400', border: 'border-sky-500/20', items: ['React', 'Next.js', 'Angular', 'Tailwind CSS', 'Radix UI', 'Zustand', 'Zod', 'HTML5', 'CSS3', 'PWA'] },
+                                { label: 'back / db', color: 'text-violet-400', border: 'border-violet-500/20', items: ['Node.js', 'Express', 'PostgreSQL', 'Supabase', 'Drizzle ORM', 'MySQL', 'MongoDB', 'Firebase', 'REST APIs', 'RBAC', 'RLS', 'pg-boss'] },
+                                { label: 'mob / desk', color: 'text-green-400', border: 'border-green-500/20', items: ['Flutter', 'Android', 'Jetpack Compose', 'C# / WPF', '.NET Framework', 'MVVM', 'Apple Wallet', 'PassKit', 'APNs', 'Google Wallet'] },
+                                { label: 'infra', color: 'text-amber-400', border: 'border-amber-500/20', items: ['Railway', 'Cloudflare', 'Firebase', 'Docker', 'Codemagic', 'Git', 'GitHub Actions', 'GitLab CI', 'WSL'] },
+                                { label: 'test / team', color: 'text-cyan-400', border: 'border-cyan-500/20', items: ['Vitest', 'Playwright', 'Testing Library', 'Cypress', 'PyTest', 'Postman', 'ESLint', 'Jira', 'Figma', 'Notion'] },
                             ].map(cat => (
                                 <div key={cat.label} className="grid grid-cols-[65px_1fr] md:grid-cols-[75px_1fr] gap-3 items-start group/cat pb-2.5 border-b border-[var(--border)] last:border-0 last:pb-0 min-w-0">
                                     <div className={`${cat.color} text-[9px] font-black uppercase tracking-tighter flex-shrink-0 pt-1 flex items-center gap-1.5 break-words`}>
@@ -248,8 +261,8 @@ const AboutPage = () => {
                         <h3 className="system-label text-[9px] mb-3 opacity-70 justify-center md:justify-start">🚀 PROFILE_DUMP</h3>
                         <p className="text-xs md:text-[15px] text-[var(--text-secondary)] leading-relaxed italic font-bold tracking-tight uppercase max-w-2xl">
                             {lang === 'es' 
-                                ? 'Ingeniera en TIC especializada en desarrollo de apps avanzadas del software. Enfocada en sistemas integrales de alto rendimiento para web, móvil y entornos empresariales SAP.'
-                                : 'ICT Engineer specialized in Advanced Software Application Development. Focused on high-performance web, mobile, and SAP enterprise ecosystems.'
+                                ? 'Única ingeniera de Voraa, con un producto de lealtad en producción, y desarrolladora en i3 Solutions para un equipo en Canadá. Web, móvil y cliente-servidor.'
+                                : 'Sole engineer at Voraa, with a loyalty product in production, and developer at i3 Solutions for a team in Canada. Web, mobile and client-server.'
                             }
                         </p>
                     </div>
@@ -262,22 +275,22 @@ const AboutPage = () => {
                         
                         <ul className="text-[10px] md:text-[11px] text-[var(--text-main)] space-y-2 font-bold italic uppercase tracking-tighter">
                             <li className="flex items-center gap-2">
-                                <span className="text-[var(--primary)]">-</span> Full Stack development
+                                <span className="text-[var(--primary)]">-</span> End-to-end product in production
                             </li>
                             <li className="flex items-center gap-2">
-                                <span className="text-[var(--primary)]">-</span> Database design (MySQL)
+                                <span className="text-[var(--primary)]">-</span> Apple &amp; Google Wallet (PassKit)
                             </li>
                             <li className="flex items-center gap-2">
-                                <span className="text-[var(--primary)]">-</span> REST API architecture
+                                <span className="text-[var(--primary)]">-</span> PostgreSQL · RLS · migrations
                             </li>
                             <li className="flex items-center gap-2">
-                                <span className="text-[var(--primary)]">-</span> Role-based access control
+                                <span className="text-[var(--primary)]">-</span> C# / .NET client-server
                             </li>
                         </ul>
-                        
+
                         <div className="pt-2 w-full">
                             <div className="h-px w-full bg-gradient-to-r from-[var(--primary)]/30 to-transparent"></div>
-                            <span className="text-[8px] opacity-40 uppercase tracking-widest mt-2 block">POSITION: SENIOR_JUNIOR_READY</span>
+                            <span className="text-[8px] opacity-40 uppercase tracking-widest mt-2 block">STATUS: OPEN_TO_OPPORTUNITIES</span>
                         </div>
                     </div>
                 </div>

@@ -17,8 +17,8 @@ const sections: { key: string; labelEs: string; labelEn: string; icon: string; c
     labelEn: "WEB DEVELOPMENT",
     icon: "public",
     certs: [
-      { title: "React", issuer: "Coursera", date: "Nov 2024", idCode: "COURSERA-RE-24", file: "/certificates/React.pdf", featured: true },
-      { title: "Django Web Development", issuer: "Coursera", date: "Sep 2024", idCode: "COURSERA-DJ-24", file: "/certificates/Coursera CQPLODRRH46E Django.pdf", featured: false },
+      { title: "React Basics", issuer: "Meta · Coursera", date: "Feb 2025", idCode: "BTPJSTGZJ8U6", file: "/certificates/react.pdf", featured: true },
+      { title: "Django Web Framework", issuer: "Meta · Coursera", date: "Feb 2025", idCode: "CQPLODRRH46E", file: "/certificates/django_coursera.pdf", featured: false },
     ],
   },
   {
@@ -27,8 +27,8 @@ const sections: { key: string; labelEs: string; labelEn: string; icon: string; c
     labelEn: "DATA & INTELLIGENCE",
     icon: "database",
     certs: [
-      { title: "Introduction to Data Science", issuer: "Cisco", date: "Apr 2023", idCode: "CISCO-DS-23", file: "/certificates/Introduction_to_Data_Science_certificate_19151741-aguascalientes-tecnm-mx_de68b3fa-be3b-4752-a93f-0c740c54911d.pdf", featured: false },
-      { title: "Business Intelligence", issuer: "Instituto Tecnológico de Aguascalientes", date: "Feb 2025", idCode: "ITA-BI-2025", file: "/certificates/Anahi Betzabe Lozano de Lira business intelligence.pdf", featured: true },
+      { title: "Introduction to Data Science", issuer: "Cisco", date: "Apr 2023", idCode: "CISCO-DS-23", file: "/certificates/intro_data_science.pdf", featured: false },
+      { title: "Business Intelligence", issuer: "Great Learning", date: "Feb 2025", idCode: "NJWVDCJD", file: "/certificates/business_intelligence.pdf", featured: true },
     ],
   },
   {
@@ -37,10 +37,11 @@ const sections: { key: string; labelEs: string; labelEn: string; icon: string; c
     labelEn: "NETWORKING & SECURITY",
     icon: "hub",
     certs: [
-      { title: "NDG Linux Unhatched", issuer: "Cisco / NDG", date: "Jun 2023", idCode: "NDG-LX-2023", file: "/certificates/Partner-_NDG_Linux_Unhatched_certificate_19151741-aguascalientes-tecnm-mx_8c79be28-11fe-43bb-a2a9-d21cf793125b.pdf", featured: true },
-      { title: "Introduction to Cybersecurity", issuer: "Cisco", date: "Mar 2023", idCode: "CISCO-SEC-23", file: "/certificates/Introduction_to_Cybersecurity_certificate_19151741-aguascalientes-tecnm-mx_c56e9699-3501-4f5a-9be9-fc9cdab22920.pdf", featured: false },
-      { title: "CCNA Switching, Routing and Wireless Essentials", issuer: "Cisco", date: "Aug 2024", idCode: "CSCO-CCNA-SRW-24", file: "/certificates/CCNA-_Switching-_Routing-_and_Wireless_Essentials_certificate_19151741-aguascalientes-tecnm-mx_8707393e-832a-4d15-97da-55bdb2202398.pdf", featured: true },
-      { title: "CCNA Enterprise Networking, Security and Automation", issuer: "Cisco", date: "Dec 2024", idCode: "CSCO-CCNA-EN-24", file: "/certificates/CCNA-_Enterprise_Networking-_Security-_and_Automation_certificate_19151741-aguascalientes-tecnm-mx_e8fb72a0-45fc-4ca1-83c8-09c232760c6d.pdf", featured: true },
+      { title: "NDG Linux Unhatched", issuer: "Cisco / NDG", date: "Jun 2023", idCode: "NDG-LX-2023", file: "/certificates/ndg_linux_unhatched.pdf", featured: true },
+      { title: "Introduction to Cybersecurity", issuer: "Cisco", date: "Mar 2023", idCode: "CISCO-SEC-23", file: "/certificates/intro_cybersecurity.pdf", featured: false },
+      { title: "CCNAv7: Switching, Routing and Wireless Essentials", issuer: "Cisco", date: "Aug 2024", idCode: "CSCO-CCNA-SRW-24", file: "/certificates/ccna_switching_routing_wireless.pdf", featured: true },
+      { title: "CCNAv7: Enterprise Networking, Security and Automation", issuer: "Cisco", date: "Dec 2024", idCode: "CSCO-CCNA-EN-24", file: "/certificates/ccna_enterprise_networking.pdf", featured: true },
+      { title: "Network Security", issuer: "Cisco", date: "Dec 2024", idCode: "CISCO-NS-24", file: "/certificates/network_security.pdf", featured: false },
     ],
   },
   {
@@ -119,7 +120,7 @@ const CertificatesPage = () => {
                                     <div className="grid grid-cols-2 gap-4 notranslate" translate="no">
                                         <div>
                                             <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start"><span>ISSUER</span></div>
-                                            <div className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-tight"><span>{c.issuer}</span></div>
+                                            <div className="text-[10px] font-black text-[var(--text-main)] uppercase tracking-tight"><span>{c.issuer}</span></div>
                                         </div>
                                         <div>
                                             <div className="system-label text-[7px] opacity-50 mb-1 justify-center md:justify-start"><span>ID</span></div>
@@ -130,7 +131,7 @@ const CertificatesPage = () => {
                                     <div className="mt-auto pt-4 border-t border-[var(--border)]/40 flex justify-between items-center bg-transparent">
                                         <div>
                                             <div className="system-label text-[7px] opacity-50 mb-0.5 justify-center md:justify-start">{t('cert_issued')}</div>
-                                            <div className="text-[11px] font-black text-[var(--text-primary)] tracking-wide">{c.date}</div>
+                                            <div className="text-[11px] font-black text-[var(--text-main)] tracking-wide">{c.date}</div>
                                         </div>
                                         <a
                                             href={c.file}

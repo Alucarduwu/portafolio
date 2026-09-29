@@ -27,17 +27,17 @@ const RHProjects = () => {
 
     const labels = {
         es: {
-            title: "Catálogo de Soluciones",
-            subtitle: "Ingeniería Estratégica & Casos de Éxito",
-            view_project: "CONSULTAR DETALLES",
-            visit: "EJECUCIÓN",
+            title: "Proyectos",
+            subtitle: "Trabajo en producción y proyectos propios",
+            view_project: "VER DETALLES",
+            visit: "VER EN VIVO",
             source: "REPOSITORIO"
         },
         en: {
-            title: "Solutions Catalog",
-            subtitle: "Strategic Engineering & Success Cases",
+            title: "Projects",
+            subtitle: "Production work and personal projects",
             view_project: "CASE DETAILS",
-            visit: "EXECUTION",
+            visit: "LIVE",
             source: "REPOSITORY"
         }
     };
