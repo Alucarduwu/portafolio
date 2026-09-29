@@ -538,19 +538,19 @@
 }
 
 @media (max-width: 768px) {
-  body {
+  body:not(:has(.one)) {
     padding-top: 64px;
   }
   
-  h1 {
+  body:not(:has(.one)) h1 {
     font-size: clamp(28px, 10vw, 42px);
   }
   
-  h2 {
+  body:not(:has(.one)) h2 {
     font-size: 20px;
   }
   
-  p {
+  body:not(:has(.one)) p {
     font-size: 14px;
   }
 
@@ -594,7 +594,7 @@
      bottom: 12px !important;
   }
   
-  h1 {
+  body:not(:has(.one)) h1 {
     font-size: 32px;
   }
 
@@ -611,3 +611,29 @@
 .animate-matrix-fall {
   animation: matrix-fall linear infinite;
 }
+
+/* ── Página única ─────────────────────────────────────────────── */
+.one {
+  --one-ink: #0b0a10;
+  --one-paper: #f4f1ea;
+  --one-accent: #b69cff;
+  --one-accent-2: #ff9ecf;
+}
+html:has(.one), html:has(.one) body { background: #0b0a10; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+@layer base {
+  /* La hoja global pone h1-h3 en mayúsculas monoespaciadas; aquí mandan las clases. */
+  .one :is(h1, h2, h3, h4) {
+    text-transform: none; font-style: normal; letter-spacing: normal;
+    font-family: inherit; color: inherit; font-size: inherit; line-height: inherit; font-weight: inherit;
+  }
+  .one p { color: inherit; font-size: inherit; line-height: inherit; }
+}
+
+@keyframes one-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.one-marquee { animation: one-marquee 38s linear infinite; }
+.one-marquee-reverse { animation-direction: reverse; animation-duration: 46s; }
+.one-marquee:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .one-marquee { animation: none; } }

@@ -84,11 +84,11 @@ export const projects = [
     category: "completo"
   },
   {
-    titleEs: "Directorio empresarial Buskq",
-    titleEn: "Buskq Business Directory",
+    titleEs: "Booskha · Directorio de negocios",
+    titleEn: "Booskha · Business directory",
     stack: "Angular • Node.js • MySQL",
-    descriptionEs: "Directorio empresarial desarrollado como proyecto full stack para la gestión y búsqueda de empresas locales con panel administrativo y estructura de categorías.",
-    descriptionEn: "Full stack business directory developed for searching and managing local companies with categories and admin dashboard.",
+    descriptionEs: "Directorio de negocios en línea que desarrollé en Lemaboox: búsqueda por palabra, ciudad, colonia o código postal, más de 350 especialidades y panel administrativo con roles.",
+    descriptionEn: "Live business directory I built at Lemaboox: search by keyword, city, neighborhood or ZIP code, 350+ specialties and a role-based admin panel.",
     problemEs: "Dificultad para localizar negocios locales digitalmente en áreas de rápido crecimiento.",
     problemEn: "Difficulty locating local businesses digitally in fast-growing areas.",
     solutionEs: "Plataforma web con búsqueda geo-espacial y CRUD administrativo robusto.",
@@ -97,7 +97,7 @@ export const projects = [
     features_en: ["Predictive search", "Category filters", "Admin panel", "SEO optimized"],
     images: [buskq1, buskq2, buskq3, buskq4, buskq5, buskq6],
     github: "",
-    demo: "",
+    demo: "https://booskha.com/home",
     category: "empresarial"
   },
   {
