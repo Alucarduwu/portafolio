@@ -308,6 +308,48 @@ const Portrait = () => {
     );
 };
 
+// GitHub etiqueta por lenguaje principal: un proyecto Django sale como «HTML» por sus templates.
+// Aquí se buscan las tecnologías en el título, la descripción y el stack, y HTML/CSS sólo quedan si no hay nada más.
+const KNOWN_TECH: [RegExp, string][] = [
+    [/django rest|drf\b/i, "Django REST"], [/django/i, "Django"], [/fastapi/i, "FastAPI"], [/flask/i, "Flask"],
+    [/next\.?js/i, "Next.js"], [/react native/i, "React Native"], [/\breact\b/i, "React"], [/angular/i, "Angular"], [/vue/i, "Vue"],
+    [/node\.?js|\bnode\b/i, "Node.js"], [/express/i, "Express"], [/typescript/i, "TypeScript"], [/javascript/i, "JavaScript"],
+    [/laravel/i, "Laravel"], [/\bphp\b/i, "PHP"], [/python/i, "Python"], [/flutter/i, "Flutter"], [/dart/i, "Dart"],
+    [/kotlin/i, "Kotlin"], [/jetpack compose/i, "Jetpack Compose"], [/\bexpo\b/i, "Expo"], [/electron/i, "Electron"],
+    [/firebase/i, "Firebase"], [/supabase/i, "Supabase"], [/postgre/i, "PostgreSQL"], [/mysql/i, "MySQL"], [/mongo/i, "MongoDB"],
+    [/sqlite/i, "SQLite"], [/docker/i, "Docker"], [/\bsap\b|abap/i, "SAP"], [/c#|\.net/i, "C# / .NET"], [/astro/i, "Astro"], [/java\b/i, "Java"],
+];
+const techOf = (p: { title: string; description: string; stack?: string[] }) => {
+    const text = `${p.title} ${p.description} ${(p.stack || []).join(" ")}`;
+    const found: string[] = [];
+    for (const [re, name] of KNOWN_TECH) if (re.test(text) && !found.includes(name)) found.push(name);
+    const fallback = (p.stack || []).filter(s => !/^(html|css|scss)$/i.test(s));
+    // Lo declarado manda; lo detectado sólo agrega lo que falte (y reemplaza al HTML engañoso).
+    const extra = found.filter(f => !fallback.some(s => s.toLowerCase().includes(f.toLowerCase())));
+    const merged = [...fallback, ...extra].filter((x, _, all) => !(x === "React" && all.includes("React Native")));
+    return (merged.length ? merged : p.stack || []).slice(0, 4);
+};
+
+const COVER_ICONS: [RegExp, string][] = [
+    [/biblio|libro|book/i, "menu_book"], [/gym|entren|fit/i, "fitness_center"], [/señas|sign/i, "sign_language"],
+    [/finanz|money|gasto/i, "savings"], [/store|shop|tienda|ropa|shoes/i, "storefront"], [/sap|erp|orders/i, "inventory_2"],
+    [/coach|atlet|rendimiento/i, "sports"], [/snack|food|comida/i, "fastfood"], [/api/i, "api"],
+];
+// Portadita para repos sin captura: ventanita con ícono, nombre y carita, no una letra suelta.
+const Cover = ({ title, repo, color }: { title: string; repo: string; color: string }) => {
+    const icon = COVER_ICONS.find(([re]) => re.test(`${title} ${repo}`))?.[1] || "terminal";
+    return (
+        <div className="relative flex h-full flex-col items-center justify-center gap-2 overflow-hidden"
+            style={{ background: color, backgroundImage: "radial-gradient(rgba(29,21,48,.16) 1.5px, transparent 1.5px)", backgroundSize: "14px 14px" }}>
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl border-[2.5px] border-[var(--ink)] bg-white shadow-[3px_3px_0_var(--ink)]">
+                <span className="material-symbols-outlined text-[34px]">{icon}</span>
+            </span>
+            <span className="rounded-md border-2 border-[var(--ink)] bg-white px-2 py-0.5 text-[13px]" style={PIXEL}>{repo}</span>
+            <span className="absolute bottom-2 right-3 text-[13px]" style={PIXEL}>(・ω・)ノ</span>
+        </div>
+    );
+};
+
 const PASTELS = ["var(--lila)", "var(--menta)", "var(--mante)", "var(--rosa)", "var(--cielo)"];
 
 const OnePage = () => {
@@ -648,12 +690,12 @@ const OnePage = () => {
                                     <div className="aspect-[16/9] overflow-hidden border-b-[2.5px] border-[var(--ink)] bg-[var(--paper)]">
                                         {p.images?.[0]
                                             ? <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover object-top" />
-                                            : <div className="flex h-full items-center justify-center text-[42px]" style={PIXEL}>{p.title.slice(0, 1)}</div>}
+                                            : <Cover title={p.title} repo={(p.github?.split("/").pop() || p.title).toLowerCase()} color={PASTELS[(i + 2) % PASTELS.length]} />}
                                     </div>
                                     <div className="flex flex-1 flex-col p-5">
                                         <h4 className="display text-[18px] font-semibold leading-snug">{p.title}</h4>
                                         <p className="mt-1.5 line-clamp-3 text-[14px] font-semibold leading-relaxed text-[var(--ink)]/70">{p.description}</p>
-                                        <div className="mt-3 flex flex-wrap gap-1.5">{(p.stack || []).slice(0, 4).map(s => <span key={s} className="tag text-[11px]">{s}</span>)}</div>
+                                        <div className="mt-3 flex flex-wrap gap-1.5">{techOf(p).map(s => <span key={s} className="tag text-[11px]">{s}</span>)}</div>
                                         <div className="mt-auto flex gap-2 pt-5">
                                             {p.github && <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-white">{t.code} ↗</a>}
                                             {p.demo && <a href={p.demo} target="_blank" rel="noopener noreferrer" className="btn btn-sm bg-[var(--menta)]">{t.visit} ↗</a>}
