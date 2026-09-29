@@ -637,3 +637,25 @@ html.lenis, html.lenis body { height: auto; }
 .one-marquee-reverse { animation-direction: reverse; animation-duration: 46s; }
 .one-marquee:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .one-marquee { animation: none; } }
+
+/* ── Detalles kawaii ─────────────────────────────────────────── */
+@keyframes kawaii-fall {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+  50%  { transform: translate3d(40px, 50vh, 0) rotate(180deg); }
+  100% { transform: translate3d(-20px, 110vh, 0) rotate(360deg); }
+}
+.kawaii-petal {
+  position: absolute; top: -20px; width: 11px; height: 11px;
+  background: linear-gradient(135deg, #ffc4e1, #ff9ecf);
+  border-radius: 100% 0 100% 0;
+  animation: kawaii-fall linear infinite;
+}
+@keyframes kawaii-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+.kawaii-blink { animation: kawaii-blink 4s infinite; }
+@keyframes kawaii-caret { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.kawaii-caret { animation: kawaii-caret 1.05s steps(1) infinite; }
+.kawaii-press { animation: kawaii-caret 1.6s steps(1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .kawaii-petal { display: none; }
+  .kawaii-blink, .kawaii-caret, .kawaii-press { animation: none; }
+}

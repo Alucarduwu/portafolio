@@ -8,6 +8,7 @@ import { certificates } from "./dataprojetcts/certificates";
 import voraaSite from "../assets/projects/voraa/1.png";
 import voraaCards from "../assets/projects/voraa/3.png";
 import booskha from "../assets/projects/buskq/booskha.png";
+import { PIXEL, PixelCat, Sakura, LevelHud, AchievementToast, useAchievements, useKonami } from "./Kawaii";
 
 // Una sola página: la barra lleva a cada sección con scroll suave (Lenis).
 // Todo lo que se afirma sale del CV 2026 o de los sitios enlazados.
@@ -37,7 +38,7 @@ const copy = {
         ctaCv: "Descargar CV",
         badgeA: "1,284 pruebas escritas por mí",
         badgeB: "Web · móvil · escritorio",
-        scroll: "Desliza",
+        scroll: "▶ PRESS START",
         aboutKicker: "Sobre mí",
         aboutTitle: ["No soy un puesto.", "Soy la persona que se queda hasta que funciona."],
         about: [
@@ -56,6 +57,7 @@ const copy = {
             ["Antes", "Técnica en Programación · CECyTEA"],
             ["Idiomas", "Español nativo · Inglés B2"],
             ["Base", "Aguascalientes · remoto"],
+            ["Fuera del código", "Videojuegos · anime ✦"],
         ],
         numbers: [
             ["2016", "empecé a programar"],
@@ -92,7 +94,7 @@ const copy = {
         contactLine: "Para una vacante, un proyecto freelance o sólo para conocernos.",
         copy: "Copiar",
         copied: "¡Copiado!",
-        footer: "Hecho por mí, con React y mucho café.",
+        footer: "Hecho con ♡, café y muchas partidas (っ˘ω˘ς )",
         mail: "Hola Anahí, vi tu portafolio",
     },
     en: {
@@ -107,7 +109,7 @@ const copy = {
         ctaCv: "Download CV",
         badgeA: "1,284 tests written by me",
         badgeB: "Web · mobile · desktop",
-        scroll: "Scroll",
+        scroll: "▶ PRESS START",
         aboutKicker: "About me",
         aboutTitle: ["I'm not a job title.", "I'm the one who stays until it works."],
         about: [
@@ -126,6 +128,7 @@ const copy = {
             ["Before that", "Programming technician · CECyTEA"],
             ["Languages", "Spanish (native) · English B2"],
             ["Based in", "Aguascalientes · remote"],
+            ["Off the clock", "Video games · anime ✦"],
         ],
         numbers: [
             ["2016", "started coding"],
@@ -162,7 +165,7 @@ const copy = {
         contactLine: "For a role, a freelance project, or just to meet.",
         copy: "Copy",
         copied: "Copied!",
-        footer: "Built by me, with React and a lot of coffee.",
+        footer: "Made with ♡, coffee and many game sessions (っ˘ω˘ς )",
         mail: "Hi Anahí, I saw your portfolio",
     },
 };
@@ -274,9 +277,9 @@ const reveal = {
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
 };
 
-const Kicker = ({ children }: { children: React.ReactNode }) => (
-    <p className="flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.28em] text-[var(--one-accent)]">
-        <span className="h-px w-8 bg-[var(--one-accent)]" />{children}
+const Kicker = ({ children, n }: { children: React.ReactNode; n?: number }) => (
+    <p className="flex items-center gap-2.5 text-[15px] text-[var(--one-accent)]" style={PIXEL}>
+        <span className="text-[var(--one-accent-2)]">★</span>{n ? `STAGE 0${n} · ` : ""}{children}
     </p>
 );
 
@@ -301,6 +304,18 @@ const OnePage = () => {
     const [active, setActive] = useState<SectionId>("inicio");
     const [menuOpen, setMenuOpen] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [party, setParty] = useState(false);
+    const { items: trophies, unlock } = useAchievements();
+    const pets = useRef(0);
+    const petCat = () => {
+        pets.current += 1;
+        if (pets.current === 5) unlock("cat", L === "es" ? "Amiga de los gatos" : "Cat friend", L === "es" ? "Acariciaste al gatito 5 veces · +50 XP" : "Pet the kitty 5 times · +50 XP");
+    };
+    useKonami(() => {
+        unlock("konami", "↑↑↓↓←→←→BA", L === "es" ? "Código secreto · +30 vidas" : "Secret code · +30 lives");
+        setParty(true);
+        setTimeout(() => setParty(false), 7000);
+    });
     const [scrolled, setScrolled] = useState(false);
 
     const { scrollYProgress } = useScroll();
@@ -351,6 +366,11 @@ const OnePage = () => {
         if (target) setTimeout(() => go(target), 350);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (active === "contacto") unlock("end", L === "es" ? "Llegaste al final" : "You made it to the end", L === "es" ? "Gracias por leer hasta aquí · +100 XP" : "Thanks for reading this far · +100 XP");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [active]);
 
     const mail = `mailto:${CONTACT_CONFIG.email}?subject=${encodeURIComponent(t.mail)}`;
     const whatsapp = `https://wa.me/52${CONTACT_CONFIG.whatsapp}?text=${encodeURIComponent(t.mail)}`;
@@ -419,6 +439,7 @@ const OnePage = () => {
                 <motion.div className="pointer-events-none absolute h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[120px]"
                     style={{ left: glowX, top: glowY, background: "radial-gradient(circle, rgba(182,156,255,0.35), rgba(255,158,207,0.12) 45%, transparent 70%)" }} />
                 <div className="pointer-events-none absolute inset-0 opacity-[0.035]" style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
+                <Sakura />
 
                 <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 lg:grid-cols-[1.25fr_0.75fr]">
                     <div>
@@ -442,7 +463,7 @@ const OnePage = () => {
                         </h1>
 
                         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.45 }}>
-                            <p className="mt-4 text-xl font-semibold sm:text-2xl">{t.role}</p>
+                            <p className="mt-4 text-xl font-semibold sm:text-2xl">{t.role}<span className="kawaii-caret ml-1.5 inline-block h-[0.85em] w-[3px] translate-y-[3px] bg-[var(--one-accent)]" /></p>
                             <p className="mt-3 max-w-[560px] text-[17px] leading-relaxed text-white/65 sm:text-lg">{t.heroLine}</p>
                             <div className="mt-6 flex flex-wrap gap-2">
                                 {t.chips.map(c => <span key={c} className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] text-white/70">{c}</span>)}
@@ -460,6 +481,7 @@ const OnePage = () => {
 
                     <motion.div initial={{ opacity: 0, scale: 0.94, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
                         className="relative mx-auto w-full max-w-[380px]">
+                        <div className="absolute -top-[48px] right-10 z-10"><PixelCat onPet={petCat} lang={L} /></div>
                         <div className="aspect-[4/5] overflow-hidden rounded-[32px] border border-white/10 shadow-[0_40px_120px_rgba(0,0,0,0.6)]">
                             <Portrait />
                         </div>
@@ -475,7 +497,7 @@ const OnePage = () => {
                 </div>
 
                 <motion.button onClick={() => go("sobre-mi")} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-                    className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-white/40 sm:flex">
+                    className="kawaii-press absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[15px] text-white/70 sm:flex" style={PIXEL}>
                     {t.scroll}
                     <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.6, repeat: Infinity }} className="material-symbols-outlined text-[18px]">south</motion.span>
                 </motion.button>
@@ -498,7 +520,7 @@ const OnePage = () => {
 
                 {/* ── Sobre mí ── */}
                 <section id="sobre-mi" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker>{t.aboutKicker}</Kicker></motion.div>
+                    <motion.div {...reveal}><Kicker n={1}>{t.aboutKicker}</Kicker></motion.div>
                     <motion.h2 {...reveal} className="mt-6 max-w-[980px] text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>
                         {t.aboutTitle[0]} <span className="italic text-white/45">{t.aboutTitle[1]}</span>
                     </motion.h2>
@@ -524,7 +546,7 @@ const OnePage = () => {
                         {t.traits.map((tr, i) => (
                             <motion.div key={tr.t} {...reveal} transition={{ ...reveal.transition, delay: i * 0.07 }}
                                 className="group rounded-3xl border border-white/[0.08] bg-white/[0.02] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-[var(--one-accent)]/40 hover:bg-white/[0.04]">
-                                <span className="text-3xl italic text-[var(--one-accent)]" style={SERIF}>0{i + 1}</span>
+                                <span className="text-[26px] text-[var(--one-accent)]" style={PIXEL}>{["♥", "⚔", "✦", "⚡"][i]}</span>
                                 <h3 className="mt-6 text-[17px] font-semibold">{tr.t}</h3>
                                 <p className="mt-2 text-[14px] leading-relaxed text-white/55">{tr.d}</p>
                             </motion.div>
@@ -534,7 +556,7 @@ const OnePage = () => {
 
                 {/* ── Experiencia ── */}
                 <section id="experiencia" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker>{t.expKicker}</Kicker></motion.div>
+                    <motion.div {...reveal}><Kicker n={2}>{t.expKicker}</Kicker></motion.div>
                     <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.expTitle}</motion.h2>
 
                     <div className="mt-16 space-y-5">
@@ -581,7 +603,7 @@ const OnePage = () => {
 
                 {/* ── Proyectos ── */}
                 <section id="proyectos" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker>{t.projKicker}</Kicker></motion.div>
+                    <motion.div {...reveal}><Kicker n={3}>{t.projKicker}</Kicker></motion.div>
                     <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.projTitle}</motion.h2>
 
                     <div className="mt-16 grid gap-5 lg:grid-cols-2">
@@ -645,7 +667,7 @@ const OnePage = () => {
                 {/* ── Servicios ── */}
                 <section id="servicios" className="scroll-mt-24">
                     <motion.div {...reveal} className="overflow-hidden rounded-[36px] border border-white/[0.08] bg-[radial-gradient(ellipse_at_top_left,rgba(182,156,255,0.14),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(255,158,207,0.08),transparent_50%)] p-7 sm:p-12 md:p-16">
-                        <Kicker>{t.servKicker}</Kicker>
+                        <Kicker n={4}>{t.servKicker}</Kicker>
                         <h2 className="mt-6 max-w-[820px] text-[40px] leading-[1.04] tracking-[-0.02em] sm:text-[60px]" style={SERIF}>{t.servTitle}</h2>
                         <div className="mt-14 grid gap-x-10 gap-y-2 md:grid-cols-2">
                             {t.services.map(s => (
@@ -688,7 +710,7 @@ const OnePage = () => {
 
                 {/* ── Certificados ── */}
                 <section id="certificados" className="scroll-mt-24">
-                    <motion.div {...reveal}><Kicker>{t.certKicker}</Kicker></motion.div>
+                    <motion.div {...reveal}><Kicker n={5}>{t.certKicker}</Kicker></motion.div>
                     <motion.h2 {...reveal} className="mt-6 text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[68px]" style={SERIF}>{t.certTitle}</motion.h2>
                     <div className="mt-14 divide-y divide-white/[0.08] border-y border-white/[0.08]">
                         {certificates.map((c, i) => (
@@ -712,7 +734,7 @@ const OnePage = () => {
 
                 {/* ── Contacto ── */}
                 <section id="contacto" className="scroll-mt-24 pb-10">
-                    <motion.div {...reveal}><Kicker>{t.contactKicker}</Kicker></motion.div>
+                    <motion.div {...reveal}><Kicker n={6}>{t.contactKicker}</Kicker></motion.div>
                     <motion.h2 {...reveal} className="mt-6 text-[88px] leading-[0.9] tracking-[-0.03em] sm:text-[150px]" style={SERIF}>
                         <span className="italic bg-gradient-to-r from-[var(--one-accent)] to-[var(--one-accent-2)] bg-clip-text text-transparent">{t.contactTitle}</span>
                     </motion.h2>
@@ -740,7 +762,11 @@ const OnePage = () => {
                 </section>
             </main>
 
-            <footer className="border-t border-white/[0.07] px-5 py-10 sm:px-8">
+            <LevelHud level={SECTIONS.indexOf(active) + 1} total={SECTIONS.length} label={t.nav[active]} />
+            <AchievementToast items={trophies} lang={L} />
+            {party && <div className="pointer-events-none fixed inset-0 z-[125]"><Sakura /><Sakura /></div>}
+
+            <footer className="border-t border-white/[0.07] px-5 pb-24 pt-10 sm:px-8">
                 <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-4 text-[13px] text-white/40 sm:flex-row">
                     <span>© 2026 Anahí Lozano</span>
                     <span>{t.footer}</span>
