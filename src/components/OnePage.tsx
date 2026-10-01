@@ -7,6 +7,8 @@ import { useGithubProjects } from "../hooks/useGithubProjects";
 import { certificates } from "./dataprojetcts/certificates";
 import voraaCards from "../assets/projects/voraa/3.png";
 import booskha from "../assets/projects/buskq/booskha.png";
+import verificaPrincipal from "../assets/projects/verificapago/principal.png";
+import verificaActivacion from "../assets/projects/verificapago/activacion.png";
 import { PIXEL, PixelCat, Sakura, LevelHud, AchievementToast, useAchievements, useKonami } from "./Kawaii";
 
 // Una sola página: la barra lleva a cada sección con scroll suave (Lenis).
@@ -680,6 +682,36 @@ const OnePage = () => {
                                 </Win>
                             </motion.a>
                         ))}
+
+                        {/* Trabajo freelance entregado: sin enlace público (app de escritorio del cliente). */}
+                        <motion.div {...reveal} transition={{ ...reveal.transition, delay: 0.16 }} className="lg:col-span-2">
+                            <Win color="var(--lila)" className="stk-hover" title={<>verifica-pago.exe <span className="ml-1 inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full border border-[var(--ink)] bg-emerald-400" />{L === "es" ? "Entregado" : "Delivered"}</span></>}>
+                                <div className="grid lg:grid-cols-[1.35fr_1fr]">
+                                    <div className="relative aspect-[16/10] overflow-hidden border-b-[2.5px] border-[var(--ink)] bg-[#f3f0ea] lg:aspect-auto lg:border-b-0 lg:border-r-[2.5px]">
+                                        <img src={verificaPrincipal} alt={L === "es" ? "Verifica Pago: pantalla principal" : "Verifica Pago: main screen"} loading="lazy" className="h-full w-full object-cover object-left-top" />
+                                        <img src={verificaActivacion} alt={L === "es" ? "Verifica Pago: activación por equipo" : "Verifica Pago: per-device activation"} loading="lazy"
+                                            className="absolute bottom-3 right-3 h-[78%] w-auto rotate-2 rounded-lg border-[2.5px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]" />
+                                    </div>
+                                    <div className="p-6">
+                                        <span className="tag bg-[var(--mante)] text-[12px]" style={PIXEL}>Freelance · {L === "es" ? "Proyecto entregado" : "Delivered project"} · 2026</span>
+                                        <h3 className="display mt-3 text-[30px] font-bold leading-tight">Verifica Pago</h3>
+                                        <p className="text-[13px] text-[var(--ink)]/60" style={PIXEL}>{L === "es" ? "Consulta vehicular · Morelos · de punta a punta" : "Vehicle lookup · Morelos · end to end"}</p>
+                                        <p className="mt-3 text-[15.5px] font-semibold leading-relaxed text-[var(--ink)]/75">
+                                            {L === "es"
+                                                ? "Aplicación de escritorio para Windows que reúne en una sola pantalla el historial de pagos, folios, líneas de captura y datos del vehículo, una consulta que antes requería varias herramientas. La diseñé, desarrollé y entregué completa."
+                                                : "A Windows desktop app that brings payment history, receipts, payment references and vehicle data into one screen, a lookup that used to take several tools. I designed, built and delivered it end to end."}
+                                        </p>
+                                        <ul className="mt-3 space-y-1 text-[14px] font-semibold text-[var(--ink)]/70">
+                                            {(L === "es"
+                                                ? ["Integración con servicios web SOAP y HTTP, y normalización de XML", "Licencia por equipo con firmas RSA: la clave privada nunca sale de mí", "Paquete self-contained win-x64: el cliente sólo lo abre"]
+                                                : ["SOAP and HTTP web service integration with XML normalization", "Per-device licensing with RSA signatures: the private key never leaves me", "Self-contained win-x64 build: the client just opens it"]
+                                            ).map(f => <li key={f}>✦ {f}</li>)}
+                                        </ul>
+                                        <div className="mt-4 flex flex-wrap gap-1.5">{["C#", ".NET 10", "WPF", "SOAP", "XML", "RSA"].map(s => <span key={s} className="tag">{s}</span>)}</div>
+                                    </div>
+                                </div>
+                            </Win>
+                        </motion.div>
                     </div>
 
                     <motion.h3 {...reveal} className="display mt-20 text-[28px] font-bold">{t.more} <span style={PIXEL} className="text-[18px]">(｡•̀ᴗ-)✧</span></motion.h3>
