@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useContext, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import Lenis from "lenis";
 import { GlobalContext } from "../context/GlobalContext";
@@ -10,6 +10,10 @@ import booskha from "../assets/projects/buskq/booskha.png";
 import verificaPrincipal from "../assets/projects/verificapago/principal.png";
 import verificaActivacion from "../assets/projects/verificapago/activacion.png";
 import { PIXEL, PixelCat, Sakura, LevelHud, AchievementToast, useAchievements, useKonami } from "./Kawaii";
+import type { OsProject } from "./os/shared";
+
+// El escritorio pesa lo suyo: sólo se descarga cuando alguien lo abre.
+const OsMode = lazy(() => import("./os/OsMode"));
 
 // Una sola página: la barra lleva a cada sección con scroll suave (Lenis).
 // Todo lo que se afirma sale del CV 2026 o de los sitios enlazados.
@@ -29,6 +33,8 @@ const copy = {
     es: {
         nav: { "inicio": "Inicio", "sobre-mi": "Sobre mí", "experiencia": "Experiencia", "proyectos": "Proyectos", "servicios": "Servicios", "certificados": "Certificados", "contacto": "Contacto" },
         cv: "CV",
+        os: "Modo OS",
+        osLong: "Ver en modo sistema operativo",
         hello: "Hola, soy",
         role: "Desarrolladora Full Stack",
         heroLine: "Construyo software que la gente usa de verdad: de la base de datos al pase que llevas en tu Wallet.",
@@ -100,6 +106,8 @@ const copy = {
     en: {
         nav: { "inicio": "Home", "sobre-mi": "About", "experiencia": "Experience", "proyectos": "Projects", "servicios": "Services", "certificados": "Certificates", "contacto": "Contact" },
         cv: "CV",
+        os: "OS mode",
+        osLong: "View in operating system mode",
         hello: "Hi, I'm",
         role: "Full Stack Developer",
         heroLine: "I build software people actually use: from the database to the pass in your Wallet.",
@@ -170,7 +178,7 @@ const copy = {
     },
 };
 
-type Job = {
+export type Job = {
     company: string; role: { es: string; en: string }; period: { es: string; en: string }; place: { es: string; en: string };
     headline: { es: string; en: string }; links: { label: string; href: string }[];
     bullets: { es: string[]; en: string[] }; stack: string[]; current?: boolean;
@@ -365,6 +373,8 @@ const OnePage = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [copied, setCopied] = useState(false);
     const [party, setParty] = useState(false);
+    // ?os=1 abre directo el escritorio (para compartir el enlace).
+    const [os, setOs] = useState(() => new URLSearchParams(window.location.search).has("os"));
     const { items: trophies, unlock } = useAchievements();
     const pets = useRef(0);
     const petCat = () => {
@@ -423,6 +433,17 @@ const OnePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active]);
 
+    // Con el escritorio abierto la página de atrás no se mueve.
+    useEffect(() => {
+        document.documentElement.style.overflow = os ? "hidden" : "";
+        return () => { document.documentElement.style.overflow = ""; };
+    }, [os]);
+    const toggleOs = (on: boolean) => {
+        setMenuOpen(false);
+        setOs(on);
+        history.replaceState(null, "", on ? "/?os=1" : "/");
+    };
+
     const mail = `mailto:${CONTACT_CONFIG.email}?subject=${encodeURIComponent(t.mail)}`;
     const whatsapp = `https://wa.me/52${CONTACT_CONFIG.whatsapp}?text=${encodeURIComponent(t.mail)}`;
     const copyMail = async () => {
@@ -431,6 +452,26 @@ const OnePage = () => {
 
     const ownProjects = projects.filter(p => !SKIP_IN_GRID.some(s => `${p.title} ${p.github}`.toLowerCase().includes(s)));
     const H2 = "display mt-5 text-[40px] font-bold leading-[1.05] sm:text-[60px]";
+
+    const featured = [
+        { name: "Voraa Lealtad", url: "voraa.io", where: L === "es" ? "Única ingeniera · de punta a punta" : "Sole engineer · end to end", href: "https://voraa.io/restaurantes/", img: voraaCards, color: "var(--rosa)",
+          d: L === "es" ? "Programas de lealtad para restaurantes con tarjetas en Apple y Google Wallet. Lo construí completo como única ingeniera." : "Loyalty programs for restaurants with Apple and Google Wallet cards. I built it end to end as the sole engineer.",
+          tags: ["Next.js", "PostgreSQL", "PassKit", "Google Wallet"] },
+        { name: "Booskha", url: "booskha.com", where: L === "es" ? "Del requerimiento a producción" : "From requirements to production", href: "https://booskha.com/home", img: booskha, color: "var(--cielo)",
+          d: L === "es" ? "Directorio que conecta a personas con negocios locales: búsqueda por ciudad, colonia o código postal y panel con roles." : "Directory connecting people with local businesses: search by city, neighborhood or ZIP code and a role-based panel.",
+          tags: ["Angular", "Node.js", "Express", "MySQL"] },
+    ];
+    const verifica = {
+        d: L === "es"
+            ? "Aplicación de escritorio para Windows que reúne en una sola pantalla el historial de pagos, folios, líneas de captura y datos del vehículo, una consulta que antes requería varias herramientas. La diseñé, desarrollé y entregué completa."
+            : "A Windows desktop app that brings payment history, receipts, payment references and vehicle data into one screen, a lookup that used to take several tools. I designed, built and delivered it end to end.",
+        tags: ["C#", ".NET 10", "WPF", "SOAP", "XML", "RSA"],
+    };
+    const osProjects: OsProject[] = [
+        ...featured.map(p => ({ name: p.name, d: p.d, tags: p.tags, href: p.href, img: p.img, badge: t.live })),
+        { name: "Verifica Pago", d: verifica.d, tags: verifica.tags, img: verificaPrincipal, badge: L === "es" ? "Entregado" : "Delivered" },
+        ...ownProjects.slice(0, 9).map(p => ({ name: p.title, d: p.description, tags: techOf(p), href: p.demo || undefined, code: p.github || undefined, img: p.images?.[0] })),
+    ];
 
     return (
         <div className="one min-h-screen overflow-x-clip antialiased selection:bg-[var(--rosa)]">
@@ -458,6 +499,9 @@ const OnePage = () => {
                     </ul>
 
                     <div className="flex items-center gap-2">
+                        <button onClick={() => toggleOs(true)} title={t.osLong} aria-label={t.osLong} className="btn btn-sm bg-[var(--lila)]">
+                            <span className="material-symbols-outlined text-[16px]">desktop_windows</span><span className="hidden xl:inline">{t.os}</span>
+                        </button>
                         <button onClick={() => setLang(lang === "es" ? "en" : "es")} className="btn btn-sm bg-white">{lang === "es" ? "EN" : "ES"}</button>
                         <a href={CV} target="_blank" rel="noopener noreferrer" className="btn btn-sm hidden bg-[var(--menta)] sm:inline-flex">{t.cv} ↓</a>
                         <button onClick={() => setMenuOpen(o => !o)} aria-label="Menú" className="btn btn-sm bg-white lg:hidden">
@@ -477,6 +521,9 @@ const OnePage = () => {
                                     <span className="text-[13px]" style={PIXEL}>0{i + 1}</span>
                                 </motion.button>
                             ))}
+                            <button onClick={() => toggleOs(true)} className="btn mt-2 w-full bg-[var(--lila)]">
+                                <span className="material-symbols-outlined text-[18px]">desktop_windows</span>{t.osLong}
+                            </button>
                             <a href={CV} target="_blank" rel="noopener noreferrer" className="btn mt-2 w-full bg-[var(--menta)]">{t.ctaCv}</a>
                         </motion.div>
                     )}
@@ -657,14 +704,7 @@ const OnePage = () => {
                     <motion.h2 {...reveal} className={H2}>{t.projTitle}</motion.h2>
 
                     <div className="mt-12 grid gap-8 lg:grid-cols-2">
-                        {[
-                            { name: "Voraa Lealtad", url: "voraa.io", where: L === "es" ? "Única ingeniera · de punta a punta" : "Sole engineer · end to end", href: "https://voraa.io/restaurantes/", img: voraaCards, color: "var(--rosa)",
-                              d: L === "es" ? "Programas de lealtad para restaurantes con tarjetas en Apple y Google Wallet. Lo construí completo como única ingeniera." : "Loyalty programs for restaurants with Apple and Google Wallet cards. I built it end to end as the sole engineer.",
-                              tags: ["Next.js", "PostgreSQL", "PassKit", "Google Wallet"] },
-                            { name: "Booskha", url: "booskha.com", where: L === "es" ? "Del requerimiento a producción" : "From requirements to production", href: "https://booskha.com/home", img: booskha, color: "var(--cielo)",
-                              d: L === "es" ? "Directorio que conecta a personas con negocios locales: búsqueda por ciudad, colonia o código postal y panel con roles." : "Directory connecting people with local businesses: search by city, neighborhood or ZIP code and a role-based panel.",
-                              tags: ["Angular", "Node.js", "Express", "MySQL"] },
-                        ].map((p, i) => (
+                        {featured.map((p, i) => (
                             <motion.a key={p.name} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }} href={p.href} target="_blank" rel="noopener noreferrer" className="group block">
                                 <Win color={p.color} className="stk-hover" title={<>{p.url} <span className="ml-1 inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full border border-[var(--ink)] bg-emerald-400" />{t.live}</span></>}>
                                     <div className="aspect-[16/10] overflow-hidden border-b-[2.5px] border-[var(--ink)] bg-[#f3f0ea]">
@@ -696,18 +736,14 @@ const OnePage = () => {
                                         <span className="tag bg-[var(--mante)] text-[12px]" style={PIXEL}>Freelance · {L === "es" ? "Proyecto entregado" : "Delivered project"} · 2026</span>
                                         <h3 className="display mt-3 text-[30px] font-bold leading-tight">Verifica Pago</h3>
                                         <p className="text-[13px] text-[var(--ink)]/60" style={PIXEL}>{L === "es" ? "Consulta vehicular · Morelos · de punta a punta" : "Vehicle lookup · Morelos · end to end"}</p>
-                                        <p className="mt-3 text-[15.5px] font-semibold leading-relaxed text-[var(--ink)]/75">
-                                            {L === "es"
-                                                ? "Aplicación de escritorio para Windows que reúne en una sola pantalla el historial de pagos, folios, líneas de captura y datos del vehículo, una consulta que antes requería varias herramientas. La diseñé, desarrollé y entregué completa."
-                                                : "A Windows desktop app that brings payment history, receipts, payment references and vehicle data into one screen, a lookup that used to take several tools. I designed, built and delivered it end to end."}
-                                        </p>
+                                        <p className="mt-3 text-[15.5px] font-semibold leading-relaxed text-[var(--ink)]/75">{verifica.d}</p>
                                         <ul className="mt-3 space-y-1 text-[14px] font-semibold text-[var(--ink)]/70">
                                             {(L === "es"
                                                 ? ["Integración con servicios web SOAP y HTTP, y normalización de XML", "Licencia por equipo con firmas RSA: la clave privada nunca sale de mí", "Paquete self-contained win-x64: el cliente sólo lo abre"]
                                                 : ["SOAP and HTTP web service integration with XML normalization", "Per-device licensing with RSA signatures: the private key never leaves me", "Self-contained win-x64 build: the client just opens it"]
                                             ).map(f => <li key={f}>✦ {f}</li>)}
                                         </ul>
-                                        <div className="mt-4 flex flex-wrap gap-1.5">{["C#", ".NET 10", "WPF", "SOAP", "XML", "RSA"].map(s => <span key={s} className="tag">{s}</span>)}</div>
+                                        <div className="mt-4 flex flex-wrap gap-1.5">{verifica.tags.map(s =><span key={s} className="tag">{s}</span>)}</div>
                                     </div>
                                 </div>
                             </Win>
@@ -843,6 +879,14 @@ const OnePage = () => {
 
             <LevelHud level={SECTIONS.indexOf(active) + 1} total={SECTIONS.length} label={t.nav[active]} />
             <AchievementToast items={trophies} lang={L} />
+            <Suspense fallback={null}>
+                <AnimatePresence>
+                    {os && (
+                        <OsMode L={L} t={t} jobs={JOBS} projects={osProjects} cv={CV} mail={mail} whatsapp={whatsapp}
+                            onToggleLang={() => setLang(lang === "es" ? "en" : "es")} onClose={() => toggleOs(false)} />
+                    )}
+                </AnimatePresence>
+            </Suspense>
             {party && <div className="pointer-events-none fixed inset-0 z-[125]"><Sakura /><Sakura /></div>}
 
             <footer className="border-t-[2.5px] border-dashed border-[var(--ink)]/30 px-5 pb-24 pt-10 sm:px-8">
