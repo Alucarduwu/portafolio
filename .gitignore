@@ -20,17 +20,17 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env.*
-.env.local
 debug_repos.js
 
 
 
 # Variables de entorno: nunca al repo
-.env
 !.env.example
 .vercel
 
 
 # Configuración del editor: fue la puerta del malware (tasks.json con runOn folderOpen)
-.vscode/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat

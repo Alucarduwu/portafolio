@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { destinations } from "./spaceDestinations";
 import { createAstronaut, createUfo } from "./spaceObjects";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const vertex = `
   varying vec3 vPosition;
@@ -23,37 +27,6 @@ const noise = `
   }
   float fbm(vec3 p) { float v=0.0; float a=0.5; for(int i=0;i<5;i++){v+=a*cosmicNoise(p);p=p*2.03+vec3(7.1);a*=0.5;}return v; }
 `;
-const surface = `
-  varying vec3 vPosition; varying vec3 vNormal; varying vec3 vWorld;
-  uniform vec3 uA; uniform vec3 uB; uniform vec3 uAtmosphere;
-  uniform float uKind;
-  ${noise}
-  void main() {
-    vec3 p=normalize(vPosition); float n=fbm(p*5.0);
-    vec3 albedo;
-    if(uKind < 0.5) {
-      float bands=sin(p.y*70.0 + fbm(p*7.0)*9.0)*0.5+0.5;
-      albedo=mix(uA,uB,bands*0.7+n*0.3);
-      albedo*=0.85+0.3*fbm(p*50.0);
-    } else if(uKind < 1.5) {
-      float land=smoothstep(0.49,0.55,n);
-      albedo=mix(uA,uB,land);
-      float clouds=smoothstep(0.58,0.72,fbm(p*9.0+3.0));
-      albedo=mix(albedo,vec3(0.83,0.89,0.9),clouds*0.85);
-      albedo=mix(albedo,vec3(0.83,0.9,0.92),smoothstep(0.83,0.98,abs(p.y)));
-    } else { albedo=mix(uA,uB,n); albedo*=0.65+0.5*fbm(p*35.0); }
-    vec3 normal=normalize(vNormal);
-    vec3 light=normalize(vec3(-6.0,5.0,6.0)-vWorld);
-    float diffuse=max(dot(normal,light),0.0);
-    vec3 viewDir=normalize(cameraPosition-vWorld);
-    float rim=pow(1.0-max(dot(normal,viewDir),0.0),3.5);
-    vec3 color=albedo*(0.06+1.1*diffuse)+uAtmosphere*rim*pow(diffuse,0.4)*0.42;
-    gl_FragColor=vec4(color,1.0);
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
-  }
-`;
-
 export default function SpaceScene({ active, onSelect }: { active: number; onSelect: (index: number) => void }) {
   const host = useRef<HTMLDivElement>(null);
   const labels = useRef<(HTMLButtonElement | null)[]>([]);
@@ -92,6 +65,10 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
     container.prepend(renderer.domElement);
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 180);
+    const composer=new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene,camera));
+    const bloom=new UnrealBloomPass(new THREE.Vector2(1,1),.32,.5,1.1);composer.addPass(bloom);
+    const output=new OutputPass();composer.addPass(output);
     const system = new THREE.Group(); scene.add(system);
     let seed = 42;
     const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
@@ -128,17 +105,18 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
     }));nebula.position.set(0,0,-95);scene.add(nebula);
 
     const sphere = new THREE.SphereGeometry(1, 80, 48);
+    const textureLoader=new THREE.TextureLoader();
+    const textures:THREE.Texture[]=[];
+    const loadTexture=(name:string)=>{const texture=textureLoader.load(`/space/${name}.jpg`);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());textures.push(texture);return texture;};
+    const backdrop=textureLoader.load("/space/nebula-cinematic.webp");backdrop.colorSpace=THREE.SRGBColorSpace;textures.push(backdrop);scene.background=backdrop;
     const specs = [
-      { position: [-.6,.2,0], radius: 1.4, a: "#af9b7c", b: "#e2c7a0", atmosphere: "#e7c79f", kind: 0 },
-      { position: [3.7,1.55,-2.5], radius: .8, a: "#0c457d", b: "#638078", atmosphere: "#5fbeef", kind: 1 },
-      { position: [-3.6,-1.65,1], radius: .63, a: "#9e5139", b: "#de9870", atmosphere: "#ca7756", kind: 2 },
+      { position: [1.6,.1,.5], radius: 1.8, atmosphere: "#e7c79f", texture:"saturn" },
+      { position: [-3.3,.1,-.7], radius: 1.02, atmosphere: "#5fbeef", texture:"earth_daymap" },
+      { position: [.1,-2.5,1], radius: .63, atmosphere: "#ca7756", texture:"mars" },
     ];
     const planets = specs.map((s,i) => {
       const group = new THREE.Group(); group.position.set(s.position[0],s.position[1],s.position[2]);
-      const material = new THREE.ShaderMaterial({ vertexShader: vertex, fragmentShader: surface, uniforms: {
-        uA: { value: new THREE.Color(s.a) }, uB: { value: new THREE.Color(s.b) },
-        uAtmosphere: { value: new THREE.Color(s.atmosphere) }, uKind: { value: s.kind },
-      } });
+      const material = new THREE.MeshStandardMaterial({map:loadTexture(s.texture),roughness:.9,metalness:.04});
       const mesh = new THREE.Mesh(sphere, material); mesh.scale.setScalar(s.radius); mesh.rotation.z = i === 0 ? -.28 : .15; group.add(mesh);
       const atmosphere = new THREE.Mesh(sphere,new THREE.ShaderMaterial({
         vertexShader: vertex, transparent: true, depthWrite: false, side: THREE.BackSide, blending: THREE.AdditiveBlending,
@@ -149,21 +127,22 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
       system.add(group);
       return { group, mesh, radius:s.radius };
     });
-    const ringGeometry = new THREE.RingGeometry(1.95, 3.05, 192, 8);
+    const ringGeometry = new THREE.RingGeometry(2.15, 3.6, 192, 8);
     const ringMaterial = new THREE.ShaderMaterial({
       transparent: true, side: THREE.DoubleSide, depthWrite: false,
       vertexShader: `varying vec3 vRing;void main(){vRing=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
-      fragmentShader: `varying vec3 vRing;void main(){float r=length(vRing.xy);float gap=1.0-smoothstep(.0,.045,abs(r-2.48));float lines=.55+.45*sin(r*240.0);float edge=smoothstep(1.95,2.03,r)*(1.0-smoothstep(2.95,3.05,r));vec3 c=mix(vec3(.27,.25,.24),vec3(.78,.69,.56),lines);gl_FragColor=vec4(c,edge*(.34+lines*.25)*(1.0-gap*.9));}`,
+      fragmentShader: `varying vec3 vRing;void main(){float r=length(vRing.xy);float gap=1.0-smoothstep(.0,.045,abs(r-2.85));float lines=.55+.45*sin(r*240.0);float edge=smoothstep(2.15,2.23,r)*(1.0-smoothstep(3.5,3.6,r));vec3 c=mix(vec3(.28,.25,.24),vec3(.88,.76,.6),lines);gl_FragColor=vec4(c,edge*(.44+lines*.3)*(1.0-gap*.9));}`,
     });
     const rings = new THREE.Mesh(ringGeometry,ringMaterial);
     rings.rotation.x = 1.18; rings.rotation.y = -.2; rings.rotation.z = -.36;
     planets[0].group.add(rings);
-    const moon = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ color: "#6f777c", roughness: 1 }));
+    const moon = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ map:loadTexture("moon"), roughness: 1 }));
     moon.scale.setScalar(.15); moon.position.set(-1.3,-1.7,.4); planets[1].group.add(moon);
-    const sunlight = new THREE.DirectionalLight("#b4c5df",2); sunlight.position.set(-6,5,6); scene.add(sunlight);
-    scene.add(new THREE.AmbientLight("#23344a",.5));
-    const astronaut=createAstronaut();astronaut.position.set(-4,1.4,2);astronaut.scale.setScalar(.52);system.add(astronaut);
-    const ufo=createUfo();ufo.position.set(3,-1.3,2);ufo.scale.setScalar(.5);system.add(ufo);
+    const sunlight = new THREE.DirectionalLight("#f8e5d4",3.2); sunlight.position.set(-6,5,6); scene.add(sunlight);
+    scene.add(new THREE.AmbientLight("#8197c7",.6));
+    const rimLight=new THREE.DirectionalLight("#948aff",1.5);rimLight.position.set(5,-1,-3);scene.add(rimLight);
+    const astronaut=createAstronaut();astronaut.position.set(-4,-1.9,2);astronaut.scale.setScalar(.72);system.add(astronaut);
+    const ufo=createUfo();ufo.position.set(4,2.15,1);ufo.scale.setScalar(.6);system.add(ufo);
     const scout=ufo.clone();scout.position.set(-2.8,3,-7);scout.scale.setScalar(.25);system.add(scout);
     astronaut.traverse(o=>{if(o instanceof THREE.Mesh)o.userData.discovery="astronaut";});
     ufo.traverse(o=>{if(o instanceof THREE.Mesh)o.userData.discovery="ufo";});
@@ -172,7 +151,11 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
     const dummy=new THREE.Object3D();
     for(let i=0;i<160;i++){const a=random()*Math.PI*2;const r=5.6+random()*1.3;dummy.position.set(Math.cos(a)*r,(random()-.5)*.45-1.2,Math.sin(a)*r-2);dummy.rotation.set(random()*6,random()*6,0);dummy.scale.setScalar(.3+random()*1.6);dummy.updateMatrix();belt.setMatrixAt(i,dummy.matrix);}
     system.add(belt);
-    const sun=new THREE.Mesh(new THREE.SphereGeometry(.7,32,24),new THREE.MeshBasicMaterial({color:"#ffd7a5"}));sun.position.set(-6,3.3,-8);system.add(sun);
+    [4.8,7.2,9.4].forEach((radius,i)=>{
+      const points=new THREE.EllipseCurve(0,0,radius,radius*.78,0,Math.PI*2,false,0).getPoints(180).map(p=>new THREE.Vector3(p.x,-2.2,p.y-1));
+      const orbitLine=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:i===0?"#749ed5":"#6684b9",transparent:true,opacity:.14,depthWrite:false}));system.add(orbitLine);
+    });
+    const sun=new THREE.Mesh(new THREE.SphereGeometry(.7,32,24),new THREE.MeshBasicMaterial({map:loadTexture("sun"),color:"#ffb978"}));sun.position.set(-6,3.3,-8);system.add(sun);
     const halo=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
       vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
       fragmentShader:`varying vec2 vUv;void main(){float d=length(vUv-.5);gl_FragColor=vec4(1.0,.5,.16,pow(max(0.0,1.0-d*2.0),4.0)*.6);}`,
@@ -194,6 +177,7 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
     const resize = () => {
       width = container.clientWidth; height = container.clientHeight;
       renderer.setSize(width,height); camera.aspect=width/height; camera.updateProjectionMatrix();
+      composer.setSize(width,height);bloom.enabled=width>=600;
       const mobile = width < 760;
       system.scale.setScalar(mobile ? .8 : 1);
       system.position.set(0,mobile ? -.5 : 0,0);
@@ -237,8 +221,8 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
         const targetScale=activeRef.current===i?1.035:1;
         p.group.scale.lerp(new THREE.Vector3(targetScale,targetScale,targetScale),.04);
       });
-      astronaut.position.y=1.4+Math.sin(time*.5)*.22;astronaut.rotation.z=-.3+Math.sin(time*.25)*.1;
-      ufo.position.x=3+Math.sin(time*.35)*.4;ufo.position.y=-1.3+Math.sin(time*.8)*.15;ufo.rotation.y=time*.2;
+      astronaut.position.y=-1.9+Math.sin(time*.5)*.22;astronaut.rotation.z=-.3+Math.sin(time*.25)*.1;
+      ufo.position.x=4+Math.sin(time*.35)*.4;ufo.position.y=2.15+Math.sin(time*.8)*.15;ufo.rotation.y=time*.2;
       scout.position.x=-2.8+Math.sin(time*.18)*1.2;scout.rotation.y=-time*.3;
       moon.position.set(Math.cos(time*.13)*1.3,-.3,Math.sin(time*.13)*1.3);
       belt.rotation.y=time*.008;
@@ -250,7 +234,7 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
       const nextFov=44+warpIntensity*24;
       if(Math.abs(camera.fov-nextFov)>.01){camera.fov=nextFov;camera.updateProjectionMatrix();}
       warpLines.position.copy(camera.position);warpLines.quaternion.copy(camera.quaternion);warpLines.position.z-=((now-warpStart)/100)%8;
-      renderer.render(scene,camera);
+      composer.render(delta);
       if(++frame%2===0) {
         planets.forEach((p,i) => {
           const label=labels.current[i];if(!label)return;
@@ -282,8 +266,8 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
       renderer.domElement.removeEventListener("webglcontextlost",contextLost);
       renderer.domElement.removeEventListener("pointerdown",down);renderer.domElement.removeEventListener("pointerup",up);renderer.domElement.removeEventListener("pointercancel",cancel);
       const geometries=new Set<THREE.BufferGeometry>();const materials=new Set<THREE.Material>();
-      scene.traverse(o=>{if(o instanceof THREE.Mesh || o instanceof THREE.Points || o instanceof THREE.LineSegments){geometries.add(o.geometry);const m=Array.isArray(o.material)?o.material:[o.material];m.forEach(v=>materials.add(v));}});
-      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();renderer.domElement.remove();
+      scene.traverse(o=>{if(o instanceof THREE.Mesh || o instanceof THREE.Points || o instanceof THREE.Line){geometries.add(o.geometry);const m=Array.isArray(o.material)?o.material:[o.material];m.forEach(v=>materials.add(v));}});
+      geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());bloom.dispose();output.dispose();composer.dispose();renderer.dispose();renderer.domElement.remove();
     };
   }, []);
 
