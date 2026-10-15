@@ -1,0 +1,92 @@
+.cosmos-scene canvas { pointer-events:auto;touch-action:pan-y;cursor:grab; }
+.cosmos-scene canvas:active { cursor:grabbing; }
+.cosmos-explorer { height:calc(100svh - 108px);min-height:690px;padding-top:36px;padding-bottom:40px;position:relative; }
+.cosmos-explorer-intro { position:relative;width:390px;pointer-events:none; }
+.cosmos-explorer-intro .cosmos-eyebrow { display:flex;align-items:center;gap:10px;font-size:8px;color:#8fa8c9;margin-bottom:17px!important; }
+.cosmos-explorer-intro i { display:block;width:5px;height:5px;border-radius:50%;background:#6efbc8;box-shadow:0 0 14px #6efbc899; }
+.cosmos-explorer h1 { font-family:'Inter',Arial,sans-serif;font-weight:500;font-size:50px;letter-spacing:-2.5px;line-height:1.1; }
+.cosmos-explorer h1>span { color:#a1bce0;font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:1.15em;font-weight:400;letter-spacing:-1px; }
+.cosmos-explorer-intro>p:not(.cosmos-eyebrow) { color:#a2afc7;font-size:11px;line-height:1.9;margin-top:16px; }
+.cosmos-explorer-hint { display:block;font:7px/1.8 'JetBrains Mono',monospace;letter-spacing:.8px;color:#657d9b;margin-top:17px; }
+.cosmos-system-readout { position:absolute;right:64px;top:40px;display:grid;gap:7px;text-align:right;font:7px/1.7 'JetBrains Mono',monospace;letter-spacing:1px;color:#718bae;pointer-events:none; }
+.cosmos-system-readout b { color:#acc9e7;font-size:11px;font-weight:400; }
+.cosmos-system-readout i { height:1px;background:linear-gradient(to right,transparent,#95bff133);margin:5px 0; }
+.cosmos-navigation { position:absolute;left:64px;bottom:130px;width:224px;pointer-events:auto;background:linear-gradient(130deg,#0b1725ac,#06101c55);backdrop-filter:blur(14px);border:1px solid #8cb4eb22; }
+.cosmos-navigation-heading { display:flex;justify-content:space-between;font:7px/1.5 'JetBrains Mono',monospace;letter-spacing:1.2px;padding:13px 15px;color:#8bacd7;border-bottom:1px solid #8cb4eb22; }
+.cosmos-navigation button { display:flex;align-items:center;gap:12px;padding:13px 15px;width:100%;text-align:left;border-left:2px solid transparent;color:#718bad;cursor:pointer;transition:background .2s; }
+.cosmos-navigation button:hover { background:#8ca8dd0e; }
+.cosmos-navigation button[aria-pressed=true] { border-left-color:#b5d9ff;background:#8ca8dd14;color:#d3e7ff; }
+.cosmos-navigation button>span:nth-child(2) { flex:1; }
+.cosmos-navigation button b { font-size:11px;font-weight:500;color:#c5d6ed; }
+.cosmos-navigation button small { display:block;font-size:8px;color:#7990ae;margin-top:2px; }
+.cosmos-navigation button>span:last-child { font:7px 'JetBrains Mono',monospace; }
+.cosmos-nav-planet { width:25px;height:25px;border-radius:50%;box-shadow:inset -5px -3px 6px #0006,0 0 14px #a9b8ff16;flex-shrink:0; }
+.cosmos-navigation>a { display:flex;justify-content:space-between;border-top:1px solid #8cb4eb22;margin:0 15px;padding:13px 0;font:8px 'JetBrains Mono',monospace;color:#9fbbdd; }
+.cosmos-explorer-note { position:absolute;right:64px;bottom:155px;text-align:right;max-width:225px;color:#718aaa;pointer-events:none; }
+.cosmos-explorer-note>span { font-size:39px;font-family:'Instrument Serif',Georgia,serif;color:#bdcfeb; }
+.cosmos-explorer-note p { font-size:12px;line-height:1.8; }
+.cosmos-explorer-note b { color:#a4c3e8;font-weight:400; }
+.cosmos-explorer-note small { display:block;margin-top:14px;font:7px/1.8 'JetBrains Mono',monospace; }
+.cosmos-mission-panel { position:absolute;right:64px;bottom:130px;width:320px;padding:20px;background:linear-gradient(135deg,#112038d4,#090e1fce);border:1px solid #a1c4ff38;backdrop-filter:blur(22px);pointer-events:auto;animation:mission-arrive .3s ease-out; }
+.cosmos-mission-heading { display:flex;align-items:center;justify-content:space-between;gap:10px;color:#799ac3;font:7px 'JetBrains Mono',monospace;letter-spacing:1px; }
+.cosmos-mission-heading button { font-size:20px;line-height:1;cursor:pointer;color:#b9d5f9; }
+.cosmos-mission-panel h2 { font:500 29px/1.2 'Inter',Arial,sans-serif;letter-spacing:-1px;margin:18px 0 13px; }
+.cosmos-mission-panel>p { font-size:10px;line-height:1.8;color:#a8b8d0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden; }
+.cosmos-mission-tech { display:flex;gap:6px;flex-wrap:wrap;margin-top:14px; }
+.cosmos-mission-tech span { padding:3px 6px;font:7px 'JetBrains Mono',monospace;background:#8dbbf016;color:#a4bfde;border:1px solid #8dbbf022; }
+.cosmos-mission-panel>a { display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding:10px 13px;background:#c9def6;color:#0a172b;font-size:10px; }
+.cosmos-explorer-scroll { position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font:7px 'JetBrains Mono',monospace;letter-spacing:1px;white-space:nowrap;pointer-events:auto;display:flex;gap:15px;color:#8ca8cb!important; }
+.cosmos-flight-console { position:fixed;bottom:0;left:0;right:0;z-index:15;border-top:1px solid #adcaff26;background:#050a16dd;backdrop-filter:blur(18px);padding:12px max(22px,calc((100vw - 1312px)/2)); }
+.cosmos-flight-controls { display:flex;align-items:center;justify-content:center;gap:28px; }
+.cosmos-flight-controls button { font:8px/1.5 'JetBrains Mono',monospace;color:#abc8eb;white-space:nowrap;padding:5px;cursor:pointer; }
+.cosmos-flight-controls button:hover { color:#eff6ff; }
+.cosmos-flight-controls button:focus-visible,.cosmos-navigation button:focus-visible { outline:2px solid #b3d1f5;outline-offset:2px; }
+.cosmos-flight-controls label { display:flex;align-items:center;gap:12px;font:8px 'JetBrains Mono',monospace;color:#7894b6; }
+.cosmos-flight-controls input { width:90px;height:3px;accent-color:#93c2f5;cursor:ew-resize; }
+.cosmos-signal { display:flex;justify-content:space-between;gap:20px;max-width:1050px;margin:10px auto 0;border-top:1px solid #adcaff10;padding-top:8px;font:7px/1.6 'JetBrains Mono',monospace;letter-spacing:.25px;color:#627fa3; }
+.cosmos-signal b { color:#95bbd9;font-weight:400;white-space:nowrap; }
+.cosmos-visitor-label { position:absolute;top:0;left:0;display:none;visibility:hidden;pointer-events:auto;white-space:nowrap;background:#082036a3;border:1px solid #78c7da39;color:#8cdeea;padding:7px 10px;font:7px/1.5 'JetBrains Mono',monospace;letter-spacing:.6px;backdrop-filter:blur(8px);cursor:pointer; }
+.cosmos-scene-ready .cosmos-visitor-label { display:flex;align-items:center;gap:8px; }
+.cosmos-visitor-label>span { font-size:13px;color:#b7fcf2; }
+.cosmos-visitor-label:hover { background:#154555ac; }
+.cosmos-visitor-label:focus-visible { outline:2px solid #bbf8ff;outline-offset:4px; }
+.cosmos-planet-label { padding:8px 20px 8px 12px;background:#030a1966;border-left-color:#8db7e677; }
+.cosmos-footer { padding-bottom:120px; }
+@keyframes mission-arrive { from { opacity:0;transform:translateY(10px); } to { opacity:1;transform:translateY(0); } }
+@media(max-width:1100px) { .cosmos-system-readout,.cosmos-explorer-note,.cosmos-mission-panel { right:36px; } .cosmos-navigation { left:36px; } .cosmos-explorer h1 { font-size:42px; } .cosmos-explorer-intro { width:300px; } .cosmos-navigation { width:200px; } }
+@media(max-width:760px) {
+  .cosmos-explorer { height:calc(100svh - 86px);min-height:710px;padding-top:24px; }
+  .cosmos-explorer-intro { width:260px; }
+  .cosmos-explorer h1 { font-size:33px;letter-spacing:-1.5px; }
+  .cosmos-explorer-intro>p:not(.cosmos-eyebrow) { font-size:9px;margin-top:10px; }
+  .cosmos-explorer-hint { font-size:6px;max-width:220px;margin-top:10px; }
+  .cosmos-system-readout { display:none; }
+  .cosmos-navigation { left:22px;right:22px;bottom:123px;width:auto;display:flex;flex-wrap:wrap; }
+  .cosmos-navigation-heading { width:100%;padding:8px 10px;font-size:6px; }
+  .cosmos-navigation button { flex:1;padding:10px 8px;gap:6px;border-left:0;border-bottom:2px solid transparent; }
+  .cosmos-navigation button[aria-pressed=true] { border-bottom-color:#b5d9ff; }
+  .cosmos-navigation button b { font-size:9px; }
+  .cosmos-navigation button small { font-size:6px; }
+  .cosmos-navigation button>span:last-child { display:none; }
+  .cosmos-nav-planet { width:19px;height:19px; }
+  .cosmos-navigation>a { margin:0 10px;width:100%;padding:8px 0;font-size:7px; }
+  .cosmos-explorer-note { right:22px;bottom:255px;width:155px; }
+  .cosmos-explorer-note p { font-size:10px; }
+  .cosmos-explorer-note>span { font-size:28px; }
+  .cosmos-explorer-note small { font-size:6px; }
+  .cosmos-mission-panel { right:22px;left:22px;bottom:251px;width:auto;padding:14px; }
+  .cosmos-mission-panel h2 { font-size:22px;margin:10px 0; }
+  .cosmos-mission-panel>p { -webkit-line-clamp:2;font-size:9px; }
+  .cosmos-mission-tech { margin-top:10px; }
+  .cosmos-mission-panel>a { padding:8px 10px;margin-top:12px;font-size:9px; }
+  .cosmos-explorer-scroll { bottom:104px;font-size:6px; }
+  .cosmos-flight-console { padding:10px 15px; }
+  .cosmos-flight-controls { flex-wrap:wrap;gap:8px 15px; }
+  .cosmos-flight-controls button { font-size:7px; }
+  .cosmos-flight-controls label { font-size:7px;gap:6px; }
+  .cosmos-flight-controls input { width:70px; }
+  .cosmos-signal { font-size:6px;gap:12px; }
+  .cosmos-signal>span { max-width:250px; }
+  .cosmos-visitor-label { font-size:6px;padding:5px 7px;letter-spacing:0; }
+}
+@media(prefers-reduced-motion:reduce) { .cosmos-mission-panel { animation:none; } }

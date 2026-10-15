@@ -499,6 +499,7 @@ const OnePage = () => {
                     </ul>
 
                     <div className="flex items-center gap-2">
+                        <a href="#universos" title={L === "es" ? "Versiones Metroflog y espacial" : "Metroflog and space versions"} className="btn btn-sm bg-[var(--cielo)]" aria-label={L === "es" ? "Explorar otros universos" : "Explore other universes"}>✦</a>
                         <button onClick={() => toggleOs(true)} title={t.osLong} aria-label={t.osLong} className="btn btn-sm bg-[var(--lila)]">
                             <span className="material-symbols-outlined text-[16px]">desktop_windows</span><span className="hidden xl:inline">{t.os}</span>
                         </button>
@@ -877,6 +878,12 @@ const OnePage = () => {
                 </section>
             </main>
 
+            <section id="universos" aria-label="Otras versiones del portafolio" className="mx-auto max-w-[1200px] scroll-mt-28 px-5 pb-16">
+                <div className="stk flex flex-wrap items-center justify-between gap-5 bg-[var(--lila)] p-6">
+                    <div><p className="display text-2xl font-bold">{L === "es" ? "Elige otro universo ✦" : "Choose another universe ✦"}</p><p>{L === "es" ? "El mismo portafolio, otra forma de explorarlo." : "The same portfolio, a new way to explore."}</p></div>
+                    <div className="flex flex-wrap gap-3"><a href="/?world=metro" className="btn bg-[var(--rosa)]">♡ Metroflog 2000s</a><a href="/?world=space" className="btn bg-[var(--cielo)]">✦ Espacial</a></div>
+                </div>
+            </section>
             <LevelHud level={SECTIONS.indexOf(active) + 1} total={SECTIONS.length} label={t.nav[active]} />
             <AchievementToast items={trophies} lang={L} />
             <Suspense fallback={null}>

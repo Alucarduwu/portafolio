@@ -9,6 +9,7 @@ import allofme8 from "../../assets/projects/allofme/8.png";
 import allofme9 from "../../assets/projects/allofme/9.png";
 
 import buskq1 from "../../assets/projects/buskq/busqueda.png";
+import booskhaHome from "../../assets/projects/buskq/booskha.png";
 import buskq2 from "../../assets/projects/buskq/categorias.png";
 import buskq3 from "../../assets/projects/buskq/dash.png";
 import buskq4 from "../../assets/projects/buskq/image.png";
@@ -95,7 +96,7 @@ export const projects = [
     solutionEn: "Web platform with geospatial search and robust administrative CRUD.",
     features_es: ["Búsqueda predictiva", "Filtros por categorías", "Panel de administración", "SEO optimizado"],
     features_en: ["Predictive search", "Category filters", "Admin panel", "SEO optimized"],
-    images: [buskq1, buskq2, buskq3, buskq4, buskq5, buskq6],
+    images: [booskhaHome, buskq1, buskq2, buskq3, buskq4, buskq5, buskq6],
     github: "",
     demo: "https://booskha.com/home",
     category: "empresarial"
