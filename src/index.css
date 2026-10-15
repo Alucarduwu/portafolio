@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* Alternate worlds do not use the legacy fixed-header spacing or light skin. */
+html[data-portfolio-world],
+html[data-portfolio-world] body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #03050d;
+  color-scheme: dark;
+}
+html[data-portfolio-world="metro"],
+html[data-portfolio-world="metro"] body {
+  background: #171017;
+  color-scheme: normal;
+}
+html[data-portfolio-world] #root {
+  min-height: 100svh;
+}
 
 
 /* Base Responsive Utilities */
@@ -538,19 +555,19 @@
 }
 
 @media (max-width: 768px) {
-  body:not(:has(.one)) {
+  html:not([data-portfolio-world]) body:not(:has(.one)) {
     padding-top: 64px;
   }
   
-  body:not(:has(.one)) h1 {
+  html:not([data-portfolio-world]) body:not(:has(.one)) h1 {
     font-size: clamp(28px, 10vw, 42px);
   }
   
-  body:not(:has(.one)) h2 {
+  html:not([data-portfolio-world]) body:not(:has(.one)) h2 {
     font-size: 20px;
   }
   
-  body:not(:has(.one)) p {
+  html:not([data-portfolio-world]) body:not(:has(.one)) p {
     font-size: 14px;
   }
 
@@ -594,7 +611,7 @@
      bottom: 12px !important;
   }
   
-  body:not(:has(.one)) h1 {
+  html:not([data-portfolio-world]) body:not(:has(.one)) h1 {
     font-size: 32px;
   }
 

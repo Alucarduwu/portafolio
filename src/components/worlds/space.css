@@ -13,7 +13,7 @@
   -webkit-font-smoothing: antialiased;
 }
 .cosmos { position: relative; background-image: radial-gradient(ellipse at 75% 20%,#22204655,transparent 50%); }
-.cosmos-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 85% 40%,#30255733,transparent 48%),radial-gradient(ellipse at 20% 75%,#0c2b4733,transparent 55%); }
+.cosmos-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 85% 40%,#30255733,transparent 48%),radial-gradient(ellipse at 20% 75%,#0c2b4733,transparent 55%),#03050d; }
 .cosmos-scene::before { content:''; position:absolute; inset:0; background-image:radial-gradient(1px 1px at 30px 42px,#bacfeaaa 90%,transparent),radial-gradient(1px 1px at 172px 111px,#ceddfa99 90%,transparent);background-size:267px 223px,413px 339px; }
 .cosmos-scene canvas { position:absolute; width:100%; height:100%; display:block; }
 .cosmos-scene-ready::before { opacity:.2; }

@@ -270,7 +270,10 @@ export default function SpaceScene({ active, onSelect }: { active: number; onSel
         });
       }
     };
-    resize(); window.addEventListener("resize",resize);window.addEventListener("pointermove",move,{passive:true});window.addEventListener("scroll",onScroll,{passive:true});
+    resize();
+    camera.position.set(0,0,width<760?22:13);
+    camera.lookAt(0,0,0);
+    window.addEventListener("resize",resize);window.addEventListener("pointermove",move,{passive:true});window.addEventListener("scroll",onScroll,{passive:true});
     renderer.domElement.addEventListener("pointerdown",down);renderer.domElement.addEventListener("pointerup",up);renderer.domElement.addEventListener("pointercancel",cancel);
     renderer.setAnimationLoop(animate);
     return () => {
